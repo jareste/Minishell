@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/02 11:12:01 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/02 22:26:06 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,10 @@ LIBFT_MAKE = INC/LIBFT
 
 HEADER = INC/minishell.h
 
-SRCS = $(addprefix $(SRC_PATH)/, main.c) 
+SRCS = $(addprefix $(SRC_PATH)/, main.c \
+	   parser.c) 
 
-CC = cc 
-#-g -fsanitize=address 
+CC = cc -g -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror 
 
