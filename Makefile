@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/03 15:30:47 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/03 18:48:14 by jrenau-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ OBJS = ${SRCS:.c=.o}
 all:
 		@$(MAKE) -C $(LIBFT_MAKE) --no-print-directory
 		@$(MAKE) -C $(PRINTF_MAKE) --no-print-directory
-		@$(MAKE) -C $(READLINE_MAKE) --no-print-directory
 		@$(MAKE) ${NAME} --no-print-directory
 
 ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
@@ -57,7 +56,6 @@ ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
 clean:
 			@$(MAKE) clean -C $(LIBFT_MAKE) --no-print-directory
 			@$(MAKE) clean -C $(PRINTF_MAKE) --no-print-directory
-			@$(MAKE) clean -C $(READLINE_MAKE) --no-print-directory
 			@${RM} ${OBJS} 
 			@echo "OBJECTS REMOVED😭   "
 
