@@ -26,6 +26,11 @@ typedef struct tokens_s{
 	char	*str;
 } t_tokens;
 
+
+// PARSER.C
+int	parser(t_tokens *tokens, char *str);
+
+// msh_words.c
 void print_words(t_tokens *words);
 int	msh_add_word(t_tokens *words, char *orig_word, size_t len, int type);
 t_word *msh_new_word(char *orig_word, size_t len, int type);
