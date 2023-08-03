@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/03 18:48:14 by jrenau-v         ###   ########.fr        #
+#    Updated: 2023/08/03 19:14:58 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,6 @@ PRINTF = INC/PRINTF/libftprintf.a
 PRINTF_MAKE = INC/PRINTF
 LIBFT = INC/libft/libft.a
 LIBFT_MAKE = INC/LIBFT
-READLINE_MAKE = INC/READLINE
-
 
 HEADER = INC/minishell.h
 
@@ -32,9 +30,8 @@ RM = rm -f
 CFLAGS = -Wall -Wextra -Werror 
 
 RDLFL = -lreadline -ltermcap #-lhistory #-lft 
-RDLSRC = INC/READLINE
-READL = INC/READLINE/libreadline.a 
-HISTORY = INC/readline/libhistory.a
+READL = INC/libft/libreadline.a 
+HISTORY = INC/libft/libhistory.a
 
 
 
@@ -62,7 +59,6 @@ clean:
 fclean: clean 
 			@$(MAKE) fclean -C $(LIBFT_MAKE) --no-print-directory
 			@$(MAKE) fclean -C $(PRINTF_MAKE) --no-print-directory
-			@$(MAKE) clean -C $(READLINE_MAKE) --no-print-directory
 			@${RM} ${OBJS} ${NAME}
 			@echo "EVERYTHING REMOVED😭 "
 
