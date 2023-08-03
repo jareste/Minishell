@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/02 23:29:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:08:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,35 @@ static int	break_ch(char c)
 		return (1);
 	return (0);
 
+}
+
+int	distance_to_dot(char *str, char dot)
+{
+	
+}
+
+int	test(t_tokens *tokens)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (tokens->str[i] && tokens->str[i] != '#')
+	{
+		if (break_ch(tokens->str[i]))
+		{
+			// msh_add_word(STRUCT, POSICION EN LA STR, LONGITUD WORD, DOT)
+			msh_add_word(tokens, str + i, 1, 0);
+			i++;
+		}
+		else if (tokens->str[i] == '"')
+			return;
+		else if (tokens->str[i] == '\'')
+		{
+			
+		}
+	}
 }
 
 static int	count_tokens(char *str)
