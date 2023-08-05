@@ -6,13 +6,13 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/03 19:41:40 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/06 01:08:10 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC_PATH = ./SRC
+SRC_PATH = ./SRC/parser
 INC_PATH = ./INC
 
 PRINTF = INC/PRINTF/libftprintf.a
@@ -24,6 +24,7 @@ HEADER = INC/minishell.h
 
 SRCS = $(addprefix $(SRC_PATH)/, main.c \
 	   parser.c \
+	   parser_utils.c \
 	   msh_words.c \
 	   msh_words_utils.c) 
 

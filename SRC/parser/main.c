@@ -6,11 +6,11 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/03 19:55:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 01:08:27 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../INC/minishell.h"
+#include "../../INC/minishell.h"
 /*
 int main(void)
 {
@@ -42,24 +42,15 @@ int main(void)
 
 int	main(int argc, char **argv, char *env[])
 {
+	t_tokens	*tokens;
+
 	argc = 0;
 	argv = 0;
 	env = 0;
-	t_tokens	*tokens;
-
-	tokens = msh_start_words();
 	while (1)
 	{
-		tokens->str = readline("hola> ");
-		if (tokens->str[0] != '\0')
-			parser(tokens, tokens->str);
-		msh_mount_matrix(tokens);
-		msh_print_words(tokens);
-		add_history(tokens->str);
-		free(tokens->str);
+		tokens = msh_start_words();
+		parser(tokens);
 	}
-
-
-	return 0;
-	
+	return (0);
 }

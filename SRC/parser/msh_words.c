@@ -6,16 +6,15 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:33 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/03 19:42:56 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 01:08:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../INC/minishell.h"
+#include "../../INC/minishell.h"
 
-
-t_tokens	 *msh_start_words(void)
+t_tokens	*msh_start_words(void)
 {
-	t_tokens *words;
+	t_tokens	*words;
 
 	words = calloc(1, sizeof (t_tokens)); // forbiden function
 	if (!words)
@@ -27,7 +26,7 @@ t_tokens	 *msh_start_words(void)
 
 int	msh_add_word(t_tokens *words, char *orig_word, size_t len, int type)
 {
-	t_word *nw_word;
+	t_word	*nw_word;
 
 	if (!orig_word)
 		return (0);
@@ -43,10 +42,10 @@ int	msh_add_word(t_tokens *words, char *orig_word, size_t len, int type)
 	return (1);
 }
 
-int msh_mount_matrix(t_tokens *words)
+int	msh_mount_matrix(t_tokens *words)
 {
 	t_word	*word;
-	size_t		i;
+	size_t	i;
 
 	if (!words)
 		return (0);
@@ -55,7 +54,7 @@ int msh_mount_matrix(t_tokens *words)
 		return (0);
 	word = words->first;
 	i = 0;
-	while(word)
+	while (word)
 	{
 		words->words[i] = word;
 		word = word->next;
@@ -63,7 +62,8 @@ int msh_mount_matrix(t_tokens *words)
 	}
 	return (1);
 }
-t_word *msh_new_word(char *orig_word, size_t len, int type)
+
+t_word	*msh_new_word(char *orig_word, size_t len, int type)
 {
 	t_word	*word;
 
@@ -82,9 +82,8 @@ t_word *msh_new_word(char *orig_word, size_t len, int type)
 	word->word[len] = '\0';
 	while (len-- > 0)
 		word->word[len] = orig_word[len];
-	return word;
+	return (word);
 }
-
 
 /*
 int main(void)
