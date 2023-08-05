@@ -6,11 +6,11 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:48 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/03 19:42:54 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 01:08:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../INC/minishell.h"
+#include "../../INC/minishell.h"
 
 void	msh_print_word(char *format_str, t_word word)
 {
@@ -22,32 +22,32 @@ void	msh_print_word(char *format_str, t_word word)
 
 void	msh_print_words_by_list(t_tokens *words)
 {
-	t_word *word;
-	
+	t_word	*word;
+
 	word = words->first;
 	while (word)
 	{
-		msh_print_word("%d: >>%s<<\n", *word);	
+		msh_print_word("%d: >>%s<<\n", *word);
 		word = word->next;
 	}
 }
 
 void	msh_print_words(t_tokens *words)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (words->words[i])
 	{
-		msh_print_word("%d: >>%s<<\n", *words->words[i]);	
+		msh_print_word("%d: >>%s<<\n", *words->words[i]);
 		i += 1;
 	}
 }
 
-int msh_free_words(t_tokens *words)
+int	msh_free_words(t_tokens *words)
 {
-	t_word *word;
-	t_word *aux;
+	t_word	*word;
+	t_word	*aux;
 
 	word = words->first;
 	while (word)
