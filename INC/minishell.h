@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 11:25:48 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:29:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int			do_spaces(t_tokens *tokens, char *str);
 
 // msh_words.c
 t_tokens	*msh_start_words(void);
-t_word		*msh_new_word(char *orig_word, size_t len, int type);
+t_word		*msh_new_word(char *str, size_t len, int type);
 void		print_words(t_tokens *words);
-int			msh_add_word(t_tokens *words, char *orig_word, size_t len, int type);
+int			msh_add_word(t_tokens *words, char *str, size_t len, int type);
 
 /* msh_words_utils.c */
 int			msh_mount_matrix(t_tokens *words);
@@ -59,6 +59,6 @@ void		msh_print_tokens(t_tokens *words);
 int			msh_free_tokens(t_tokens *tokens);
 
 //expander.c
-int	expander(t_tokens *tokens);
+int			expander(t_tokens *tokens);
 
 #endif
