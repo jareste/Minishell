@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 11:26:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:33:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static int	parse_string(t_tokens *tokens, char *str)
 int	parser(t_tokens *tokens)
 {
 	tokens->str = readline("bobo> ");
+	if (!tokens->str)
+		return (-1);
 	parse_string(tokens, tokens->str);
 	add_history(tokens->str);
 	msh_mount_matrix(tokens);
