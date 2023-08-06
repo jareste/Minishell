@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 02:16:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 11:25:48 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ typedef struct tokens_s{
 
 // PARSER.C
 int			parser(t_tokens *tokens);
+int			break_ch(char c);
 
 // PARSER UTILS
 int			do_dots(t_tokens *tokens, char *str);
 int			do_spaces(t_tokens *tokens, char *str);
-int			do_break(t_tokens *tokens, char *str);
+// int			do_break(t_tokens *tokens, char *str);
 
 // msh_words.c
 t_tokens	*msh_start_words(void);

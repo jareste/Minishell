@@ -6,17 +6,16 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 02:19:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 11:26:28 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static int	break_ch(char c)
+static int	do_break(t_tokens *tokens, char *str)
 {
-	if (c == '$' || c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
+	msh_add_word(tokens, str, 1, 0);
+	return (1);
 }
 
 static int	check_normal_ch(char ch)
