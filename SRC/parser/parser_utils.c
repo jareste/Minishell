@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:37:54 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 01:13:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 11:26:23 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ int	do_spaces(t_tokens *tokens, char *str)
 	return (i);
 }
 
-int	do_break(t_tokens *tokens, char *str)
+int	break_ch(char c)
 {
-	msh_add_word(tokens, str, 1, 0);
-	return (1);
+	if (c == '$' || c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
 }
