@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:33 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 01:08:33 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 01:41:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 t_tokens	*msh_start_words(void)
 {
-	t_tokens	*words;
+	t_tokens	*tokens;
 
-	words = calloc(1, sizeof (t_tokens)); // forbiden function
-	if (!words)
+	tokens = calloc(1, sizeof (t_tokens)); // forbiden function
+	if (!tokens)
 		return (NULL);
-	words->words = NULL; 
-	words->size = 0;
-	return (words);
+	tokens->words = NULL; 
+	tokens->size = 0;
+	return (tokens);
 }
 
-int	msh_add_word(t_tokens *words, char *orig_word, size_t len, int type)
+int	msh_add_word(t_tokens *tokens, char *orig_word, size_t len, int type)
 {
 	t_word	*nw_word;
 
@@ -33,12 +33,12 @@ int	msh_add_word(t_tokens *words, char *orig_word, size_t len, int type)
 	nw_word = msh_new_word(orig_word, len, type);
 	if (!nw_word) // mem leak
 		return (0);
-	if (words->first == NULL)
-		words->first = nw_word;
+	if (tokens->first == NULL)
+		tokens->first = nw_word;
 	else
-		words->last->next = nw_word;
-	words->last = nw_word;
-	words->size += 1;
+		tokens->last->next = nw_word;
+	tokens->last = nw_word;
+	tokens->size += 1;
 	return (1);
 }
 
