@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 01:08:27 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/06 02:19:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int	main(int argc, char **argv, char *env[])
 	{
 		tokens = msh_start_words();
 		parser(tokens);
+
+		add_history(tokens->str);
+		expander(tokens);
+	msh_print_tokens(tokens);
+	msh_free_tokens(tokens);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/06 01:08:10 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/06 02:11:46 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,11 @@ SRCS = $(addprefix $(SRC_PATH)/, main.c \
 	   parser.c \
 	   parser_utils.c \
 	   msh_words.c \
-	   msh_words_utils.c) 
+	   msh_words_utils.c)
+
+EXPANDER_PATH = ./SRC/expander
+
+SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c) 
 
 CC = cc -g -fsanitize=address 
 RM = rm -f
