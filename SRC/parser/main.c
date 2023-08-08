@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 12:14:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 00:47:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int main(void)
 int	main(int argc, char **argv, char *env[])
 {
 	t_tokens	*tokens;
+	t_tokens	*exp_tok;
 
 	argc = 0;
 	argv = 0;
@@ -50,11 +51,14 @@ int	main(int argc, char **argv, char *env[])
 	while (1)
 	{
 		tokens = msh_start_words();
+		exp_tok = msh_start_words();
 		if (parser(tokens) != -1)
 		{
-			expander(tokens);
+			expander(tokens, exp_tok);
 			msh_print_tokens(tokens);
+			msh_print_tokens(exp_tok);
 			msh_free_tokens(tokens);
+			msh_free_tokens(exp_tok);
 		}
 	}
 	return (0);
