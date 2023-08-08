@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 13:33:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 00:47:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	do_break(t_tokens *tokens, char *str)
 {
-	msh_add_word(tokens, str, 1, 0);
+	msh_add_word(tokens, str, 1, 3);
 	return (1);
 }
 
@@ -61,7 +61,7 @@ static int	parse_string(t_tokens *tokens, char *str)
 
 int	parser(t_tokens *tokens)
 {
-	tokens->str = readline("bobo> ");
+	tokens->str = readline("navidconD> ");
 	if (!tokens->str)
 		return (-1);
 	parse_string(tokens, tokens->str);

@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/06 02:11:46 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/09 00:31:05 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRCS = $(addprefix $(SRC_PATH)/, main.c \
 
 EXPANDER_PATH = ./SRC/expander
 
-SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c) 
+SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c \
+		expand_breaks.c) 
 
 CC = cc -g -fsanitize=address 
 RM = rm -f
