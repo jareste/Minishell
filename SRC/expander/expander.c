@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 02:14:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:09:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		type = tokens->words[i]->type;
 		if (type == 3)
 			i = expand_break(tokens, exp_tok, i);
-		// if (type == 2 || type == 1)
-			// expand_dots(tokens, exp_tok, i);
+		if (type == 2 || type == 1)
+			i = expand_dots(tokens, exp_tok, i);
 		else
 			i++;
 		}

@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 03:10:17 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:10:47 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static char	*expand_dollar(t_tokens *tokens, int i)
+char	*expand_dollar(t_tokens *tokens, int i)
 {
 	char	*str;
 	int		type;
@@ -24,6 +24,8 @@ static char	*expand_dollar(t_tokens *tokens, int i)
 		return (str);
 	}
 	str = tokens->words[i + 1]->word;
+	if (!getenv(str))
+		return (ft_strjoin(tokens->words[i]->word, str));
 	return (getenv(str));
 }
 
@@ -74,7 +76,7 @@ static int	expand_out(t_tokens *tokens, t_tokens *exp_tok, int i)
 	if (type == 3 && ch == '$')
 		src[1] = expand_dollar(tokens, (i + 1));
 	i++;
-	if (type != 3)
+	if (type != 3 || !src[1])
 		src[1] = tokens->words[i]->word;
 	dst = ft_strjoin(src[0], src[1]);
 	msh_add_word(exp_tok, dst, ft_strlen(dst), 0);
@@ -88,8 +90,17 @@ static int	do_dollar(t_tokens *tokens, t_tokens *exp_tok, int i)
 	char	*str;
 
 	printf("he entrau\n");
-	str = expand_dollar(tokens, i);
-	msh_add_word(exp_tok, str, ft_strlen(str), 0);
+	if (!tokens->words[i + 1])
+	{
+		msh_add_word(exp_tok, "$", 1, 0);
+		return (i);
+	}
+	else
+	{
+		str = expand_dollar(tokens, i);
+		if (str)
+			msh_add_word(exp_tok, str, ft_strlen(str), 0);
+	}
 	return (i + 1);
 }
 
@@ -100,11 +111,12 @@ int	expand_break(t_tokens *tokens, t_tokens *exp_tok, int i)
 
 	j = 0;
 	str = tokens->words[i]->word;
-	printf("i:::::%i\n", i);
-	if (str[0] == '|')
-		return (1);
-	else if (str[0] == '$')
+	if (str[0] == '$')
 		i = do_dollar(tokens, exp_tok, i);
+	if (!tokens->words[i + 1])
+		return (i + 1);
+	else if (str[0] == '|')
+		return (1);
 	else if (str[0] == '<')
 		i = expand_in(tokens, exp_tok, i);
 	else if (str[0] == '>')

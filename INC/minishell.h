@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 00:39:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:11:15 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ int			msh_free_tokens(t_tokens *tokens);
 //                    EXPANDER
 //   ###################################################
 //expander.c
-int	expander(t_tokens *tokens, t_tokens *exp_tok);
+int			expander(t_tokens *tokens, t_tokens *exp_tok);
 
 //expand_breaks.c
-int	expand_break(t_tokens *tokens, t_tokens *exp_tok, int i);
+int			expand_break(t_tokens *tokens, t_tokens *exp_tok, int i);
+char		*expand_dollar(t_tokens *tokens, int i);
 
 #endif
