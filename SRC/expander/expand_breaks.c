@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 02:58:23 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 03:10:17 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,35 +82,15 @@ static int	expand_out(t_tokens *tokens, t_tokens *exp_tok, int i)
 	// free_src(src);// hay que liberar SRC, pero no se como.
 	return (i + 1);
 }
-// {
-// 	int		type;
-// 	char	ch;
-// 	char	*dst;
-// 	char	*src[2];
-
-// 	printf("entro\n");
-// 	type = tokens->words[i + 1]->type;
-// 	ch = tokens->words[i + 1]->word[0];
-// 	// if (type == 3 && ch == '$')
-// 	// 	expand_dollar(tokens, (i + 1));
-// 	if (type != 3)
-// 	{
-// 		src[0] = tokens->words[i]->word;
-// 		if (ch == ' ' && type == 4)
-// 			i += 2;
-// 		else
-// 			i += 1;
-// 		src[1] = tokens->words[i]->word;
-// 		dst = ft_strjoin(src[0], src[1]);
-// 		msh_add_word(exp_tok, dst, ft_strlen(dst), 0);
-// 		free(dst);
-// 	}
-// 	return (i);
-// }
 
 static int	do_dollar(t_tokens *tokens, t_tokens *exp_tok, int i)
 {
+	char	*str;
 
+	printf("he entrau\n");
+	str = expand_dollar(tokens, i);
+	msh_add_word(exp_tok, str, ft_strlen(str), 0);
+	return (i + 1);
 }
 
 int	expand_break(t_tokens *tokens, t_tokens *exp_tok, int i)
@@ -120,10 +100,11 @@ int	expand_break(t_tokens *tokens, t_tokens *exp_tok, int i)
 
 	j = 0;
 	str = tokens->words[i]->word;
+	printf("i:::::%i\n", i);
 	if (str[0] == '|')
 		return (1);
 	else if (str[0] == '$')
-		i += do_dollar(tokens, exp_tok, i);
+		i = do_dollar(tokens, exp_tok, i);
 	else if (str[0] == '<')
 		i = expand_in(tokens, exp_tok, i);
 	else if (str[0] == '>')
