@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 04:10:47 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:40:30 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	expand_in(t_tokens *tokens, t_tokens *exp_tok, int i)
 	}
 	if (type == 3 && ch == '$')
 		src[1] = expand_dollar(tokens, (i + 1));
+	if (src[1])
+		i++;
 	i++;
 	if (type != 3)
 		src[1] = tokens->words[i]->word;
@@ -75,6 +77,8 @@ static int	expand_out(t_tokens *tokens, t_tokens *exp_tok, int i)
 	}
 	if (type == 3 && ch == '$')
 		src[1] = expand_dollar(tokens, (i + 1));
+	if (src[1])
+		i++;
 	i++;
 	if (type != 3 || !src[1])
 		src[1] = tokens->words[i]->word;
@@ -101,7 +105,7 @@ static int	do_dollar(t_tokens *tokens, t_tokens *exp_tok, int i)
 		if (str)
 			msh_add_word(exp_tok, str, ft_strlen(str), 0);
 	}
-	return (i + 1);
+	return (i + 2);
 }
 
 int	expand_break(t_tokens *tokens, t_tokens *exp_tok, int i)

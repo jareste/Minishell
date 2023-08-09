@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 04:11:15 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:20:07 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,8 @@ int			expander(t_tokens *tokens, t_tokens *exp_tok);
 //expand_breaks.c
 int			expand_break(t_tokens *tokens, t_tokens *exp_tok, int i);
 char		*expand_dollar(t_tokens *tokens, int i);
+
+//expand_dots.c
+int	expand_dots(t_tokens *tokens, t_tokens *exp_tok, int i);
 
 #endif
