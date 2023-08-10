@@ -6,54 +6,47 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 20:33:57 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:01:15 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static int	dst_tobreak(t_word **words)
+static int	expand_str(t_tokens *tokens, t_tokens *exp_tok, int i)
 {
-	int		i;
 	char	*str;
-
-	str = words->word;
-	while (str[i] && str[i] != ' ' && str[i] != '<' && \
-	str[i] != '>' && str[i] != '|')
-		i++;
-	return (i);
+		
+	str = tokens->words[i]->word;
+	if (str[0] == ' ' && !str[1])
+		return (i + 1);
+	msh_add_word(exp_tok, str, ft_strlen(str), 0);
+	return (i + 1);
 }
 
-static int	is_break_exp(char ch)
-{
-	if (ch == ' ' || ch == '<' || ch == '>' || ch == '|')
-		return (1);
-	return (0);
-}
 
 int	expander(t_tokens *tokens, t_tokens *exp_tok)
 {
-	size_t		i;
-	int			type;
-	char		*str[2];
+	int		i;
+	int		type;
 
 	i = 0;
-	type = 0;
-	while (i < tokens->size)
+	// printf("%s\n", getenv("HOME"));
+	while (tokens->words[i])
 	{
-		str[0] = tokens->words[i]->word;
-		while (!is_break_exp(str[0]))
+		// printf("i::::%i\n", i);
+		type = tokens->words[i]->type;
+		// printf("type::::%i\n", type);
+		if (type == 3)
 		{
-			type = tokens->words[i]->type;
-			if (type == 1)
-				// msh_add_word(exp_tokens, str, ft_strlen(str), 0);
-			
-
-			i++;
-			if (i >= tokens->size)
-				break;
-			str[0] = tokens->words[i]->word;	
-		}	
+			// printf("entroo\n");
+			i = expand_break(tokens, exp_tok, i);
+		}
+		// if (type == 2 || type == 1)
+		// 	i = expand_dots(tokens, exp_tok, i);
+		else
+			i = expand_str(tokens, exp_tok, i);
+		// printf("ia::::%i\n", i);
+	
 	}
 	msh_mount_matrix(exp_tok);
 	return (0);
