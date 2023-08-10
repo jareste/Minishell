@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/09 04:25:22 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/10 13:07:23 by jrenau-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,14 @@ SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c \
 		expand_breaks.c \
 		expand_dots.c) 
 
+BUILTINS_PATH = ./SRC/builtins
+
+SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
+		)
+
 CC = cc -g -fsanitize=address 
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -I ./INC
 
 RDLFL = -lreadline -ltermcap #-lhistory #-lft 
 READL = INC/libft/libreadline.a 
