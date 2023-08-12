@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/10 13:07:23 by jrenau-v         ###   ########.fr        #
+#    Updated: 2023/08/12 17:25:43 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ BUILTINS_PATH = ./SRC/builtins
 SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 		)
 
-CC = cc -g -fsanitize=address 
+CC = cc -g #-fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
