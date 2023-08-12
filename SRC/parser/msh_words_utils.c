@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:48 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/06 02:16:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/12 18:08:51 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	msh_free_tokens(t_tokens *tokens)
 	}
 	if (tokens->words)
 		free(tokens->words);
+	if (tokens->str)
+		free(tokens->str);
 	free(tokens);
 	return (1);
 }
