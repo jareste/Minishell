@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:37:54 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 00:22:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 05:15:28 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	dst_todot(char *str, char dot)
 
 	i = 1;
 	if (str[1] == dot)
-		return (-2);
+		return (-2); //error or smth
 	while (str[i] && str[i] != dot)
 		i++;
 	if (str[i] == '\0')

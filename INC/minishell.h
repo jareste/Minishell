@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/12 17:14:07 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 07:32:06 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct word_s{
+typedef struct word_s
+{
 	char			*word;
 	int				type;
 	size_t			len;
@@ -30,7 +31,8 @@ typedef struct word_s{
 
 }				t_word;
 
-typedef struct tokens_s{
+typedef struct tokens_s
+{
 	t_word	*first;
 	t_word	*last;
 	t_word	**words;
@@ -71,7 +73,7 @@ int			expand_break(t_tokens *tokens, t_tokens *exp_tok, int i);
 char		*expand_dollar(t_tokens *tokens, int i);
 
 //expand_dots.c
-int	expand_dots(t_tokens *tokens, t_tokens *exp_tok, int i);
+char	*expand_dots(t_tokens *tokens, int i);
 
 //   ###################################################
 //                    BUILTINS

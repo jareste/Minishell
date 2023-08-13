@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 04:57:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 07:42:54 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,6 @@ char	*expand_dollar(t_tokens *tokens, int i)
 	return (getenv(str));
 }
 
-static char	*check_expansion(t_tokens *tokens, int i)
-{
-	if (tokens->words[i]->type == 2)
-		return ("hola");
-	if (tokens->words[i]->type == 3)
-		return (expand_dollar(tokens, i));
-	return ("jaja");
-
-}
-
 int	expander(t_tokens *tokens, t_tokens *exp_tok)
 {
 	size_t		i;
@@ -132,10 +122,10 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		//justo antes del strdup para duplicar ya expandido en el 
 		//caso de los $
 			if (tokens->words[i]->type == 2)
-				str[j] = check_expansion(tokens, i);
-			if (tokens->words[i]->type == 3)
+				str[j] = expand_dots(tokens, i);
+			else if (tokens->words[i]->type == 3)
 			{
-				str[j] = check_expansion(tokens, i);
+				str[j] = expand_dollar(tokens, i);
 				str[j] = ft_strdup(str[j]);
 				i++;
 			}
