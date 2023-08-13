@@ -6,19 +6,19 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 08:54:33 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 09:17:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-char	*getenv_str(char *str)
+static char	*getenv_str(char *str)
 {
 	int		i;
 	char	*ret;
 
 	i = 1;
-	while(str[i] && str[i] != '$' && str[i] != ' ')
+	while (str[i] && str[i] != '$' && str[i] != ' ')
 		i++;
 	if (str[i] == '$' || str[i] == ' ')
 		i--;
@@ -26,50 +26,69 @@ char	*getenv_str(char *str)
 	return (ret);
 }
 
-static char	*free_join(char *ret, char *tmp)
+static char	*check_env(char *str)
 {
-	tmp = ft_strdup(ret);
-	free(ret);
-	return (tmp);
+	char	*env;
+	char	*aux;
+
+	env = getenv_str(str);
+	if (!getenv(env))
+		aux = ft_strdup("");
+	else
+		aux = ft_strdup(getenv(env));
+	free(env);
+	return (aux);
 }
 
-char	*expand_dots(t_tokens *tokens, int i)
+static char	*get_ret(char *ret, char *str, int j)
 {
-	size_t		j;
-	char	*str;
 	char	*aux;
-	char	*ret;
+	char	*tmp;
+
+	tmp = "\0";
+	aux = ft_substr(str, 0, j);
+	if (ret[0] != '\0')
+		tmp = free_join(ret, tmp);
+	ret = ft_strjoin(tmp, aux);
+	if (tmp[0] != '\0')
+		free(tmp);
+	free(aux);
+	aux = check_env(str + j);
+	tmp = free_join(ret, tmp);
+	ret = ft_strjoin(tmp, aux);
+	free(tmp);
+	free(aux);
+	return (ret);
+}
+
+static int	get_len(char *str)
+{
 	char	*env;
+	int		i;
+
+	env = getenv_str(str);
+	i = ft_strlen(env);
+	free(env);
+	return (i);
+}
+
+char	*expand_dots(t_tokens *tokens, int i, size_t j)
+{
+	char	*str;
+	char	*ret;
 	char	*tmp;
 	int		len;
 
 	len = tokens->words[i]->len;
 	str = tokens->words[i]->word;
-	j = 0;
 	ret = "\0";
 	tmp = "\0";
 	while (str[j])
 	{
 		if (str[j] == '$')
 		{
-			aux = ft_substr(str, 0, j);
-			if (ret[0] != '\0')
-				tmp = free_join(ret, tmp);
-			ret = ft_strjoin(tmp, aux);
-			if (tmp[0] != '\0')
-				free(tmp);
-			free(aux);
-			env = getenv_str(str + j);
-			if (!getenv(env))
-				aux = ft_strdup("");
-			else
-				aux = ft_strdup(getenv(env));
-			tmp = free_join(ret, tmp);
-			ret = ft_strjoin(tmp, aux);
-			free(tmp);
-			str = str + j + ft_strlen(env) + 1;
-			free(aux);
-			free(env);
+			ret = get_ret(ret, str, j);
+			str = str + j + get_len(str + j) + 1;
 			j = 0;
 			len--;
 		}
@@ -78,14 +97,6 @@ char	*expand_dots(t_tokens *tokens, int i)
 		if (len-- <= 0)
 			break ;
 	}
-	if (ret[0] != '\0')
-		tmp = free_join(ret, tmp);
-	
-	// {
-	// 	tmp = ft_strdup(ret);
-	// 	free(ret);
-	// }
-	ret = ft_strjoin(tmp, str);
-	free(tmp);
+	ret = get_ret(ret, str, j);
 	return (ret);
 }
