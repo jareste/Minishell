@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 09:17:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 20:33:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static char	*check_env(char *str)
 	char	*env;
 	char	*aux;
 
+	printf("dddddddddd::::::%s\n", str);
 	env = getenv_str(str);
 	if (!getenv(env))
 		aux = ft_strdup("");
@@ -97,6 +98,13 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j)
 		if (len-- <= 0)
 			break ;
 	}
-	ret = get_ret(ret, str, j);
+	if (ret[0])
+	{
+	tmp = ft_strdup(ret);
+	free(ret);
+	}
+	ret = ft_strjoin(tmp, str);
+	if (tmp[0])
+		free(tmp);
 	return (ret);
 }

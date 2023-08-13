@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 09:20:40 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 20:23:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,31 @@ static	void	ft_free(char **matrix)
 	free(matrix);
 }
 
-static void	new_tokens(t_tokens *exp_tok, char *str)
+static void	new_tokens(t_tokens *exp_tok, char *str, int type)
 {
-	msh_add_word(exp_tok, str, ft_strlen(str), 0);
-	free(str);
+	msh_add_word(exp_tok, str, ft_strlen(str), type);
+	if (str[0])
+		free(str);
+}
+
+int	exp_type(t_tokens *tokens, int i)
+{
+	int	type;
+
+	type = 0;
+	if (i >= 1)
+	{
+		if (tokens->words[i - 1]->word[0] == '<')
+			type = 1;
+		if (tokens->words[i - 1]->word[0] == '>')
+			type = 2;
+		if (tokens->words[i - 1]->word[0] == '|')
+			type = 3;
+		if (i > 1)
+			if (tokens->words[i - 1]->word[0] == '<' && tokens->words[i - 2]->word[0] == '|')
+				type = 4;
+	}
+	return (type);
 }
 
 int	expander(t_tokens *tokens, t_tokens *exp_tok)
@@ -64,14 +85,17 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 	int			len;
 	char		**str;
 	char		*src;
+	int			type;
 
+	type = 0;
 	i = 0;
 	while (i < tokens->size)
 	{
 		len = dst_tobreak(tokens, i);
 		str = ft_calloc(len + 1, sizeof(char *));
+		type = exp_type(tokens, i);
 		j = 0;
-		while (!is_break_exp(tokens->words[i]->word[0]))
+		while (is_break_exp(tokens->words[i]->word[0]) != 1)
 		{
 			if (tokens->words[i]->type == 2)
 				str[j] = expand_dots(tokens, i, 0);
@@ -87,9 +111,12 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 			if (tokens->size == i)
 				break ;
 		}
-		src = merge_matrix(str);
-		new_tokens(exp_tok, src);
-		ft_free(str);
+		if (str[0])
+		{
+			src = merge_matrix(str);
+			new_tokens(exp_tok, src, type);
+			ft_free(str);
+		}
 		i++;
 	}
 	msh_mount_matrix(exp_tok);
