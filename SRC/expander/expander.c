@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 09:17:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 09:20:40 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,6 @@ static	void	ft_free(char **matrix)
 	}
 	free(matrix);
 }
-
-
-
 
 static void	new_tokens(t_tokens *exp_tok, char *str)
 {
