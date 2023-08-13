@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 07:42:54 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 08:38:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,18 +115,13 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		len = dst_tobreak(tokens, i);
 		str = ft_calloc(len + 1, sizeof(char *));
 		j = 0;
-		printf("len::::%i\n", len);
 		while (!is_break_exp(tokens->words[i]->word[0]))
 		{
-		//en este bucle es donde tengo que expandir antes del merge
-		//justo antes del strdup para duplicar ya expandido en el 
-		//caso de los $
 			if (tokens->words[i]->type == 2)
 				str[j] = expand_dots(tokens, i);
 			else if (tokens->words[i]->type == 3)
 			{
-				str[j] = expand_dollar(tokens, i);
-				str[j] = ft_strdup(str[j]);
+				str[j] = ft_strdup(expand_dollar(tokens, i));
 				i++;
 			}
 			else
@@ -137,11 +132,7 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 			if (tokens->size == i)
 				break ;
 		}
-		printf("1::::%s\n", str[0]);
-		printf("2::::%s\n", str[1]);
-		printf("j:::%zu\n", j);
 		src = merge_matrix(str);
-		printf("return::::%s\n", src);
 		new_tokens(exp_tok, src);
 		ft_free(str);
 		i++;

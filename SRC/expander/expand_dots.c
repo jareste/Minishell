@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 08:08:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 08:54:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,24 @@
 
 char	*getenv_str(char *str)
 {
-	int	i;
+	int		i;
+	char	*ret;
 
 	i = 1;
 	while(str[i] && str[i] != '$' && str[i] != ' ')
 		i++;
 	if (str[i] == '$' || str[i] == ' ')
 		i--;
-	return (ft_substr(str, 1, i));
+	ret = ft_substr(str, 1, i);
+	return (ret);
 }
 
-
+static char	*free_join(char *ret, char *tmp)
+{
+	tmp = ft_strdup(ret);
+	free(ret);
+	return (tmp);
+}
 
 char	*expand_dots(t_tokens *tokens, int i)
 {
@@ -33,44 +40,52 @@ char	*expand_dots(t_tokens *tokens, int i)
 	char	*aux;
 	char	*ret;
 	char	*env;
+	char	*tmp;
 	int		len;
 
 	len = tokens->words[i]->len;
 	str = tokens->words[i]->word;
 	j = 0;
 	ret = "\0";
+	tmp = "\0";
 	while (str[j])
 	{
 		if (str[j] == '$')
 		{
 			aux = ft_substr(str, 0, j);
-			ret = ft_strjoin(ret, aux);
+			if (ret[0] != '\0')
+				tmp = free_join(ret, tmp);
+			ret = ft_strjoin(tmp, aux);
+			if (tmp[0] != '\0')
+				free(tmp);
 			free(aux);
 			env = getenv_str(str + j);
-			printf("env:::::::%s\n", env);
 			if (!getenv(env))
 				aux = ft_strdup("");
 			else
-			{
-				aux = getenv(env);
-				aux = ft_strdup(aux);
-			printf("aux:::::::%s\n", aux);
-			}
-			ret = ft_strjoin(ret, aux);
-			printf("len:::::%zu\n", ft_strlen(env));
+				aux = ft_strdup(getenv(env));
+			tmp = free_join(ret, tmp);
+			ret = ft_strjoin(tmp, aux);
+			free(tmp);
 			str = str + j + ft_strlen(env) + 1;
 			free(aux);
+			free(env);
 			j = 0;
-			printf("ret:::::::%s\n", ret);
 			len--;
 		}
 		else
 			j++;
 		if (len-- <= 0)
 			break ;
-		// printf("len:::%i\n", len);
 	}
-	ret = ft_strjoin(ret, str);
-	printf("ret:::::::%s\n", ret);
+	if (ret[0] != '\0')
+		tmp = free_join(ret, tmp);
+	
+	// {
+	// 	tmp = ft_strdup(ret);
+	// 	free(ret);
+	// }
+	ret = ft_strjoin(tmp, str);
+	free(tmp);
 	return (ret);
 }
