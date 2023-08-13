@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 07:32:06 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 09:16:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,13 @@ int			msh_free_tokens(t_tokens *tokens);
 //expander.c
 int			expander(t_tokens *tokens, t_tokens *exp_tok);
 
-//expand_breaks.c
-int			expand_break(t_tokens *tokens, t_tokens *exp_tok, int i);
-char		*expand_dollar(t_tokens *tokens, int i);
+//expand_utils.c
+char	*free_join(char *ret, char *tmp);
+char	*expand_dollar(t_tokens *tokens, int i);
+char	*merge_matrix(char **matrix);
 
 //expand_dots.c
-char	*expand_dots(t_tokens *tokens, int i);
+char	*expand_dots(t_tokens *tokens, int i, size_t j);
 
 //   ###################################################
 //                    BUILTINS

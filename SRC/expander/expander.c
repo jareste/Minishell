@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 08:38:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 09:17:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,54 +51,13 @@ static	void	ft_free(char **matrix)
 	free(matrix);
 }
 
-static char	*merge_matrix(char **matrix)
-{
-	char	*str;
-	int		i;
-	char	*ret;
 
-	i = 0;
-	str = "\0";
-	ret = "\0";
-	while (matrix[i])
-	{
-		printf("hola\n");
-		if (i > 0)
-		{
-			str = ft_strdup(ret);
-			free(ret);
-		}
-		ret = ft_strjoin(str, matrix[i]);
-		if (i > 0)
-			free(str);
-		i++;
-	}
-	return (ret);
-}
 
 
 static void	new_tokens(t_tokens *exp_tok, char *str)
 {
 	msh_add_word(exp_tok, str, ft_strlen(str), 0);
 	free(str);
-}
-
-char	*expand_dollar(t_tokens *tokens, int i)
-{
-	char	*str;
-	int		type;
-
-	type = tokens->words[i + 1]->type;
-	if (type == 4)
-	{
-		str = "$";
-		return (str);
-	}
-	str = tokens->words[i + 1]->word;
-	if (!getenv(str))
-		return (ft_strdup(""));
-		// return (ft_strjoin(tokens->words[i]->word, str));
-	return (getenv(str));
 }
 
 int	expander(t_tokens *tokens, t_tokens *exp_tok)
@@ -118,7 +77,7 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		while (!is_break_exp(tokens->words[i]->word[0]))
 		{
 			if (tokens->words[i]->type == 2)
-				str[j] = expand_dots(tokens, i);
+				str[j] = expand_dots(tokens, i, 0);
 			else if (tokens->words[i]->type == 3)
 			{
 				str[j] = ft_strdup(expand_dollar(tokens, i));
@@ -126,7 +85,6 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 			}
 			else
 				str[j] = ft_strdup(tokens->words[i]->word);
-			// printf("%zu, str:::%s\n", j, str[j]);
 			j++;
 			i++;
 			if (tokens->size == i)
