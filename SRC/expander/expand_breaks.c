@@ -6,28 +6,28 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/09 19:08:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/13 04:06:25 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-char	*expand_dollar(t_tokens *tokens, int i)
-{
-	char	*str;
-	int		type;
+// char	*expand_dollar(t_tokens *tokens, int i)
+// {
+// 	char	*str;
+// 	int		type;
 
-	type = tokens->words[i + 1]->type;
-	if (type == 4)
-	{
-		str = "$";
-		return (str);
-	}
-	str = tokens->words[i + 1]->word;
-	if (!getenv(str))
-		return (ft_strjoin(tokens->words[i]->word, str));
-	return (getenv(str));
-}
+// 	type = tokens->words[i + 1]->type;
+// 	if (type == 4)
+// 	{
+// 		str = "$";
+// 		return (str);
+// 	}
+// 	str = tokens->words[i + 1]->word;
+// 	if (!getenv(str))
+// 		return (ft_strjoin(tokens->words[i]->word, str));
+// 	return (getenv(str));
+// }
 
 static int	expand_in(t_tokens *tokens, t_tokens *exp_tok, int i)
 {
