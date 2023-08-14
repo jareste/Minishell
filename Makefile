@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/13 20:33:17 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/14 20:54:18 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,6 @@ CFLAGS = -Wall -Wextra -Werror -I ./INC
 RDLFL = -lreadline -ltermcap #-lhistory #-lft 
 READL = INC/libft/libreadline.a 
 HISTORY = INC/libft/libhistory.a
-
-
 
 
 %.o: %.c ${HEADER} Makefile

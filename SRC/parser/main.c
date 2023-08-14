@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 00:18:38 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/14 22:49:59 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ int	main(int argc, char **argv, char *env[])
 		if (tmp_exit == -2)
 			break;
 	}
+	ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
 	return (0);
 }
