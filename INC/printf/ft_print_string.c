@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_string.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:22:49 by jareste-          #+#    #+#             */
-/*   Updated: 2023/07/31 08:57:15 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/14 22:43:34 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_print_string(char *str)
+int	ft_print_string(int fd ,char *str)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ int	ft_print_string(char *str)
 		str = "(null)";
 	while (str[i])
 	{
-		if (ft_print_char_fd(str[i], 1) == -1)
+		if (ft_print_char_fd(str[i], fd) == -1)
 			return (-1);
 		i++;
 	}

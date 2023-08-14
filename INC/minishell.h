@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:07:36 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/14 22:40:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ typedef struct tokens_s
 	size_t	size;
 	char	*str;
 }				t_tokens;
+
+typedef struct cmd_s
+{
+	int		fd_in[2];
+	int		fd_out[2];
+	char	**args;
+	char	**env;
+}				t_cmd;
 
 //   ###################################################
 //                    PARSER

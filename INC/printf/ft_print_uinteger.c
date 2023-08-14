@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_uinteger.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:45:52 by jareste-          #+#    #+#             */
-/*   Updated: 2023/07/31 08:57:20 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/14 22:48:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_print_uinteger(unsigned int n)
+int	ft_print_uinteger(int fd, unsigned int n)
 {
 	char	c;
 	size_t	temp;
@@ -27,13 +27,13 @@ int	ft_print_uinteger(unsigned int n)
 	{
 		temp = n / 10;
 		n = n % 10;
-		if (ft_print_decimal(temp) == -1)
+		if (ft_print_decimal(fd, temp) == -1)
 			return (-1);
 	}
 	if (n < 9)
 		temp = n;
 	c = n + '0';
-	if (ft_print_char_fd(c, 1) == -1)
+	if (ft_print_char_fd(c, fd) == -1)
 		return (-1);
 	return (c_printed);
 }
