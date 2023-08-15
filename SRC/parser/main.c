@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 05:21:20 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 09:15:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int main(void)
 
 int	main(int argc, char **argv, char *env[])
 {
-	// t_tokens	*tokens;
-	// t_tokens	*exp_tok;
+	t_tokens	*tokens;
+	t_tokens	*exp_tok;
 
 	argc = 0;
 	argv = 0;
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char *env[])
 			expander(tokens, exp_tok);
 			msh_print_tokens(exp_tok);
 			printf("#######exp ended######\n\n");  //ss
-			executor(exp_tok);
+			// executor(exp_tok);
 			printf("#######exe ended######\n\n");  //ss
 		}
 		msh_free_tokens(tokens);
@@ -68,7 +68,8 @@ int	main(int argc, char **argv, char *env[])
 		if (tmp_exit == -2)
 			break;
 	}
-	ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
+
+	// ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
 	return (0);
 }
 
@@ -76,15 +77,20 @@ int	main(int argc, char **argv, char *env[])
 /*
 char *args[4];
 args[0] = "cat";
-args[1] = "Makefile";
+args[1] = "tst";
 args[2] = NULL;
 args[3] = NULL;
 
-char *args2[2];
-args2[0] = "pwd";
-args2[1] = NULL;
+int output_fd = open("afd", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-execve("/bin/pwd", args2, NULL);//seems to kill process
-ret -1 if fails.
-execve("/bin/cat", args, NULL);
+ pid_t pid = fork();
+        // printf("pid:%i\n", pid);
+
+    if (pid == 0) {  // Proceso hijo
+        // Redirigir la salida estándar al archivo
+        dup2(output_fd, STDOUT_FILENO);
+        close(output_fd); // Cerrar el descriptor de archivo
+        execve("/bin/cat", args, NULL); // Usar la ruta completa de "cat"
+        return 1;
+    }
 */
