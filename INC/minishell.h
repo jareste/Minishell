@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:40:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 05:21:48 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 
 typedef struct word_s
 {
@@ -42,10 +43,11 @@ typedef struct tokens_s
 
 typedef struct cmd_s
 {
-	int		fd_in[2];
-	int		fd_out[2];
-	char	**args;
-	char	**env;
+	int			fd_in[2];
+	int			fd_out[2];
+	char		**args;
+	char		**env;
+	t_tokens	*t_exp;
 }				t_cmd;
 
 //   ###################################################
@@ -77,17 +79,29 @@ int			msh_free_tokens(t_tokens *tokens);
 int			expander(t_tokens *tokens, t_tokens *exp_tok);
 
 //expand_utils.c
-char	*free_join(char *ret, char *tmp);
-char	*expand_dollar(t_tokens *tokens, int i);
-char	*merge_matrix(char **matrix);
+char		*free_join(char *ret, char *tmp);
+char		*expand_dollar(t_tokens *tokens, int i);
+char		*merge_matrix(char **matrix);
 
 //expand_dots.c
-char	*expand_dots(t_tokens *tokens, int i, size_t j);
+char		*expand_dots(t_tokens *tokens, int i, size_t j);
+
+//   ###################################################
+//                    EXECUTOR
+//   ###################################################
+# define NONE 0
+# define INPUT 1
+# define OUTPUT 2
+# define PIPE 3
+# define INPIPE 4
+# define PATH "/bin/"
+
+int	executor(t_tokens *exp_tok);
 
 //   ###################################################
 //                    BUILTINS
 //   ###################################################
-int blt_exit(int argc, char **argv);
-int blt_echo(int argc, char** argv);
+int			blt_exit(int argc, char **argv);
+int			blt_echo(int argc, char **argv);
 
 #endif
