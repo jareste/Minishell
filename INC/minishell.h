@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 05:21:48 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 07:00:36 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct cmd_s
 {
 	int			fd_in[2];
 	int			fd_out[2];
+	int			flag;// 0 = mid cmd 1 = start of cmd
 	char		**args;
 	char		**env;
 	t_tokens	*t_exp;
