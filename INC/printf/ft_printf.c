@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:13 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:48:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/16 01:30:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int	ft_printf(int fd, const char *s, ...)
 	va_start(args, s);
 	c_printed = bucle(fd, s, args, c_printed);
 	va_end(args);
-	printf("::::::%i\n", fd);
 	return (c_printed);
 }
 /*
