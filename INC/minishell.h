@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 07:00:36 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:06:24 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/errno.h>
+# include <sys/stat.h>
+
+# define _XOPEN_SOURCE
 
 typedef struct word_s
 {
@@ -104,5 +108,6 @@ int	executor(t_tokens *exp_tok);
 //   ###################################################
 int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
+int			blt_cd(int argc, char **argv);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 09:18:36 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:06:38 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*expand_dollar(t_tokens *tokens, int i)
 	str = tokens->words[i + 1]->word;
 	if (!getenv(str))
 		return (ft_strdup(""));
+//TODO peta si el dollar esta al final de de lla comanda "echo hello $"
 	return (getenv(str));
 }
 

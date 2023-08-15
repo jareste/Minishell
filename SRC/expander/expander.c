@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 20:54:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:06:54 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		{
 			if (tokens->words[i]->type == 2)
 				str[j] = expand_dots(tokens, i, 0);
-			else if (tokens->words[i]->type == 3)
+			else if (tokens->words[i]->type == 3) // TODO  el tres tambe pot ser pipe i no la gestiona
 			{
-				str[j] = ft_strdup(expand_dollar(tokens, i));
+				str[j] = ft_strdup(expand_dollar(tokens, i)); // TODO Doble dup
 				i++;
 			}
 			else
