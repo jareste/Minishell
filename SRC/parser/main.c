@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:49:59 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/15 05:21:20 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int main(void)
 
 int	main(int argc, char **argv, char *env[])
 {
-	t_tokens	*tokens;
-	t_tokens	*exp_tok;
+	// t_tokens	*tokens;
+	// t_tokens	*exp_tok;
 
 	argc = 0;
 	argv = 0;
@@ -60,6 +60,8 @@ int	main(int argc, char **argv, char *env[])
 			expander(tokens, exp_tok);
 			msh_print_tokens(exp_tok);
 			printf("#######exp ended######\n\n");  //ss
+			executor(exp_tok);
+			printf("#######exe ended######\n\n");  //ss
 		}
 		msh_free_tokens(tokens);
 		msh_free_tokens(exp_tok);
@@ -69,3 +71,20 @@ int	main(int argc, char **argv, char *env[])
 	ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
 	return (0);
 }
+
+//FUNCIONA EJECUTA CAT
+/*
+char *args[4];
+args[0] = "cat";
+args[1] = "Makefile";
+args[2] = NULL;
+args[3] = NULL;
+
+char *args2[2];
+args2[0] = "pwd";
+args2[1] = NULL;
+
+execve("/bin/pwd", args2, NULL);//seems to kill process
+ret -1 if fails.
+execve("/bin/cat", args, NULL);
+*/
