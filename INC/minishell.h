@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 19:06:24 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/16 08:10:06 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,18 @@ typedef struct tokens_s
 
 typedef struct cmd_s
 {
-	int			fd_in[2];
-	int			fd_out[2];
+	int			fd_in;
+	int			fd_out; 
+/* no entenc pq un array 
+de 2, ho borro, per lo que he llegites 
+nessesari si sols tens 1 variable per al fdin y
+fdout pero tenim dos variables distintes aixi que
+no entenc pq ambes han de ser [2].*/
 	int			flag;// 0 = mid cmd 1 = start of cmd
+	int			argc;
 	char		**args;
 	char		**env;
-	t_tokens	*t_exp;
+	t_tokens	*exp_tok;
 }				t_cmd;
 
 //   ###################################################
@@ -99,6 +105,7 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define OUTPUT 2
 # define PIPE 3
 # define INPIPE 4
+# define OUTPIPE 5
 # define PATH "/bin/"
 
 int	executor(t_tokens *exp_tok);
