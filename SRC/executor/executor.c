@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 09:41:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/16 10:37:30 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,34 +116,29 @@ int	executor(t_tokens *exp_tok)
 	int		flag;
 	t_cmd	cmd;
 	pid_t	pid;
+	int		status;
 
 	i = 0;
 	flag = 1;
 	while (i < exp_tok->size)
 	{
-		// pid = fork();
-		// if (pid == 0)
-		// {
-			init_cmd(exp_tok, &cmd, i);
-			if (ft_strncmp("echo", cmd.args[0], ft_strlen(cmd.args[0])) == 0)
+		init_cmd(exp_tok, &cmd, i);
+		if (ft_strncmp("echo", cmd.args[0], ft_strlen(cmd.args[0])) == 0)
+		{
+			pid = fork();
+			if (pid == 0)
 			{
-				pid_t pid = fork();
-				if (pid == 0)
-				{
-					if (dup2(cmd.fd_out, STDOUT_FILENO) == -1) {
-			    	perror("dup2");}
-					blt_echo(cmd.argc, cmd.args);
-				}
+				if (cmd.fd_out != 1)
+					dup2(cmd.fd_out, STDOUT_FILENO);
+				blt_echo(cmd.argc, cmd.args);
 				exit(1);
 			}
-		// }
-		// else if (pid > 0)
-		// {
-			i += dst_topipe(exp_tok, i);
-			printf("mainbucle:::::::::%zu, %zu\n", i, exp_tok->size);
+		}
+		waitpid(pid, &status, 0);
+		i += dst_topipe(exp_tok, i);
+		// printf("mainbucle:::::::::%zu, %zu\n", i, exp_tok->size);
 		// free_cmd(&cmd);
-		// }
-		// else
+		// exit(1);
 	}
 
 
