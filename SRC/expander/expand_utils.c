@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 15:06:38 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/16 06:41:07 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*merge_matrix(char **matrix)
 	ret = "\0";
 	while (matrix[i])
 	{
-		printf("hola\n");
 		if (i > 0)
 		{
 			str = ft_strdup(ret);

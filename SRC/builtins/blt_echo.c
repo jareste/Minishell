@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_echo.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/16 02:00:50 by jareste-          #+#    #+#             */
+/*   Updated: 2023/08/16 02:02:01 by jareste-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-int	blt_echo(int argc, char** argv)
+int	blt_echo(int argc, char **argv)
 {
 	int	i;
 	int	first;
@@ -14,12 +25,12 @@ int	blt_echo(int argc, char** argv)
 	}
 	i = 1; //mateix que abaix, he canviat la teva condicio per strncmp.
 	while (i < argc && ft_strncmp(argv[i], "-n", ft_strlen(argv[i])) == 0)
-		i++;	
+		i++;
 // a aquest while tenies el mateix problema, si et passaben
 // -na o lo que fos, se ho tragaba, quan sols volem -n
 	while (i < argc)
 	{
-		if (!first)// lo que tenies aqui no funcionaba mai pq first era == 1 i no entraba
+		if (!first) // lo que tenies aqui no funcionaba mai pq first era == 1 i no entraba
 			ft_printf(1, " ");//al ft_printf haura d'anar el fd, atm es queda 1.
 		if (argv[i] == NULL)
 			break ;
@@ -31,7 +42,6 @@ int	blt_echo(int argc, char** argv)
 		ft_printf(1, "\n");//al ft_printf haura d'anar el fd, atm es queda 1.
 	return (0);
 }
-
 
 // int main(int ac, char **av)
 // {
