@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/17 11:37:28 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/18 01:52:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	redirect_in(char *str, t_cmd *cmd)
 		// printf("openedIN:::%s::::::%i:::fd_in::::%i\n", str, fd, cmd->fd_in);
 		if (cmd->fd_in[0] != 0)
 			close(cmd->fd_in[0]);
-		cmd->fd_in[0] = fd; // est tindria que surar dup
+		// cmd->fd_in[0] = fd; // est tindria que surar dup
+        dup2(cmd->fd_in[0], fd);
+        cmd->fd_flag[0] = 1;
+		
 	}
 	return (0);
 }
@@ -34,9 +37,11 @@ int	redirect_out(char *str, t_cmd *cmd)
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd > 2)
 	{
-		if (cmd->fd_out[0] != 1)
-			close(cmd->fd_out[0]);
-		cmd->fd_out[0] = fd; // es tindria que usrar dup
+		if (cmd->fd_in[1] != 1)
+			close(cmd->fd_in[1]);
+        dup2(cmd->fd_in[1], fd);
+        cmd->fd_flag[1] = 1;
+		// cmd->fd_out[0] = fd; // es tindria que usrar dup
 		// if (close(fd) == -1)
 			// printf("badclose\n");
 	}
@@ -64,8 +69,8 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 	int	j;
 	int	type;
 
-	cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
-	cmd->fd_out[0] = 1; // 2fds, 0 == old, 1 == NEW
+	// cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
+	// cmd->fd_out[0] = 1; // 2fds, 0 == old, 1 == NEW
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
 		exp_tok->words[i]->type -= 3;
@@ -162,21 +167,91 @@ int	executor(t_tokens *exp_tok)
 	pid_t	pid;
 	int		status;
 
+	pipe(cmd.fd_in);
+	// printf("IN:%i\nOUT:%i\n", cmd.fd_in[0], cmd.fd_in[1]);
 	i = 0;
 	flag = 1;
 	while (i < exp_tok->size)
 	{
 		init_cmd(exp_tok, &cmd, i);
 		pid = fork();
-		if (!pid)			
+		if (!pid) 
+		{
+			if (i > 0)
+			{
+				close(cmd.fd_in[1]);
+				dup2(cmd.fd_in[0], STDIN_FILENO);
+				close(cmd.fd_in[0]);
+			}
+			if (i < exp_tok->size - 1)
+			{
+				close(cmd.fd_in[0]);
+				dup2(cmd.fd_in[1], STDOUT_FILENO);
+				close(cmd.fd_in[1]);
+			}
 			exit(exe_cmd(&cmd));
+		}
+		if (i > 0)
+		{
+			close(cmd.fd_in[1]);
+			close(cmd.fd_in[0]);
+		}
+		if (i == exp_tok->size - 1)
+			break ;
+		i += dst_topipe(exp_tok, i);
+		free_cmd(&cmd);
+	}
+	if (exp_tok->size == 1)
 		waitpid(pid, &status, 0);
+	while (wait(NULL) > 0)
+		i++;
+	return (0);
+}
+
+/*   OLD EXECUTOR:::::::
+		init_cmd(exp_tok, &cmd, i);
+	
+		pid = fork();
+		if (!pid)
+		{
+		   if (i > 0) {
+                close(cmd.fd_in[1]);  // Cerrar el descriptor de escritura de la tubería
+                dup2(cmd.fd_in[0], STDIN_FILENO);  // Redirigir la entrada estándar al descriptor de lectura de la tubería
+                close(cmd.fd_in[0]);  // Cerrar el descriptor de lectura no utilizado
+            }
+            
+            // Redirigir stdout al descriptor de escritura de la tubería
+            close(cmd.fd_in[0]);
+            dup2(cmd.fd_in[1], STDOUT_FILENO);
+            close(cmd.fd_in[1]);
+            
+            exit(exe_cmd(&cmd));
+
+
+
+
+	
+		}
+	if (exp_tok->size == 1) {
+    waitpid(pid, &status, 0);
+}
+
+// Esperar a que se completen todos los comandos
+	int k = 0;
+	while (wait(NULL) > 0)
+		k++;
+
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
  	return (0);
-}
+}*/
 
+	//estaba despues del exit.
+	// 	close(cmd.fd_in[0]);
+		// 	dup2(cmd.fd_in[1], STDOUT_FILENO);
+		// 	close(cmd.fd_in[1]);			
+		// 	exit(exe_cmd(&cmd));
 //FUNCIONA EJECUTA CAT
 /*
 char *args[4];
