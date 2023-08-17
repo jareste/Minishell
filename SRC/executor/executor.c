@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 10:37:30 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/17 07:02:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	redirect_in(char *str, t_cmd *cmd)
 	if (fd > 0)
 	{
 		// printf("openedIN:::%s::::::%i:::fd_in::::%i\n", str, fd, cmd->fd_in);
-		if (cmd->fd_in != 0)
-			close(cmd->fd_in);
-		cmd->fd_in = fd;
+		if (cmd->fd_in[0] != 0)
+			close(cmd->fd_in[0]);
+		cmd->fd_in[0] = fd;
 	}
 	return (0);
 }
@@ -34,10 +34,9 @@ int	redirect_out(char *str, t_cmd *cmd)
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd > 2)
 	{
-		// printf("openedOUT:::%s::::::%i:::::fd_out:::%i\n", str, fd, cmd->fd_out);
-		if (cmd->fd_out != 1)
-			close(cmd->fd_out);
-		cmd->fd_out = fd;
+		if (cmd->fd_out[0] != 1)
+			close(cmd->fd_out[0]);
+		cmd->fd_out[0] = fd;
 		// if (close(fd) == -1)
 			// printf("badclose\n");
 	}
@@ -60,36 +59,31 @@ int	dst_topipe(t_tokens *exp_tok, size_t i)
 	return (j);
 }
 
-
 void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 {
 	int	j;
+	int	type;
 
-	cmd->fd_in = 0; // 2fds, 0 == old, 1 == NEW
-	cmd->fd_out = 1; // 2fds, 0 == old, 1 == NEW
+	cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
+	cmd->fd_out[0] = 1; // 2fds, 0 == old, 1 == NEW
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
 		exp_tok->words[i]->type -= 3;
-	cmd->args = ft_calloc(sizeof(char *), dst_topipe(exp_tok, i));
+	cmd->args = ft_calloc(sizeof(char *), dst_topipe(exp_tok, i) + 1);
 	j = 0;
-	// printf("dst_topipe::::::::%i\n", dst_topipe(exp_tok, i));
-	while (i < exp_tok->size)//esto no sirve (creo)
+	while (i < exp_tok->size) //esto no sirve (creo) //atm si sirve
 	{
-		// printf("type::::::::%i  %i\n", exp_tok->words[i]->type, PIPE);
+		type = exp_tok->words[i]->type;
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
-		else if (exp_tok->words[i]->type == INPUT || exp_tok->words[i]->type == INPIPE)
+		else if (type == INPUT || type == INPIPE)
 			redirect_in(exp_tok->words[i]->word, cmd);
-		else if (exp_tok->words[i]->type == OUTPUT || exp_tok->words[i]->type == OUTPIPE)
+		else if (type == OUTPUT || type == OUTPIPE)
 			redirect_out(exp_tok->words[i]->word, cmd);
 		else
-		{
-			cmd->args[j] = ft_strdup(exp_tok->words[i]->word);
-			j++;
-		}
+			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
 	}
-	// printf("j:::::::::::%i\n", j);
 	cmd->argc = j;
 }
 
@@ -105,10 +99,60 @@ void	free_cmd(t_cmd *cmd)
 	}
 	if (cmd->args)
 		free(cmd->args);
-
-
 }
 
+int	check_blt(t_cmd *cmd)
+{
+	if (ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		return (blt_echo(cmd->argc, cmd->args));
+	else if (ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("cd\n");//blt_cd;
+	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("pwd\n");//blt_pwd;
+	else if (ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("export\n");//blt_export;
+	else if (ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("unset\n");//blt_unset;
+	else if (ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("env\n");//blt_env;
+	else if (ft_strncmp("exit", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+		printf("exit\n");//blt_exit;
+	return (1);
+	//if error return 1;
+}
+
+int	call(t_cmd *cmd)
+{
+	char	*pth;
+
+	pth = ft_strjoin(PATH, cmd->args[0]);
+	// printf("::::::::%s\n", pth);
+	if (execve(pth, cmd->args, NULL) == -1)
+		return (1);
+	return (0);
+}
+
+int	call_wo_path(t_cmd *cmd)
+{
+	if (execve(cmd->args[0], cmd->args, NULL) == -1)
+		return (1);
+	return (0);
+}
+
+///EXEC CMD
+
+int	exe_cmd(t_cmd *cmd)
+{
+	if (check_blt(cmd) == 0)
+		printf("CHECK_BLT\n");//ss
+	else if (call(cmd) == 0)
+		printf("CALL\n'");//ss
+	else if (call_wo_path(cmd) == 0)
+		printf("CALLWO\n");//s
+	else
+		printf("error\n");//s
+	return (0);
+}
 
 int	executor(t_tokens *exp_tok)
 {
@@ -123,28 +167,15 @@ int	executor(t_tokens *exp_tok)
 	while (i < exp_tok->size)
 	{
 		init_cmd(exp_tok, &cmd, i);
-		if (ft_strncmp("echo", cmd.args[0], ft_strlen(cmd.args[0])) == 0)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (cmd.fd_out != 1)
-					dup2(cmd.fd_out, STDOUT_FILENO);
-				blt_echo(cmd.argc, cmd.args);
-				exit(1);
-			}
-		}
+		pid = fork();
+		if (!pid)			
+			exit(exe_cmd(&cmd));
 		waitpid(pid, &status, 0);
 		i += dst_topipe(exp_tok, i);
-		// printf("mainbucle:::::::::%zu, %zu\n", i, exp_tok->size);
-		// free_cmd(&cmd);
-		// exit(1);
+		free_cmd(&cmd);
 	}
-
-
  	return (0);
 }
-
 
 //FUNCIONA EJECUTA CAT
 /*

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 09:57:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/17 06:45:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,8 @@ typedef struct tokens_s
 
 typedef struct cmd_s
 {
-	int			fd_in;
-	int			fd_out; 
-/* no entenc pq un array 
-de 2, ho borro, per lo que he llegites 
-nessesari si sols tens 1 variable per al fdin y
-fdout pero tenim dos variables distintes aixi que
-no entenc pq ambes han de ser [2].*/
+	int			fd_in[2];//[2]
+	int			fd_out[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	char		**args;
