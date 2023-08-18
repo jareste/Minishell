@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 13:31:47 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:39:47 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	redirect_out(char *str, t_cmd *cmd)
 	int	old_fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	old_fd = 2;
-	if (fd > 2)
+	old_fd = 2; // No es fa servir nomes s'asigna?
+	if (fd > 2) // en principi sempre sera major que 2, ja que 2 es stderr
 	{
 		// printf("...........fdin..........:%i, fd::::::::::%i.\n", cmd->fd_in[1], fd);
-		old_fd = cmd->fd_in[1];
+		old_fd = cmd->fd_in[1]; // No es fa servir nomes s'asigna?
 		// if (cmd->fd_in[1] != 1)
 			// close(cmd->fd_in[1]);
 		dup2(cmd->fd_in[1], fd);
@@ -69,7 +69,7 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 {
 	int	j;
 	int	type;
-
+	// TODO els fds potser es tindiren que inicialitzar a -1 per saber si realment fan refrencia a un fd
 	// cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
 	// cmd->fd_in[1] = 1; // 2fds, 0 == old, 1 == NEW
 	cmd->exp_tok = exp_tok;
@@ -182,17 +182,17 @@ int	executor(t_tokens *exp_tok, char **envp)
 			pipe(cmd.fd_in);
 		init_cmd(exp_tok, &cmd, i);
 		pid = fork();
-		if (!pid)
+		if (!pid) // es pot gestinar dins del call per tal destalviar linies
 		{
 			if (i > 0 && exp_tok->pipe_n != 0)
 			{
-				close(cmd.prev_pipe[1]);
+				close(cmd.prev_pipe[1]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
 				dup2(cmd.prev_pipe[0], STDIN_FILENO);
 				close(cmd.prev_pipe[0]);
 			}
 			if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
 			{
-				close(cmd.fd_in[0]);
+				close(cmd.fd_in[0]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
 				dup2(cmd.fd_in[1], STDOUT_FILENO);
 				close(cmd.fd_in[1]);
 			}
