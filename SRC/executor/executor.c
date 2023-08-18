@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 03:19:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 07:18:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	redirect_in(char *str, t_cmd *cmd)
 	fd = open(str, O_RDONLY);
 	if (fd > 0)
 	{
-		if (cmd->fd_in[0] != 0)
-			close(cmd->fd_in[0]);
+		// if (cmd->fd_in[0] != 0)
+		// 	close(cmd->fd_in[0]);
         dup2(cmd->fd_in[0], fd);
-        cmd->fd_flag[0] = 1;
+        // cmd->fd_flag[0] = 1;
 		
 	}
 	return (0);
@@ -31,14 +31,21 @@ int	redirect_in(char *str, t_cmd *cmd)
 int	redirect_out(char *str, t_cmd *cmd)
 {
 	int	fd;
+	int	old_fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	old_fd = 2;
 	if (fd > 2)
 	{
-		if (cmd->fd_in[1] != 1)
-			close(cmd->fd_in[1]);
-        dup2(cmd->fd_in[1], fd);
-        cmd->fd_flag[1] = 1;
+		// printf("...........fdin..........:%i, fd::::::::::%i.\n", cmd->fd_in[1], fd);
+		old_fd = cmd->fd_in[1];
+		// if (cmd->fd_in[1] != 1)
+			// close(cmd->fd_in[1]);
+		dup2(cmd->fd_in[1], fd);
+        // if (old_fd > 2)
+        // 	close(old_fd);
+        // cmd->fd_flag[1] = 1;
+		// printf("AFTER..............fdin..........:%i, fd::::::::::%i.\n", cmd->fd_in[1], old_fd);
 	}
 	return (0);
 }
@@ -65,7 +72,7 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 	int	type;
 
 	// cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
-	// cmd->fd_out[0] = 1; // 2fds, 0 == old, 1 == NEW
+	// cmd->fd_in[1] = 1; // 2fds, 0 == old, 1 == NEW
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
 		exp_tok->words[i]->type -= 3;
@@ -143,6 +150,7 @@ int	call_wo_path(t_cmd *cmd)
 
 int	exe_cmd(t_cmd *cmd)
 {
+		// printf("EXE.....................:%i\n", cmd->fd_in[1]);
 	if (check_blt(cmd) == 0)
 		printf("CHECK_BLT\n");//ss
 	else if (call(cmd) == 0)
@@ -157,28 +165,33 @@ int	exe_cmd(t_cmd *cmd)
 int	executor(t_tokens *exp_tok)
 {
 	size_t	i;
-	int		flag;
 	t_cmd	cmd;
 	pid_t	pid;
 	int		status;
+	int		prev_pipe[2] = {-1, -1};  // Initialize previous pipe
+	int		j;
 
-	pipe(cmd.fd_in);
-	// printf("IN:%i\nOUT:%i\n", cmd.fd_in[0], cmd.fd_in[1]);
+	j = 0;
 	i = 0;
-	flag = 1;
+	cmd.fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
+	cmd.fd_in[1] = 1;
+	// printf("pipes:::::::::%i\n", exp_tok->pipe_n);
 	while (i < exp_tok->size)
 	{
+		// printf("i::::%zu, exptok:::::::%zu, pipe_n:::::%i, j::::::%i\n", i, exp_tok->size -1, exp_tok->pipe_n, j);
+		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
+			pipe(cmd.fd_in);
 		init_cmd(exp_tok, &cmd, i);
 		pid = fork();
-		if (!pid) 
+		if (!pid)
 		{
-			if (i > 0)
+			if (i > 0 && exp_tok->pipe_n != 0)
 			{
-				close(cmd.fd_in[1]);
-				dup2(cmd.fd_in[0], STDIN_FILENO);
-				close(cmd.fd_in[0]);
+				close(prev_pipe[1]);
+				dup2(prev_pipe[0], STDIN_FILENO);
+				close(prev_pipe[0]);
 			}
-			if (i < exp_tok->size - 1)
+			if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
 			{
 				close(cmd.fd_in[0]);
 				dup2(cmd.fd_in[1], STDOUT_FILENO);
@@ -188,11 +201,15 @@ int	executor(t_tokens *exp_tok)
 		}
 		if (i > 0)
 		{
-			close(cmd.fd_in[1]);
-			close(cmd.fd_in[0]);
+			close(prev_pipe[0]);
+			close(prev_pipe[1]);
 		}
-		if (i == exp_tok->size - 1)
-			break ;
+		if (i < exp_tok->size - 1)
+		{
+			prev_pipe[0] = cmd.fd_in[0];
+			prev_pipe[1] = cmd.fd_in[1];
+		}
+		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
@@ -202,6 +219,68 @@ int	executor(t_tokens *exp_tok)
 		i++;
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+// OLD EXECUTOR
+	// size_t	i;
+	// int		flag;
+	// t_cmd	cmd;
+	// pid_t	pid;
+	// int		status;
+
+	// // pid = ft_calloc(exp_tok->pipe_n + 1, sizeof(pid_t));
+	// if (exp_tok->pipe_n != 0)
+	// 	pipe(cmd.fd_in);
+	// // printf("IN:%i\nOUT:%i\n", cmd.fd_in[0], cmd.fd_in[1]);
+	// i = 0;
+	// flag = 1;
+	// printf("pipes:::::::::%i\n", exp_tok->pipe_n);
+	// while (i < exp_tok->size)
+	// {
+	// 	init_cmd(exp_tok, &cmd, i);
+	// 	pid = fork();
+	// 	if (!pid) 
+	// 	{
+	// 		if (exp_tok->pipe_n != 0)
+	// 		{
+	// 			if (i > 0)
+	// 			{
+	// 				close(cmd.fd_in[1]);
+	// 				dup2(cmd.fd_in[0], STDIN_FILENO);
+	// 				close(cmd.fd_in[0]);
+	// 			}
+	// 			if (i < exp_tok->size - 1)
+	// 			{
+	// 				close(cmd.fd_in[0]);
+	// 				dup2(cmd.fd_in[1], STDOUT_FILENO);
+	// 				close(cmd.fd_in[1]);
+	// 			}
+	// 		}
+	// 		exit(exe_cmd(&cmd));
+	// 	}
+	// 	if (i > 0)
+	// 	{
+	// 		close(cmd.fd_in[1]);
+	// 		close(cmd.fd_in[0]);
+	// 	}
+	// 	if (i == exp_tok->size - 1)
+	// 		break ;
+	// 	i += dst_topipe(exp_tok, i);
+	// 	free_cmd(&cmd);
+	// }
+	// if (exp_tok->size == 1)
+	// 	waitpid(pid, &status, 0);
+	// while (wait(NULL) > 0)
+	// 	i++;
+	// return (0);
+
 
 /*   OLD EXECUTOR:::::::
 		init_cmd(exp_tok, &cmd, i);

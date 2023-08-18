@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 10:36:48 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 05:19:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,21 @@ int	exp_type(t_tokens *tokens, int i)
 	return (type);
 }
 
+static int	count_pipes(t_tokens *tokens)
+{
+	size_t	i;
+	int		pipes;
+
+	i = 0;
+	pipes = 0;
+	while (i < tokens->size)
+	{
+		if (tokens->words[i]->word[0] == '|')
+			pipes++;
+		i++;
+	}
+	return (pipes);
+}
 int	expander(t_tokens *tokens, t_tokens *exp_tok)
 {
 	size_t		i;
@@ -95,6 +110,7 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 
 	type = 0;
 	i = 0;
+	exp_tok->pipe_n = count_pipes(tokens);
 	while (i < tokens->size)
 	{
 		len = dst_tobreak(tokens, i);
