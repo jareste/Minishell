@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 01:52:22 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 02:38:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ int	redirect_in(char *str, t_cmd *cmd)
 	fd = open(str, O_RDONLY);
 	if (fd > 0)
 	{
-		// printf("openedIN:::%s::::::%i:::fd_in::::%i\n", str, fd, cmd->fd_in);
 		if (cmd->fd_in[0] != 0)
 			close(cmd->fd_in[0]);
-		// cmd->fd_in[0] = fd; // est tindria que surar dup
         dup2(cmd->fd_in[0], fd);
         cmd->fd_flag[0] = 1;
 		
@@ -41,9 +39,6 @@ int	redirect_out(char *str, t_cmd *cmd)
 			close(cmd->fd_in[1]);
         dup2(cmd->fd_in[1], fd);
         cmd->fd_flag[1] = 1;
-		// cmd->fd_out[0] = fd; // es tindria que usrar dup
-		// if (close(fd) == -1)
-			// printf("badclose\n");
 	}
 	return (0);
 }
