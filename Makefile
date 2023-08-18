@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/17 04:52:13 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/18 05:16:00 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ EXECUTOR_PATH = ./SRC/executor
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
 		)
 
-CC = cc -g #-fsanitize=address 
+CC = cc -g -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 

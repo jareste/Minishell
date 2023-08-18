@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 01:27:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 06:45:29 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ typedef struct tokens_s
 	t_word	*last;
 	t_word	**words;
 	size_t	size;
+	int		pipe_n;
 	char	*str;
 }				t_tokens;
 
 typedef struct cmd_s
 {
 	int			fd_in[2];//[2]
-	int			fd_flag[2];//[2] 
+	// int			fd_flag[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	char		**args;
