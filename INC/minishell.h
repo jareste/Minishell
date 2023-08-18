@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 08:24:47 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 13:39:09 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include "pipex.h"
 
 # define _XOPEN_SOURCE
 
@@ -43,7 +44,6 @@ typedef struct word_s
 	int				type;
 	size_t			len;
 	struct word_s	*next;
-
 }				t_word;
 
 typedef struct tokens_s
@@ -66,6 +66,9 @@ typedef struct cmd_s
 	char		**env;
 	t_tokens	*exp_tok;
 }				t_cmd;
+
+/* pipex.c */
+int call(t_cmd *cmd);
 
 //   ###################################################
 //                    PARSER
@@ -114,7 +117,7 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define OUTPIPE 5
 # define PATH "/bin/"
 
-int	executor(t_tokens *exp_tok);
+int	executor(t_tokens *exp_tok, char **envp);
 
 //   ###################################################
 //                    BUILTINS

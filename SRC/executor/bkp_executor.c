@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 13:31:47 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/18 08:41:45 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	redirect_in(char *str, t_cmd *cmd)
 		// 	close(cmd->fd_in[0]);
         dup2(cmd->fd_in[0], fd);
         // cmd->fd_flag[0] = 1;
+		
 	}
 	return (0);
 }
@@ -127,7 +128,6 @@ int	check_blt(t_cmd *cmd)
 	//if error return 1;
 }
 
-/*
 int	call(t_cmd *cmd)
 {
 	char	*pth;
@@ -138,7 +138,7 @@ int	call(t_cmd *cmd)
 		return (1);
 	return (0);
 }
-*/
+
 int	call_wo_path(t_cmd *cmd)
 {
 	if (execve(cmd->args[0], cmd->args, NULL) == -1)
@@ -161,7 +161,7 @@ int	exe_cmd(t_cmd *cmd)
 	return (0);
 }
 
-int	executor(t_tokens *exp_tok, char **envp)
+int	executor(t_tokens *exp_tok)
 {
 	size_t	i;
 	t_cmd	cmd;
@@ -173,7 +173,6 @@ int	executor(t_tokens *exp_tok, char **envp)
 	i = 0;
 	cmd.fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd.fd_in[1] = 1;
-	cmd.env = envp;
 	// printf("pipes:::::::::%i\n", exp_tok->pipe_n);
 	while (i < exp_tok->size)
 	{
