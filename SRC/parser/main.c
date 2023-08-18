@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 09:36:36 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 13:44:56 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,17 @@ int	main(int argc, char **argv, char *env[])
 
 	argc = 0;
 	argv = 0;
-	(void) env;
+//	(void) env;
 	
 	//#######################for geting env#################
-	// char **ptr_env;
-	// ptr_env = env;
+	 char **ptr_env;
+	 ptr_env = env;
 
-	// while (*ptr_env)
-	// {
-	// 	printf("%s\n", *ptr_env);
-	// 	ptr_env++;
-	// }
-	//#######################for geting env#################
+	 while (*ptr_env)
+	 {
+	 	printf("%s\n", *ptr_env);
+	 	ptr_env++;
+	 }
 	while (1)
 	{
 		tokens = msh_start_words();
@@ -71,7 +70,7 @@ int	main(int argc, char **argv, char *env[])
 			expander(tokens, exp_tok);
 			// msh_print_tokens(exp_tok);
 			// printf("#######exp ended######\n\n");  //ss
-			executor(exp_tok);
+			executor(exp_tok, env);
 			// printf("#######exe ended######\n\n");  //ss
 		}
 		msh_free_tokens(tokens);

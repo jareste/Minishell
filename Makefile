@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/18 05:16:00 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/18 13:21:02 by jrenau-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,12 @@ SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 EXECUTOR_PATH = ./SRC/executor
 
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
+		ppx_get_path.c \
+		ppx_spliter.c \
+		ppx_utils.c \
+		ppx_utils2.c \
+		ppx_wend.c \
+		pipex.c \
 		)
 
 CC = cc -g -fsanitize=address 
