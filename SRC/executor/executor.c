@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 08:30:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 08:41:45 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ int	call_wo_path(t_cmd *cmd)
 
 int	exe_cmd(t_cmd *cmd)
 {
-		// printf("EXE.....................:%i\n", cmd->fd_in[1]);
 	if (check_blt(cmd) == 0)
 		printf("CHECK_BLT\n");//ss
 	else if (call(cmd) == 0)

@@ -10,3 +10,4 @@ TO DO:
 - signals >>>> 3 dies?
 - env >>> ?
 - heredoc >>>> ?
+- neteja de codig >>>> 2-3 dies
