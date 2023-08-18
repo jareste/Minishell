@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 06:45:29 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 08:24:47 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct tokens_s
 typedef struct cmd_s
 {
 	int			fd_in[2];//[2]
-	// int			fd_flag[2];//[2] 
+	int			prev_pipe[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	char		**args;

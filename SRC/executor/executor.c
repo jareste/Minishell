@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 07:18:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/18 08:28:27 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ int	executor(t_tokens *exp_tok)
 	t_cmd	cmd;
 	pid_t	pid;
 	int		status;
-	int		prev_pipe[2] = {-1, -1};  // Initialize previous pipe
 	int		j;
 
 	j = 0;
@@ -179,19 +178,19 @@ int	executor(t_tokens *exp_tok)
 	while (i < exp_tok->size)
 	{
 		// printf("i::::%zu, exptok:::::::%zu, pipe_n:::::%i, j::::::%i\n", i, exp_tok->size -1, exp_tok->pipe_n, j);
-		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
+		if (exp_tok->pipe_n > 0)// && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
 			pipe(cmd.fd_in);
 		init_cmd(exp_tok, &cmd, i);
 		pid = fork();
 		if (!pid)
 		{
-			if (i > 0 && exp_tok->pipe_n != 0)
+			if (i > 0 && exp_tok->pipe_n >= 0)
 			{
-				close(prev_pipe[1]);
-				dup2(prev_pipe[0], STDIN_FILENO);
-				close(prev_pipe[0]);
+				close(cmd.prev_pipe[1]);
+				dup2(cmd.prev_pipe[0], STDIN_FILENO);
+				close(cmd.prev_pipe[0]);
 			}
-			if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
+			if (i < exp_tok->size - 1 && exp_tok->pipe_n >= 0)
 			{
 				close(cmd.fd_in[0]);
 				dup2(cmd.fd_in[1], STDOUT_FILENO);
@@ -201,14 +200,15 @@ int	executor(t_tokens *exp_tok)
 		}
 		if (i > 0)
 		{
-			close(prev_pipe[0]);
-			close(prev_pipe[1]);
+			close(cmd.prev_pipe[0]);
+			close(cmd.prev_pipe[1]);
 		}
 		if (i < exp_tok->size - 1)
 		{
-			prev_pipe[0] = cmd.fd_in[0];
-			prev_pipe[1] = cmd.fd_in[1];
+			cmd.prev_pipe[0] = cmd.fd_in[0];
+			cmd.prev_pipe[1] = cmd.fd_in[1];
 		}
+		exp_tok->pipe_n--;
 		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
