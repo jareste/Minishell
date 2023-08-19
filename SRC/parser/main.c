@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/19 03:26:16 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:33:24 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ int	main(int argc, char **argv, char *env[])
 		int tmp_exit = parser(tokens);
 		if (tmp_exit == 0)
 		{
-			// msh_print_tokens(tokens);
-			// printf("#######tokens ended######\n\n"); //s
+			msh_print_tokens(tokens);
+			printf("#######tokens ended######\n\n"); //s
 			expander(tokens, exp_tok);
-			// msh_print_tokens(exp_tok);
-			// printf("#######exp ended######\n\n");  //ss
+			msh_print_tokens(exp_tok);
+			printf("#######exp ended######\n\n");  //ss
 			executor(exp_tok, env);
-			// printf("#######exe ended######\n\n");  //ss
+			printf("#######exe ended######\n\n");  //ss
 		}
 		msh_free_tokens(tokens);
 		msh_free_tokens(exp_tok);
