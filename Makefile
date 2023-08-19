@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/18 13:21:02 by jrenau-v         ###   ########.fr        #
+#    Updated: 2023/08/19 03:25:05 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c \
 BUILTINS_PATH = ./SRC/builtins
 
 SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
-		blt_echo.c)
+		blt_echo.c \
+		blt_cd.c \
+		blt_pwd.c)
 
 EXECUTOR_PATH = ./SRC/executor
 

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 13:39:09 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/19 04:27:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ typedef struct cmd_s
 	int			prev_pipe[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
+	int			aux_cd;
 	char		**args;
 	char		**env;
 	t_tokens	*exp_tok;
 }				t_cmd;
 
 /* pipex.c */
-int call(t_cmd *cmd);
+// int call(t_cmd *cmd);
 
 //   ###################################################
 //                    PARSER
@@ -124,7 +125,8 @@ int	executor(t_tokens *exp_tok, char **envp);
 //   ###################################################
 int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
-int			blt_cd(int argc, char **argv);
+int			blt_cd(int argc, char** argv);
+int			blt_pwd(void);
 
 /* blt_env_utils.c */
 t_env		*env_list(char **envs);

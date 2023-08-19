@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrenau-v <jrenau-v@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 18:22:25 by jrenau-v          #+#    #+#             */
-/*   Updated: 2023/08/18 13:36:21 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/19 02:27:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //static int	wait_end(pid_t pids[2], int fds[2], int ppe[2], int *ret);
 
 //pid_t	call(char **argv, char **envp, int fds[3], char **oargv)
-int	call(t_cmd *cmd)
+/*int	call(t_cmd *cmd)
 {
 	char	*path;
 	pid_t	pid;
@@ -41,7 +41,7 @@ int	call(t_cmd *cmd)
 		exit(exit_val);
 	}
 	return (pid);
-}
+}*/
 /*
 int	load_stdio(int tuberia[2], int fds[2], char *file_names[2], char *program)
 {

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 18:39:47 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/19 05:13:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	redirect_out(char *str, t_cmd *cmd)
 	int	old_fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	old_fd = 2; // No es fa servir nomes s'asigna?
-	if (fd > 2) // en principi sempre sera major que 2, ja que 2 es stderr
+	old_fd = 2; // No es fa servir nomes s'asigna? //si
+	if (fd > 2) // en principi sempre sera major que 2, ja que 2 es stderr //si, hauria de
 	{
 		// printf("...........fdin..........:%i, fd::::::::::%i.\n", cmd->fd_in[1], fd);
 		old_fd = cmd->fd_in[1]; // No es fa servir nomes s'asigna?
@@ -91,6 +91,7 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 		i++;
 	}
 	cmd->argc = j;
+	cmd->aux_cd = 0;
 }
 
 void	free_cmd(t_cmd *cmd)
@@ -112,9 +113,9 @@ int	check_blt(t_cmd *cmd)
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("cd\n");//blt_cd;
+		printf("cd\n");//return (blt_cd(cmd->argc, cmd->args));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("pwd\n");//blt_pwd;
+		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("export\n");//blt_export;
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
@@ -127,7 +128,7 @@ int	check_blt(t_cmd *cmd)
 	//if error return 1;
 }
 
-/*
+
 int	call(t_cmd *cmd)
 {
 	char	*pth;
@@ -138,7 +139,7 @@ int	call(t_cmd *cmd)
 		return (1);
 	return (0);
 }
-*/
+
 int	call_wo_path(t_cmd *cmd)
 {
 	if (execve(cmd->args[0], cmd->args, NULL) == -1)
@@ -183,6 +184,7 @@ int	executor(t_tokens *exp_tok, char **envp)
 		init_cmd(exp_tok, &cmd, i);
 		pid = fork();
 		if (!pid) // es pot gestinar dins del call per tal destalviar linies
+			//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 		{
 			if (i > 0 && exp_tok->pipe_n != 0)
 			{
@@ -198,6 +200,7 @@ int	executor(t_tokens *exp_tok, char **envp)
 			}
 			exit(exe_cmd(&cmd));
 		}
+		// printf("aux:::::::::%i, pipe::::::::::%i\n",cmd.aux_cd ,exp_tok->pipe_n);
 		if (i > 0)
 		{
 			close(cmd.prev_pipe[0]);
