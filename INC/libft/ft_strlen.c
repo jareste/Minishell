@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:32:58 by jareste-          #+#    #+#             */
-/*   Updated: 2023/05/09 00:13:41 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:43:54 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (i);
 	while (s[i])
 		i++;
 	return (i);

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/19 12:21:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/19 13:01:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,11 @@ int	executor(t_tokens *exp_tok, char **envp)
 		i++;
 	dup2(fdout, STDOUT_FILENO);
 	dup2(fdin, STDIN_FILENO);
+	close(fdout);
+	close(fdin);
+	int hola = open("JAJAJA", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	printf("fd:::::::::::%i\n", hola);
+	close (hola);
 	return (0);
 }
 
