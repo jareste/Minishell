@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 13:44:56 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/19 03:26:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	main(int argc, char **argv, char *env[])
 //	(void) env;
 	
 	//#######################for geting env#################
-	 char **ptr_env;
-	 ptr_env = env;
-
-	 while (*ptr_env)
-	 {
-	 	printf("%s\n", *ptr_env);
-	 	ptr_env++;
-	 }
+	 // char **ptr_env;
+	 // ptr_env = env;
+	 // while (*ptr_env)
+	 // {
+	 // 	printf("%s\n", *ptr_env);
+	 // 	ptr_env++;
+	 // }
+	//#######################for geting env#################
 	while (1)
 	{
 		tokens = msh_start_words();

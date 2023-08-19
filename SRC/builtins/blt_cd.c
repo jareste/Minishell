@@ -1,6 +1,6 @@
 # include <minishell.h>
 
-int check_prnt_direrr(char *dir) // TODO totaly useless
+static int check_prnt_direrr(char *dir) // TODO totaly useless
 {
 	int err;
 	struct stat	*restrict stat_buf;
@@ -42,7 +42,7 @@ int blt_cd(int argc, char** argv)
 
 	//TODO modifie env
 	if (argc < 2)
-		return (0);
+		return (1);
 	err = check_prnt_direrr(argv[1]);
 	if (err)
 	{
@@ -57,7 +57,5 @@ int blt_cd(int argc, char** argv)
 		return (err);
 		
 	}
-
-	 
-	return (1);
+	return (0);
 }
