@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/19 05:13:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:21:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
 
+	(void)cmd;
 	fd = open(str, O_RDONLY);
 	if (fd > 0)
 	{
 		// if (cmd->fd_in[0] != 0)
 		// 	close(cmd->fd_in[0]);
-        dup2(cmd->fd_in[0], fd);
+        dup2(fd, STDIN_FILENO);
         // cmd->fd_flag[0] = 1;
 	}
 	return (0);
@@ -30,17 +31,19 @@ int	redirect_in(char *str, t_cmd *cmd)
 int	redirect_out(char *str, t_cmd *cmd)
 {
 	int	fd;
-	int	old_fd;
+	// int	old_fd;
 
+	(void)cmd;
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	old_fd = 2; // No es fa servir nomes s'asigna? //si
+	// old_fd = 2; // No es fa servir nomes s'asigna? //si
 	if (fd > 2) // en principi sempre sera major que 2, ja que 2 es stderr //si, hauria de
 	{
 		// printf("...........fdin..........:%i, fd::::::::::%i.\n", cmd->fd_in[1], fd);
-		old_fd = cmd->fd_in[1]; // No es fa servir nomes s'asigna?
+		// old_fd = cmd->fd_in[1]; // No es fa servir nomes s'asigna?
 		// if (cmd->fd_in[1] != 1)
 			// close(cmd->fd_in[1]);
-		dup2(cmd->fd_in[1], fd);
+		//dup2(cmd->fd_in[1], fd);
+		dup2(fd, STDOUT_FILENO);
         // if (old_fd > 2)
         // 	close(old_fd);
         // cmd->fd_flag[1] = 1;
@@ -169,12 +172,16 @@ int	executor(t_tokens *exp_tok, char **envp)
 	pid_t	pid;
 	int		status;
 	int		j;
+	int		fdout;
+	int		fdin;
 
 	j = 0;
 	i = 0;
 	cmd.fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd.fd_in[1] = 1;
 	cmd.env = envp;
+	fdout = dup(STDOUT_FILENO);
+	fdin = dup(STDIN_FILENO);
 	// printf("pipes:::::::::%i\n", exp_tok->pipe_n);
 	while (i < exp_tok->size)
 	{
@@ -219,6 +226,8 @@ int	executor(t_tokens *exp_tok, char **envp)
 		waitpid(pid, &status, 0);
 	while (wait(NULL) > 0)
 		i++;
+	dup2(fdout, STDOUT_FILENO);
+	dup2(fdin, STDIN_FILENO);
 	return (0);
 }
 
