@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/19 13:01:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 01:47:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	check_blt(t_cmd *cmd)
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("cd\n");//return (blt_cd(cmd->argc, cmd->args));
+		return (blt_cd(cmd->argc, cmd->args));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
@@ -165,6 +165,27 @@ int	exe_cmd(t_cmd *cmd)
 	return (0);
 }
 
+int	is_blt(char *str)
+{
+	if (ft_strncmp("echo", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("cd", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("pwd", str, ft_strlen(str)) == 0)
+		return(0);
+	else if (ft_strncmp("export", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("unset", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("env", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("exit", str, ft_strlen(str)) == 0)
+		return (0);
+	return (1);
+
+}
+
+
 int	executor(t_tokens *exp_tok, char **envp)
 {
 	size_t	i;
@@ -189,35 +210,42 @@ int	executor(t_tokens *exp_tok, char **envp)
 		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
 			pipe(cmd.fd_in);
 		init_cmd(exp_tok, &cmd, i);
-		pid = fork();
-		if (!pid) // es pot gestinar dins del call per tal destalviar linies
-			//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
+		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
+		//pq si creamos un hijo el blt se ejecuta en el hijo y cagada. 
 		{
-			if (i > 0 && exp_tok->pipe_n != 0)
+			printf(":::::::::;no es blt\n");
+			pid = fork();
+			if (!pid) // es pot gestinar dins del call per tal destalviar linies
+				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 			{
-				close(cmd.prev_pipe[1]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
-				dup2(cmd.prev_pipe[0], STDIN_FILENO);
+				if (i > 0 && exp_tok->pipe_n != 0)
+				{
+					close(cmd.prev_pipe[1]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
+					dup2(cmd.prev_pipe[0], STDIN_FILENO);
+					close(cmd.prev_pipe[0]);
+				}
+				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
+				{
+					close(cmd.fd_in[0]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
+					dup2(cmd.fd_in[1], STDOUT_FILENO);
+					close(cmd.fd_in[1]);
+				}
+				exit(exe_cmd(&cmd));
+			}
+			// printf("aux:::::::::%i, pipe::::::::::%i\n",cmd.aux_cd ,exp_tok->pipe_n);
+			if (i > 0)
+			{
 				close(cmd.prev_pipe[0]);
+				close(cmd.prev_pipe[1]);
 			}
-			if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
+			if (i < exp_tok->size - 1)
 			{
-				close(cmd.fd_in[0]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
-				dup2(cmd.fd_in[1], STDOUT_FILENO);
-				close(cmd.fd_in[1]);
+				cmd.prev_pipe[0] = cmd.fd_in[0];
+				cmd.prev_pipe[1] = cmd.fd_in[1];
 			}
-			exit(exe_cmd(&cmd));
 		}
-		// printf("aux:::::::::%i, pipe::::::::::%i\n",cmd.aux_cd ,exp_tok->pipe_n);
-		if (i > 0)
-		{
-			close(cmd.prev_pipe[0]);
-			close(cmd.prev_pipe[1]);
-		}
-		if (i < exp_tok->size - 1)
-		{
-			cmd.prev_pipe[0] = cmd.fd_in[0];
-			cmd.prev_pipe[1] = cmd.fd_in[1];
-		}
+		else
+			check_blt(&cmd);
 		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
@@ -230,9 +258,15 @@ int	executor(t_tokens *exp_tok, char **envp)
 	dup2(fdin, STDIN_FILENO);
 	close(fdout);
 	close(fdin);
-	int hola = open("JAJAJA", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	printf("fd:::::::::::%i\n", hola);
-	close (hola);
+	
+///////////////////////// CHECK NO FD OPEN /////////////////////////
+	// int hola = open("JAJAJA", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	// printf("fd_check no fdopen:::::::::::%i\n", hola);
+	// close (hola);
+///////////////////////// CHECK NO FD OPEN /////////////////////////
+
+
+
 	return (0);
 }
 
