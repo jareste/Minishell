@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 04:58:30 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 08:31:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int main(void)
 
 int	main(int argc, char **argv, char *env[])
 {
-	// t_tokens	*tokens;
-	// t_tokens	*exp_tok;
+	t_tokens	*tokens;
+	t_tokens	*exp_tok;
 
 	argc = 0;
 	argv = 0;
@@ -59,28 +59,28 @@ int	main(int argc, char **argv, char *env[])
 	 // }
 	//#######################for geting env#################
 	
-	blt_env(env);
+	// blt_env(env);
 
-	// while (1)
-	// {
-	// 	tokens = msh_start_words();
-	// 	exp_tok = msh_start_words();
-	// 	int tmp_exit = parser(tokens);
-	// 	if (tmp_exit == 0)
-	// 	{
-	// 		// msh_print_tokens(tokens);
-	// 		// printf("#######tokens ended######\n\n"); //s
-	// 		expander(tokens, exp_tok);
-	// 		// msh_print_tokens(exp_tok);
-	// 		// printf("#######exp ended######\n\n");  //ss
-	// 		executor(exp_tok, env);
-	// 		// printf("#######exe ended######\n\n");  //ss
-	// 	}
-	// 	msh_free_tokens(tokens);
-	// 	msh_free_tokens(exp_tok);
-	// 	if (tmp_exit == -2)
-	// 		break;
-	// }
+	while (1)
+	{
+		tokens = msh_start_words();
+		exp_tok = msh_start_words();
+		int tmp_exit = parser(tokens);
+		if (tmp_exit == 0)
+		{
+			// msh_print_tokens(tokens);
+			// printf("#######tokens ended######\n\n"); //s
+			expander(tokens, exp_tok);
+			// msh_print_tokens(exp_tok);
+			// printf("#######exp ended######\n\n");  //ss
+			executor(exp_tok, env);
+			// printf("#######exe ended######\n\n");  //ss
+		}
+		msh_free_tokens(tokens);
+		msh_free_tokens(exp_tok);
+		if (tmp_exit == -2)
+			break;
+	}
 
 	// ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 01:47:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 09:47:15 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	check_blt(t_cmd *cmd)
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("unset\n");//blt_unset;
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("env\n");//blt_env;
+		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
 	else if (ft_strncmp("exit", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("exit\n");//blt_exit;
 	return (1);
@@ -201,6 +201,7 @@ int	executor(t_tokens *exp_tok, char **envp)
 	cmd.fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd.fd_in[1] = 1;
 	cmd.env = envp;
+	// cmd.s_env = NULL;
 	fdout = dup(STDOUT_FILENO);
 	fdin = dup(STDIN_FILENO);
 	// printf("pipes:::::::::%i\n", exp_tok->pipe_n);
@@ -245,8 +246,21 @@ int	executor(t_tokens *exp_tok, char **envp)
 			}
 		}
 		else
+		{
+			printf("no es fork\n");
 			check_blt(&cmd);
+		}
 		j++;
+// int k;
+
+// 	k = 0;
+// 	printf(":::::::::::;%s\n", cmd.s_env->envc[k]);
+//     while (cmd.s_env->envc[k]) 
+//     {
+//         printf("%s\n", cmd.s_env->envc[k]);
+//         k++;
+// 	}
+
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
