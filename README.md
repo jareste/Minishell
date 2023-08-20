@@ -13,5 +13,4 @@ TO DO:
 - neteja de codig >>>> 2-3 dies
 
 
-$a = cho
-expansion error :... "e$a"' 'a'b' a... should not work
+#solved expansion error :... "echo"' 'a'b' a... should not work

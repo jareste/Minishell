@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 06:41:07 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:34:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ char	*expand_dollar(t_tokens *tokens, int i)
 	char	*str;
 	int		type;
 
+	if ((int)tokens->size <= i + 1)
+		return (ft_strdup("$"));
 	type = tokens->words[i + 1]->type;
+	// printf("EXPDOLL:::::::%s,\n", tokens->words[i + 1]->word);
 	if (type == 4)
 	{
 		str = "$";
@@ -34,6 +37,7 @@ char	*expand_dollar(t_tokens *tokens, int i)
 	if (!getenv(str))
 		return (ft_strdup(""));
 //TODO peta si el dollar esta al final de de lla comanda "echo hello $"
+	// printf("EXPDOLLar:::::::%s,\n", getenv(str));
 	return (getenv(str));
 }
 
