@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/19 04:27:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 04:57:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ typedef struct env_s
 	struct env_s	*next;
 	char			*key;
 	char			*val;
+
+	char			**envc;
+	size_t			size;
 }	t_env;
 
 
@@ -135,5 +138,7 @@ t_env		*free_envs(t_env *env_nodes);
 void		print_envs(t_env *env);
 t_env		*free_envs(t_env *env_nodes);
 t_env *env_get_last(t_env *env);
+
+int	blt_env(char **env);
 
 #endif

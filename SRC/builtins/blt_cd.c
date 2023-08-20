@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 03:54:26 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 03:56:45 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 04:01:08 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ static int check_prnt_direrr(char *dir) // TODO totaly useless
 		}
 		free(stat_buf);
 	}
-	else //TODO DELETE
-	{
-		// ft_printf(1, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
-		ft_printf(2, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
-	}
+	// else //TODO DELETE
+	// {
+	// 	// ft_printf(1, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
+	// 	ft_printf(2, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
+	// }
 	if (access(dir, X_OK) < 0)
 	{
 		err = errno;

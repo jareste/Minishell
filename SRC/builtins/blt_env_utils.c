@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_env_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/20 04:02:22 by jareste-          #+#    #+#             */
+/*   Updated: 2023/08/20 04:02:23 by jareste-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include <minishell.h>
 
 void vervose_print_envs(t_env *env) // TODO es pot borrar per passar norminette
