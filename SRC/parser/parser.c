@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 12:35:49 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 16:14:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	parser(t_tokens *tokens)
 	if (check_input(tokens->str))
 		return (1);
 	if (tokens->str[0] == 'e' && !tokens->str[1]) //sortir de programa borrar
-		return (2);//borrar
+		return (-2);//borrar
 	parse_string(tokens, tokens->str);
 	msh_mount_matrix(tokens);
 	return (0);

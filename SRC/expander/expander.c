@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 05:19:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 16:12:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static int	dst_tobreak(t_tokens *tokens, size_t i)
 
 	j = 0;
 	str = tokens->words[i]->word;
-	while (str[0] && str[0] != ' ' && str[0] != '<' && \
+	while (str[0] && str[0] != '<' && \
 	str[0] != '>' && str[0] != '|')
 	{
+		if (str[0] == ' ' && tokens->words[i]->type == 4)
+			break ;
 		j++;
 		i++;
 		if (tokens->size <= i)
@@ -31,8 +33,10 @@ static int	dst_tobreak(t_tokens *tokens, size_t i)
 	return (j);
 }
 
-static int	is_break_exp(char ch)
+static int	is_break_exp(char ch, int type)
 {
+	if (ch == ' ' && type != 4)
+		return (0);
 	if (ch == ' ' || ch == '<' || ch == '>' || ch == '|')
 		return (1);
 	return (0);
@@ -117,10 +121,12 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 		str = ft_calloc(len + 1, sizeof(char *));
 		type = exp_type(tokens, i);
 		j = 0;
-		while (is_break_exp(tokens->words[i]->word[0]) != 1)
+		while (!is_break_exp(tokens->words[i]->word[0], tokens->words[i]->type))
 		{
 			if (tokens->words[i]->type == 2)
+			{
 				str[j] = expand_dots(tokens, i, 0);
+			}
 			else if (tokens->words[i]->type == 3) // TODO  el tres tambe pot ser pipe i no la gestiona
 			{
 				str[j] = ft_strdup(expand_dollar(tokens, i)); // TODO Doble dup
@@ -140,6 +146,8 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 			ft_free(str);
 		}
 		i++;
+		// printf("after::::::::%i,%c,\n", is_break_exp(tokens->words[i]->word[0]), tokens->words[i]->word[0]);
+
 	}
 	msh_mount_matrix(exp_tok);
 	return (0);
