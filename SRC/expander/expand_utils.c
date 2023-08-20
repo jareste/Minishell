@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 21:44:45 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 00:24:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ char	*expand_dollar(t_tokens *tokens, int i)
 		tmp2 = ft_substr(str, dst_doll_brk(str, 0) - 1, 1 + (int)ft_strlen(str) - dst_doll_brk(str, 0));
 		str = getenv(tmp);
 		free(tmp);
-		tmp = ft_strjoin(str, tmp2);
+		if (str)
+			tmp = ft_strjoin(str, tmp2);
+		else
+			return (tmp2);
 		// printf("tmp::::::%s,tmp2:::::%s,\n::str:%s\n", str, tmp2, tmp);
 		free(tmp2);
 		return (tmp);
