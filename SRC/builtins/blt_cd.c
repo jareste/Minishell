@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_cd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/20 03:54:26 by jareste-          #+#    #+#             */
+/*   Updated: 2023/08/20 03:56:45 by jareste-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include <minishell.h>
 
 static int check_prnt_direrr(char *dir) // TODO totaly useless
@@ -11,20 +23,21 @@ static int check_prnt_direrr(char *dir) // TODO totaly useless
 		ft_printf(2, "cd: %s: No such file or directory\n", dir);
 		return (1);
 	}
-	stat_buf = malloc(sizeof(stat_buf));
+	stat_buf = malloc(sizeof(struct stat));
 	if (stat(dir, stat_buf) == 0)
 	{
-		if (stat_buf->st_mode != 16877) // https://man7.org/linux/man-pages/man7/inode.7.html ## look for "The file type and mode"
+		if (!S_ISDIR(stat_buf->st_mode)) 
+		//modificada condicio, macro de llibreria <sys/stat.h>
 		{
 			ft_printf(2, "cd: %s: Not a directory\n", dir);
-			return (1);
 			free(stat_buf);
+			return (1);
 		}
 		free(stat_buf);
 	}
 	else //TODO DELETE
 	{
-		ft_printf(1, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
+		// ft_printf(1, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
 		ft_printf(2, "SEMBLA QUE ALGO HA ANAT MALAMENT (blt_cd.c: check_prnt_direrr)");
 	}
 	if (access(dir, X_OK) < 0)
@@ -38,24 +51,29 @@ static int check_prnt_direrr(char *dir) // TODO totaly useless
 
 int blt_cd(int argc, char** argv)
 {
-	int	err;
+	int		err;
+	char	*dir;
 
 	//TODO modifie env
-	if (argc < 2)
-		return (1);
-	err = check_prnt_direrr(argv[1]);
+	if (argc == 1) //if argc == 1 no ha de retornar 1, sino anar a HOME.
+		dir = ft_strdup(getenv("HOME"));
+	else
+		dir = ft_strdup(argv[1]);
+	err = check_prnt_direrr(dir);
 	if (err)
 	{
 		return (err);
 	}
-	if(chdir(argv[1]) < 0)
+	if(chdir(dir) < 0)
 	{
 		err = errno;
-		ft_printf(2, "cd: %s: ", argv[1]);
+		ft_printf(2, "cd: %s: ", dir);
 		perror(NULL);
 		ft_printf(2, "\n");
+		free(dir);
 		return (err);
 		
 	}
+	free(dir);
 	return (0);
 }
