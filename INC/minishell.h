@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 09:47:40 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 11:09:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ int			msh_add_word(t_tokens *words, char *str, size_t len, int type);
 int			msh_mount_matrix(t_tokens *words);
 void		msh_print_tokens(t_tokens *words);
 int			msh_free_tokens(t_tokens *tokens);
+
+/* check_errors.c */
+int	check_input(char *str);
 
 //   ###################################################
 //                    EXPANDER
