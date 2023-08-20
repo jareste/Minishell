@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/15 13:35:02 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/20 12:35:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ int	parser(t_tokens *tokens)
 {
 	tokens->str = readline("🎷🦄miniHell> ");
 	if (!tokens->str)
-		return (-1); //error here
-	if (tokens->str[0] == 'e' && !tokens->str[1])
-		return (-2);
-	parse_string(tokens, tokens->str);
+		return (1); //error here
 	add_history(tokens->str);
+	if (check_input(tokens->str))
+		return (1);
+	if (tokens->str[0] == 'e' && !tokens->str[1]) //sortir de programa borrar
+		return (2);//borrar
+	parse_string(tokens, tokens->str);
 	msh_mount_matrix(tokens);
 	return (0);
 }
