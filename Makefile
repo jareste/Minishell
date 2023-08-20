@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/20 11:10:01 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/20 12:39:31 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
 		pipex.c \
 		)
 
-CC = cc -g #-fsanitize=address 
+CC = cc -g -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
