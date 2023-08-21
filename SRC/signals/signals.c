@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 00:35:28 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 06:51:33 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 07:17:57 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void	ninter_handler(int sig, siginfo_t *data, void *non_used_data)
 	(void) non_used_data;
 	if (sig == SIGINT)
 	{
-		ft_printf(1, "\n");
+		// printf("entro\n");
+		printf("\n");
 		g_msh.err = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_printf(1, "Quit: 3\n");
+		printf("Quit: 3\n");
 		g_msh.err = 131;
 	}
 	return ;
@@ -46,7 +47,7 @@ void	norm_handler(int sig, siginfo_t *data, void *non_used_data)
 	(void) non_used_data;
 	if (sig == SIGINT)
 	{
-		ft_printf(1, "\n");
+		printf("\n");
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
@@ -54,7 +55,6 @@ void	norm_handler(int sig, siginfo_t *data, void *non_used_data)
 	}
 	return ;
 }
-
 
 int	init_signals(int mode)
 {
@@ -68,7 +68,7 @@ int	init_signals(int mode)
 		signal.sa_sigaction = ninter_handler;
 	// else if (mode == HEREDOC)
 	// 	signal.sa_sigaction = heredoc_handler;
-	printf("%i,\n", mode);
+	// printf("%i,\n", mode);
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 	return (0);

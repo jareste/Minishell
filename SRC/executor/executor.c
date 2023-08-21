@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 07:07:57 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 07:18:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,11 +214,12 @@ int	executor(t_tokens *exp_tok)
 		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
 		//pq si creamos un hijo el blt se ejecuta en el hijo y cagada. 
 		{
-			printf(":::::::::;no es blt\n");
+			// printf(":::::::::;no es blt\n");
 			pid = fork();
 			if (!pid) // es pot gestinar dins del call per tal destalviar linies
 				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 			{
+				init_signals(N_INTERACT);
 				if (i > 0 && exp_tok->pipe_n != 0)
 				{
 					close(cmd.prev_pipe[1]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
@@ -247,7 +248,7 @@ int	executor(t_tokens *exp_tok)
 		}
 		else
 		{
-			printf("no es fork\n");
+			// printf("no es fork\n");
 			check_blt(&cmd);
 		}
 		j++;
