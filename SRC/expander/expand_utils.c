@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 00:24:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 01:03:34 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int	dst_doll_brk(char *str, int i)
 	j = 0;
 	while (str[i] && ft_strrchr(ok_char, str[i]))
 	{
-		printf("entro\n");
 		i++;
 		j++;
 	}

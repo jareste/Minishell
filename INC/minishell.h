@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 11:09:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 02:32:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,32 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
+
 # include "pipex.h"
 
 # define _XOPEN_SOURCE
 
-typedef struct env_s
+typedef struct msh_s	t_msh;
+typedef struct env_s	t_env;
+
+/*  variable global */
+t_msh				g_msh;
+
+struct msh_s
+{
+	t_env	*env;
+	int		ctrl_c;
+	int		err;
+};
+
+struct env_s
 {
 	struct env_s	*prev;
 	struct env_s	*next;
 	char			*key;
 	char			*val;
-}	t_env;
+};
 
 
 typedef struct word_s
