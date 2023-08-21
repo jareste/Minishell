@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/21 01:02:39 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/21 07:02:54 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ PRINTF = INC/PRINTF/libftprintf.a
 PRINTF_MAKE = INC/PRINTF
 LIBFT = INC/libft/libft.a
 LIBFT_MAKE = INC/LIBFT
+READLINE_MAKE = INC/READLINE
 
 HEADER = INC/minishell.h
 
@@ -55,13 +56,20 @@ SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
 		pipex.c \
 		)
 
+SIGNALS_PATH = ./SRC/signals
+
+SRCS += $(addprefix $(SIGNALS_PATH)/, signals.c \
+		) 
+
 CC = cc -g -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
-RDLFL = -lreadline -ltermcap #-lhistory #-lft 
-READL = INC/libft/libreadline.a 
-HISTORY = INC/libft/libhistory.a
+RDLFL = -lreadline -ltermcap #-lhistory -lft 
+READL = INC/readline/libreadline.a 
+#READL = INC/libft/libreadline.a 
+HISTORY = INC/readline/libhistory.a
+#HISTORY = INC/libft/libhistory.a
 
 
 %.o: %.c ${HEADER} Makefile
@@ -72,6 +80,7 @@ OBJS = ${SRCS:.c=.o}
 all:
 		@$(MAKE) -C $(LIBFT_MAKE) --no-print-directory
 		@$(MAKE) -C $(PRINTF_MAKE) --no-print-directory
+		@$(MAKE) -C $(READLINE_MAKE) --no-print-directory
 		@$(MAKE) ${NAME} --no-print-directory
 
 ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
@@ -81,6 +90,7 @@ ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
 clean:
 			@$(MAKE) clean -C $(LIBFT_MAKE) --no-print-directory
 			@$(MAKE) clean -C $(PRINTF_MAKE) --no-print-directory
+			@$(MAKE) clean -C $(READLINE_MAKE) --no-print-directory
 			@${RM} ${OBJS} 
 			@echo "OBJECTS REMOVED😭   "
 

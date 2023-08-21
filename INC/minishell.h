@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 02:32:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 07:08:10 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@
 # include "pipex.h"
 
 # define _XOPEN_SOURCE
-
+///borrar
+# define NORM		1
+# define HEREDOC	2
+# define N_INTERACT	3
+////
 typedef struct msh_s	t_msh;
 typedef struct env_s	t_env;
 
@@ -136,12 +140,12 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define OUTPIPE 5
 # define PATH "/bin/"
 
-int	executor(t_tokens *exp_tok, char **envp);
+int	executor(t_tokens *exp_tok);
 
 //   ###################################################
 //                    BUILTINS
 //   ###################################################
-int			blt_exit(int argc, char **argv);
+// int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
 int			blt_cd(int argc, char** argv);
 int			blt_pwd(void);
@@ -155,5 +159,12 @@ t_env		*free_envs(t_env *env_nodes);
 t_env *env_get_last(t_env *env);
 
 int	blt_env(char **env, char *str, int to_do);
+
+//   ###################################################
+//                    SIGNALS
+//   ###################################################
+
+int	init_signals(int mode);
+void	do_sigign(int signum);
 
 #endif
