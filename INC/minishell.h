@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 07:08:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 09:39:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <termios.h>
 
 # include "pipex.h"
 
@@ -38,12 +39,15 @@
 typedef struct msh_s	t_msh;
 typedef struct env_s	t_env;
 
+# define IN 0
+# define OUT 1
 /*  variable global */
 t_msh				g_msh;
 
 struct msh_s
 {
 	t_env	*env;
+	int		fd[2];//in0 out1
 	int		ctrl_c;
 	int		err;
 };
@@ -77,13 +81,11 @@ typedef struct tokens_s
 
 typedef struct cmd_s
 {
-	int			fd_in[2];//[2]
+	int			pipe_fd[2];//[2]
 	int			prev_pipe[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
-	int			aux_cd;
 	char		**args;
-	char		**env;
 	t_tokens	*exp_tok;
 }				t_cmd;
 
