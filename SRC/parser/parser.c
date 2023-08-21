@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 01:58:41 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 06:54:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static int	parse_string(t_tokens *tokens, char *str)
 
 int	parser(t_tokens *tokens)
 {
-	tokens->str = readline("🎷🦄miniHell> ");
-	if (!tokens->str)
-		return (1); //error here
+	// tokens->str = readline("🎷🦄miniHell> ");
+	// if (!tokens->str)
+	// 	return (1); //error here
 	add_history(tokens->str);
 	if (check_input(tokens->str))
 		return (1);

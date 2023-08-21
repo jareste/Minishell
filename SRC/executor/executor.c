@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 10:54:16 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 07:07:57 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int	is_blt(char *str)
 }
 
 
-int	executor(t_tokens *exp_tok, char **envp)
+int	executor(t_tokens *exp_tok)
 {
 	size_t	i;
 	t_cmd	cmd;
@@ -200,7 +200,7 @@ int	executor(t_tokens *exp_tok, char **envp)
 	i = 0;
 	cmd.fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd.fd_in[1] = 1;
-	cmd.env = envp;
+	// cmd.env = envp;
 	// cmd.s_env = NULL;
 	fdout = dup(STDOUT_FILENO);
 	fdin = dup(STDIN_FILENO);
