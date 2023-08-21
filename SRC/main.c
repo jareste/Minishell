@@ -6,11 +6,11 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 20:24:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 02:33:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../INC/minishell.h"
+#include "../INC/minishell.h"
 /*
 int main(void)
 {
@@ -40,6 +40,34 @@ int main(void)
 	msh_free_words(words);
 }*/
 
+
+
+// Función para manejar la señal SIGINT (Control+C)
+void sigint_handler(int signum) {
+	(void)signum;
+    printf("Señal SIGINT (Control+C) recibida.\n");
+}
+
+// Función para manejar la señal SIGQUIT (Control+\)
+void sigquit_handler(int signum) {
+	(void)signum;
+    printf("Señal SIGQUIT (Control+\\) recibida.\n");
+}
+
+// Función para manejar la señal SIGTSTP (Control+Z)
+void sigtstp_handler(int signum) {
+	(void)signum;
+    printf("Señal SIGTSTP (Control+Z) recibida.\n");
+}
+
+
+
+
+
+
+
+
+
 int	main(int argc, char **argv, char *env[])
 {
 	t_tokens	*tokens;
@@ -61,6 +89,20 @@ int	main(int argc, char **argv, char *env[])
 	
 	// blt_env(env);
 
+
+
+
+   signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, sigquit_handler);
+    signal(SIGTSTP, sigtstp_handler);
+
+
+
+
+
+
+
+
 	while (1)
 	{
 		tokens = msh_start_words();
@@ -68,13 +110,13 @@ int	main(int argc, char **argv, char *env[])
 		int tmp_exit = parser(tokens);
 		if (tmp_exit == 0)
 		{
-			msh_print_tokens(tokens);
-			printf("#######tokens ended######\n\n"); //s
+			// msh_print_tokens(tokens);
+			// printf("#######tokens ended######\n\n"); //s
 			expander(tokens, exp_tok);
-			msh_print_tokens(exp_tok);
-			printf("#######exp ended######\n\n");  //ss
+			// msh_print_tokens(exp_tok);
+			// printf("#######exp ended######\n\n");  //ss
 			executor(exp_tok, env);
-			printf("#######exe ended######\n\n");  //ss
+			// printf("#######exe ended######\n\n");  //ss
 		}
 		msh_free_tokens(tokens);
 		msh_free_tokens(exp_tok);
