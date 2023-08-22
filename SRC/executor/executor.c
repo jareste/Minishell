@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 09:46:49 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:19:22 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	check_blt(t_cmd *cmd)
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
 	else if (ft_strncmp("exit", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("exit\n");//blt_exit;
+		return(blt_exit(cmd->argc, cmd->args));//blt_exit;
 	return (1);
 	//if error return 1;
 }
@@ -220,7 +220,6 @@ int	executor(t_tokens *exp_tok)
 		}
 		else
 		{
-			printf(":::::;blt\n");
 			check_blt(&cmd);
 		}
 		j++;
