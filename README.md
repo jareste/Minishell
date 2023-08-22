@@ -13,5 +13,6 @@ TO DO:
 - neteja de codig >>>> 2-3 dies
 
 expand $?
+cd>>>> cd ~ no funca
 "$>foo" SEGFAULT
 #solved expansion error :... "echo"' 'a'b' a... should not work

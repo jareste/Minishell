@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 00:35:28 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 07:17:57 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:12:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@ void	ninter_handler(int sig, siginfo_t *data, void *non_used_data)
 	(void) non_used_data;
 	if (sig == SIGINT)
 	{
-		// printf("entro\n");
 		printf("\n");
-		g_msh.err = 130;
+		sig_rec = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
 		printf("Quit: 3\n");
-		g_msh.err = 131;
+		sig_rec = 131;
 	}
 	return ;
 }
@@ -51,7 +50,7 @@ void	norm_handler(int sig, siginfo_t *data, void *non_used_data)
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_msh.err = 1;
+		sig_rec = 1;
 	}
 	return ;
 }
@@ -60,6 +59,7 @@ int	init_signals(int mode)
 {
 	struct sigaction	signal;
 
+	// sig_rec = 0;
 	signal.sa_flags = SA_RESTART;
 	sigemptyset(&signal.sa_mask);
 	if (mode == NORM)
