@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:02:22 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 04:02:23 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:43:23 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,39 @@ char *ft_strndup(char *str, size_t i)
 {
 	char *str_res;
 
+	if (!str)
+		return (NULL);
 	str_res = malloc(sizeof(char) * (i + 1));
 	str_res[i] = '\0';
+	ft_printf(1, "sdaaaf%d\n", i);
 	while(i--)
+	{
+	//	ft_printf(1, "%d\n", i);
 		str_res[i] =  str[i];
+	}
 	return (str_res);
-
 }
 
 int ft_ichar(char *str, char c)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
+	if (!str[i])
+		return (-1);
 	return (i);
 }
 
-t_env *free_envs(t_env *env_nodes)
+t_env *free_envs(t_env **_env_nodes)
 {
 	t_env *aux;
+	t_env *env_nodes;
 
+	if (!*_env_nodes)
+		return (NULL);
+	env_nodes = *_env_nodes;
 	while (env_nodes)
 	{
 		aux = env_nodes;
@@ -64,6 +75,7 @@ t_env *free_envs(t_env *env_nodes)
 		env_nodes = env_nodes->next;
 		free(aux);
 	}
+	*_env_nodes = NULL;
 	return (NULL);
 }
 
@@ -82,7 +94,7 @@ t_env	*env_list(char **envs)
 
 	first = (t_env *) calloc(sizeof(t_env), 1);
 	if(!first)
-		return (free_envs(first));
+		return (free_envs(&first));
 	curr = first;
 	curr->key = ft_strndup(*envs, ft_ichar(*envs, '='));
 	curr->val = ft_strdup(*envs + ft_ichar(*envs, '=') + 1);
@@ -91,14 +103,13 @@ t_env	*env_list(char **envs)
 	{
 		curr->next = (t_env *) calloc(sizeof(t_env), 1);
 		if(!curr->next)
-			return (free_envs(first));
+			return (free_envs(&first));
 		curr->next->prev = curr;
 		curr = curr->next;
-
 		curr->key = ft_strndup(*envs, ft_ichar(*envs, '='));
 		curr->val = ft_strdup(*envs + ft_ichar(*envs, '=') + 1);
 		if (!curr->key || !curr->val)
-			return (free_envs(first));
+			return (free_envs(&first));
 		envs++;
 	}
 	return (first);

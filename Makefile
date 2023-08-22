@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/21 07:02:54 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/22 17:02:45 by jrenau-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ SIGNALS_PATH = ./SRC/signals
 SRCS += $(addprefix $(SIGNALS_PATH)/, signals.c \
 		) 
 
-CC = cc -g -fsanitize=address 
+CC = cc  -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
