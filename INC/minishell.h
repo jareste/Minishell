@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 16:36:10 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/22 16:50:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ typedef struct env_s	t_env;
 # define OUT 1
 /*  variable global */
 t_msh				g_msh;
+int			sig_rec;
 
 struct msh_s
 {
-	t_env	*env;
+	char	**env;
 	int		fd[2];//in0 out1
-	int		ctrl_c;
 	int		err;
 };
 
@@ -85,6 +85,7 @@ typedef struct cmd_s
 	int			prev_pipe[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
+	int			err;
 	char		**args;
 	t_tokens	*exp_tok;
 }				t_cmd;
@@ -121,11 +122,11 @@ int	check_input(char *str);
 //                    EXPANDER
 //   ###################################################
 //expander.c
-int			expander(t_tokens *tokens, t_tokens *exp_tok);
+int			expander(t_tokens *tokens, t_tokens *exp_tok, int err[2]);
 
 //expand_utils.c
 char		*free_join(char *ret, char *tmp);
-char		*expand_dollar(t_tokens *tokens, int i);
+char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
 char		*merge_matrix(char **matrix);
 
 //expand_dots.c
@@ -142,7 +143,7 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define OUTPIPE 5
 # define PATH "/bin/"
 
-int	executor(t_tokens *exp_tok);
+int	executor(t_tokens *exp_tok, int err[2]);
 
 //   ###################################################
 //                    BUILTINS

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:21:40 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 06:54:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:17:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	parser(t_tokens *tokens)
 	// 	return (1); //error here
 	add_history(tokens->str);
 	if (check_input(tokens->str))
-		return (1);
+		return (258);//error code 258
 	if (tokens->str[0] == 'e' && !tokens->str[1]) //sortir de programa borrar
 		return (-2);//borrar
 	parse_string(tokens, tokens->str);

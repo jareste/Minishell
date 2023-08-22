@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 12:19:22 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:16:31 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 	// TODO els fds potser es tindiren que inicialitzar a -1 per saber si realment fan refrencia a un fd
 	// cmd-.pipe_fd[0] = 0; // 2fds, 0 == old, 1 == NEW
 	// cmd-.pipe_fd[1] = 1; // 2fds, 0 == old, 1 == NEW
+	cmd->err = 0;
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
 		exp_tok->words[i]->type -= 3;
@@ -92,21 +93,21 @@ void	free_cmd(t_cmd *cmd)
 
 int	check_blt(t_cmd *cmd)
 {
-	if (ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	if (ft_strncmp("echo", cmd->args[0], ft_strlen("echo") + 1) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
-	else if (ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp("cd", cmd->args[0], ft_strlen("cd") + 1) == 0)
 		return (blt_cd(cmd->argc, cmd->args));
-	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
 		return(blt_pwd());
-	else if (ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp("export", cmd->args[0], ft_strlen("export") + 1) == 0)
 		printf("export\n");//blt_export;
-	else if (ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp("unset", cmd->args[0], ft_strlen("unset") + 1) == 0)
 		printf("unset\n");//blt_unset;
-	else if (ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp("env", cmd->args[0], ft_strlen("env") + 1) == 0)
 		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
-	else if (ft_strncmp("exit", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		return(blt_exit(cmd->argc, cmd->args));//blt_exit;
-	return (1);
+	else if (ft_strncmp("exit", cmd->args[0], ft_strlen("exit") + 1) == 0)
+		printf("exit\n");//blt_exit;
+	return (127);
 	//if error return 1;
 }
 
@@ -116,7 +117,6 @@ int	call(t_cmd *cmd)
 	char	*pth;
 
 	pth = ft_strjoin(PATH, cmd->args[0]);
-	// printf("::::::::%s\n", pth);
 	if (execve(pth, cmd->args, NULL) == -1)
 		return (1);
 	return (0);
@@ -134,38 +134,38 @@ int	call_wo_path(t_cmd *cmd)
 int	exe_cmd(t_cmd *cmd)
 {
 	if (check_blt(cmd) == 0)
-		printf("CHECK_BLT\n");//ss
+		return (0);//ss
 	else if (call(cmd) == 0)
-		printf("CALL\n'");//ss
+		return (0);//ss
 	else if (call_wo_path(cmd) == 0)
-		printf("CALLWO\n");//s
+		return (0);//s
 	else
-		printf("error\n");//s
-	return (0);
+		ft_printf(2, "%s: command not found\n", cmd->args[0]);//s
+	return (127);
 }
 
 int	is_blt(char *str)
 {
-	if (ft_strncmp("echo", str, ft_strlen(str)) == 0)
+	if (ft_strncmp("echo", str, ft_strlen("echo") + 1) == 0)
 		return (0);
-	else if (ft_strncmp("cd", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("cd", str, ft_strlen("cd") + 1) == 0)
 		return (0);
-	else if (ft_strncmp("pwd", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("pwd", str, ft_strlen("pwd") + 1) == 0)
 		return(0);
-	else if (ft_strncmp("export", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("export", str, ft_strlen("export") + 1) == 0)
 		return (0);
-	else if (ft_strncmp("unset", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("unset", str, ft_strlen("unset") + 1) == 0)
 		return (0);
-	else if (ft_strncmp("env", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("env", str, ft_strlen("env") + 1) == 0)
 		return (0);
-	else if (ft_strncmp("exit", str, ft_strlen(str)) == 0)
+	else if (ft_strncmp("exit", str, ft_strlen("exit") + 1) == 0)
 		return (0);
 	return (1);
 
 }
 
 
-int	executor(t_tokens *exp_tok)
+int	executor(t_tokens *exp_tok, int err[2])
 {
 	size_t	i;
 	t_cmd	cmd;
@@ -174,7 +174,7 @@ int	executor(t_tokens *exp_tok)
 	int		j;
 	// int		fdout;
 	// int		fdin;
-
+	(void)err;
 	j = 0;
 	i = 0;
 	cmd.pipe_fd[IN] = 0; // 2fds, 0 == old, 1 == NEW
@@ -189,7 +189,7 @@ int	executor(t_tokens *exp_tok)
 		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
 		{
 			pid = fork();
-			if (!pid) // es pot gestinar dins del call per tal destalviar linies
+			if (pid == 0) // es pot gestinar dins del call per tal destalviar linies
 				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 			{
 				init_signals(N_INTERACT);
@@ -217,24 +217,28 @@ int	executor(t_tokens *exp_tok)
 				cmd.prev_pipe[IN] = cmd.pipe_fd[IN];
 				cmd.prev_pipe[OUT] = cmd.pipe_fd[OUT];
 			}
+			if (cmd.err != 0)
+				return (cmd.err);
 		}
 		else
-		{
-			check_blt(&cmd);
-		}
+			cmd.err = check_blt(&cmd);
 		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
 	if (exp_tok->size == 1)
 		waitpid(pid, &status, 0);
+
+	// printf("err:::::::::%i,\n", cmd.err);
 	while (wait(NULL) > 0)
 		i++;
+	if (WIFEXITED(status))
+		cmd.err = WEXITSTATUS(status);
 	dup2(g_msh.fd[OUT], STDOUT_FILENO);
 	dup2(g_msh.fd[IN], STDIN_FILENO);
 	close(g_msh.fd[OUT]);
 	close(g_msh.fd[IN]);
-	return (0);
+	return (cmd.err);
 }
 
 ///////////////////////// CHECK NO FD OPEN /////////////////////////

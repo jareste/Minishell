@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 20:37:44 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:23:25 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	exp_type(t_tokens *tokens, int i)
 		if (tokens->words[i - 1]->word[0] == '<')
 			type = INPUT;
 		if (tokens->words[i - 1]->word[0] == '>')
-			type =OUTPUT;
+			type = OUTPUT;
 		if (tokens->words[i - 1]->word[0] == '|')
 			type = PIPE;
 		if (i > 1)
@@ -103,7 +103,7 @@ static int	count_pipes(t_tokens *tokens)
 	}
 	return (pipes);
 }
-int	expander(t_tokens *tokens, t_tokens *exp_tok)
+int	expander(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 {
 	size_t		i;
 	size_t		j;
@@ -127,7 +127,7 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok)
 				str[j] = expand_dots(tokens, i, 0);
 			else if (tokens->words[i]->type == 3) // TODO  el tres tambe pot ser pipe i no la gestiona
 			{
-				str[j] = ft_strdup(expand_dollar(tokens, i)); // TODO Doble dup
+				str[j] = ft_strdup(expand_dollar(tokens, i, err)); // TODO Doble dup
 				i++;
 			}
 			else
