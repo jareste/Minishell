@@ -6,11 +6,34 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 02:00:50 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/18 07:00:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 16:37:13 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
+
+static int	is_n(char *str)
+{
+	int	i;
+
+	i = 2;
+	if (ft_strlen(str) > 1)
+	{
+		if (str[0] == '-' && str[1] == 'n')
+			while (str[i])
+			{
+				if (str[i] == 'n')
+					i++;
+				else
+					return (0);
+			}
+			else
+				return (0);
+	}
+	else
+		return (0);
+	return (1);
+}
 
 int	blt_echo(int argc, char **argv)
 {
@@ -18,28 +41,27 @@ int	blt_echo(int argc, char **argv)
 	int	first;
 
 	first = 1;
-	if (argc == 1) // Si es sols 1 arg, hem de imprimir un \n;
+	if (argc == 1)
 	{
-		ft_printf(1, "\n");//al ft_printf haura d'anar el fd, atm es queda 1.
+		ft_printf(1, "\n");
 		return (0);
 	}
-	i = 1; //mateix que abaix, he canviat la teva condicio per strncmp.
-	while (i < argc && ft_strncmp(argv[i], "-n", ft_strlen(argv[i])) == 0)
+	i = 1;
+	while (i < argc && is_n(argv[i]))
 		i++;
-// a aquest while tenies el mateix problema, si et passaben
-// -na o lo que fos, se ho tragaba, quan sols volem -n
+	// printf("i::::%i, argc:::::%i\n", i, argc);
 	while (i < argc)
 	{
-		if (!first) // lo que tenies aqui no funcionaba mai pq first era == 1 i no entraba
-			ft_printf(1, " ");//al ft_printf haura d'anar el fd, atm es queda 1.
+		if (!first)
+			ft_printf(1, " ");
 		if (argv[i] == NULL)
 			break ;
-		ft_printf(1, "%s", argv[i]);//al ft_printf haura d'anar el fd, atm es queda 1.
-		first = 0;//despres de escriure el primer cop first = 0 aleshores printeja espais
+		ft_printf(1, "%s", argv[i]);
+		first = 0;
 		i++;
 	}
-	if (ft_strncmp(argv[1], "-n", ft_strlen(argv[1])) != 0)
-		ft_printf(1, "\n");//al ft_printf haura d'anar el fd, atm es queda 1.
+	if (!is_n(argv[1]))
+		ft_printf(1, "\n");
 	return (0);
 }
 
