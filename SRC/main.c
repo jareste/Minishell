@@ -6,40 +6,43 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 09:25:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:21:37 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../INC/minishell.h"
 
-static int	start(t_tokens *tokens, t_tokens *exp_tok)
+static int	start(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 {
-	g_msh.err = parser(tokens);
-	if (g_msh.err == 0)
+	err[0] = parser(tokens);
+	if (err[0] == 0)
 	{
 		// msh_print_tokens(tokens);
 		// printf("#######tokens ended######\n\n"); //s
-		g_msh.err = expander(tokens, exp_tok);
+		err[0] = expander(tokens, exp_tok, err);
 		// msh_print_tokens(exp_tok);
 		// printf("#######exp ended######\n\n");  //ss
-		g_msh.err = executor(exp_tok);
+		err[0] = executor(exp_tok, err);
 		// printf("#######exe ended######\n\n");  //ss
 	}
-	return (g_msh.err);
+	return (err[0]);
 }
 
 int	main(int argc, char **argv, char *env[])
 {
 	t_tokens	*tokens;
 	t_tokens	*exp_tok;
+	int			err[2];
 
-	(0 || (argc = 0) || (argv = 0));
+	(0 || (argc = 0) || (argv = 0) || (err[0] = 0));
 	(void)env;//we should start env on global var
+	sig_rec = 0;
 	while (1)
 	{
+
+		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
 		init_signals(NORM);
 		do_sigign(SIGQUIT);
-		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
 		tokens->str = readline("🎷🦄miniHell> ");
 		do_sigign(SIGINT);
 		if (!tokens->str)
@@ -49,10 +52,18 @@ int	main(int argc, char **argv, char *env[])
 			(1 && (msh_free_tokens(tokens)) && (msh_free_tokens(exp_tok)));
 			return (0);
 		}
-		start(tokens, exp_tok);
+		err[1] = start(tokens, exp_tok, err);
 		(1 && (msh_free_tokens(tokens)) && (msh_free_tokens(exp_tok)));
 		if (g_msh.err == -2) // sobra
 			break ;//sobra
+		// printf("sig:::::::::%i,\n", sig_rec);
+		if (sig_rec > 0)
+		{
+			err[1] = sig_rec;
+			sig_rec = 0;
+		}
+		// if (sig_rec != 0)
+			// err[1] = sig_rec;
 	}
 	return (0);
 }
