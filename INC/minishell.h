@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 16:50:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 20:33:56 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct cmd_s
 {
 	int			pipe_fd[2];//[2]
 	int			prev_pipe[2];//[2] 
+	int			flag_red[2];
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	int			err;
