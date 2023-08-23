@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 19:42:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 21:06:08 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ static int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
 
-	// (void)cmd;
 	fd = open(str, O_RDONLY);
 	if (fd < 0)
 	{
 		ft_printf(2, "%s: ", str);
 		perror(NULL);
+		cmd->err = 1;
 		return (1);
 	}
 	else if (fd > 0)
@@ -38,7 +38,8 @@ static int	redirect_out(char *str, t_cmd *cmd)
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		ft_printf(2, "%s: Permission denied", str);
+		ft_printf(2, "%s: ", str);
+		perror(NULL);
 		return (1);
 	}
 	if (fd > 2)
@@ -240,12 +241,12 @@ int	executor(t_tokens *exp_tok)
 				}
 				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)// && cmd.flag_red[OUT] == 0)
 				{
-					ft_printf(2, "entro,j:::::%i\n", j);
-					ft_printf(2, "pipe:::::%i, stdout:::::%i, flag::::%i\n", cmd.pipe_fd[OUT], STDOUT_FILENO, cmd.flag_red[OUT]);
+					// ft_printf(2, "entro,j:::::%i\n", j);
+					// ft_printf(2, "pipe:::::%i, stdout:::::%i, flag::::%i\n", cmd.pipe_fd[OUT], STDOUT_FILENO, cmd.flag_red[OUT]);
 					close(cmd.pipe_fd[IN]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
 					if (cmd.flag_red[OUT] == 0)// && j < exp_tok->pipe_n)
 					{
-						ft_printf(2, "swap\n");
+						// ft_printf(2, "swap\n");
 						if (j == exp_tok->pipe_n)
 							dup2(cmd.init_fd[OUT], STDOUT_FILENO);
 						else
@@ -257,7 +258,7 @@ int	executor(t_tokens *exp_tok)
 			}
 			if (i > 0 && cmd.prev_pipe[IN] > 0)
 			{
-				ft_printf(2, "segunda ejecucion%i\n", j);
+				// ft_printf(2, "segunda ejecucion%i\n", j);
 				close(cmd.prev_pipe[IN]);
 				// if (cmd.prev_pipe[OUT])
 				close(cmd.prev_pipe[OUT]);
@@ -268,6 +269,8 @@ int	executor(t_tokens *exp_tok)
 					cmd.prev_pipe[IN] = cmd.pipe_fd[IN];
 					cmd.prev_pipe[OUT] = cmd.pipe_fd[OUT];
 			}
+			if (cmd.err > 0)
+				break ;
 			cmd.flag_red[OUT] = 0;
 			cmd.flag_red[IN] = 0;
 		}

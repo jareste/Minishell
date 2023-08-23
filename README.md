@@ -14,7 +14,7 @@ TO DO:
 #echo "'$'"
 #cd>>>> cd ~ no funca //hauria d'expandir ~ abans de cd
 #"$>foo" SEGFAULT
-ls | cat>a |echo f >> no ho fa correctament.
+#ls | cat>a |echo f >> no ho fa correctament.
 $hola ls (ha d'executar l'ls)
 
-gestionar errores si falla open en in o out si no hay permisos
+#gestionar errores si falla open en in o out si no hay permisos
