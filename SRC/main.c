@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 18:21:37 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:29:47 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char *env[])
 	int			err[2];
 
 	(0 || (argc = 0) || (argv = 0) || (err[0] = 0));
-	(void)env;//we should start env on global var
+	(void)env;//kkkkkwe should start env on global var
 	sig_rec = 0;
 	while (1)
 	{
