@@ -34,12 +34,11 @@ int	main(int argc, char **argv, char *env[])
 	t_tokens	*exp_tok;
 	int			err[2];
 
-	(0 || (argc = 0) || (argv = 0) || (err[0] = 0));
-	(void)env;//kkkkkwe should start env on global var
+	(0 || (argc = 0) || (argv = 0) || (err[1] = 0) || (err[0] = 0));
+	(void)env;//we should start env on global var
 	sig_rec = 0;
 	while (1)
 	{
-
 		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
 		init_signals(NORM);
 		do_sigign(SIGQUIT);
@@ -54,7 +53,7 @@ int	main(int argc, char **argv, char *env[])
 		}
 		err[1] = start(tokens, exp_tok, err);
 		(1 && (msh_free_tokens(tokens)) && (msh_free_tokens(exp_tok)));
-		if (g_msh.err == -2) // sobra
+		if (err[1] == -2) // sobra
 			break ;//sobra
 		// printf("sig:::::::::%i,\n", sig_rec);
 		if (sig_rec > 0)

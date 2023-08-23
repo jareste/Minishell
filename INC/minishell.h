@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 16:50:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 20:33:56 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct cmd_s
 {
 	int			pipe_fd[2];//[2]
 	int			prev_pipe[2];//[2] 
+	int			flag_red[2];
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	int			err;
@@ -148,18 +149,21 @@ int	executor(t_tokens *exp_tok, int err[2]);
 //   ###################################################
 //                    BUILTINS
 //   ###################################################
-// int			blt_exit(int argc, char **argv);
+int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
 int			blt_cd(int argc, char** argv);
 int			blt_pwd(void);
+int			blt_export(int argc, char **argv, t_env **env);
 
 /* blt_env_utils.c */
 t_env		*env_list(char **envs);
 void		print_envs(t_env *env);
-t_env		*free_envs(t_env *env_nodes);
-void		print_envs(t_env *env);
-t_env		*free_envs(t_env *env_nodes);
-t_env *env_get_last(t_env *env);
+void		vervose_print_envs(t_env *env);
+t_env		*free_envs(t_env **env_nodes);
+t_env		*env_get_last(t_env *env);
+int			ft_ichar(char *str, char c);
+int			export_print(t_env *env);
+char		*ft_strndup(char *str, size_t i);
 
 int	blt_env(char **env, char *str, int to_do);
 
