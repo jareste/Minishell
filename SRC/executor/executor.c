@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 10:21:26 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:28:07 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ static int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
 
+	(void)cmd;
 	fd = open(str, O_RDONLY);
-	if (cmd->prev_pipe[IN])
+	// if (cmd->prev_pipe[IN])
+        // dup2(fd, STDIN_FILENO);
+	if (fd > 0)
         dup2(fd, STDIN_FILENO);
-	else if (fd > 0)
-        dup2(fd, STDIN_FILENO);
-    cmd->flag_red[IN] = 1;
+    // cmd->flag_red[IN] = 1;
 	return (0);
 }
 
@@ -181,6 +182,7 @@ int	executor(t_tokens *exp_tok, int err[2])
 	(void)err;
 	j = 0;
 	i = 0;
+	// pid = malloc(sizeof(pid_t) * exp_tok->pipe_n + 1);
 	cmd.pipe_fd[IN] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd.pipe_fd[OUT] = 1;
 	g_msh.fd[OUT]= dup(STDOUT_FILENO);
@@ -221,8 +223,8 @@ int	executor(t_tokens *exp_tok, int err[2])
 				cmd.prev_pipe[IN] = cmd.pipe_fd[IN];
 				cmd.prev_pipe[OUT] = cmd.pipe_fd[OUT];
 			}
-			if (cmd.err != 0)
-				return (cmd.err);
+			// if (cmd.err != 0)
+			// 	return (cmd.err);
 		}
 		else
 			cmd.err = check_blt(&cmd);
@@ -230,21 +232,21 @@ int	executor(t_tokens *exp_tok, int err[2])
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
-	if (exp_tok->size == 1)
-		waitpid(pid, &status, 0);
-
-	// printf("err:::::::::%i,\n", cmd.err);
-	while (wait(NULL) > 0)
-		i++;
-	int last = 0;
-	if (WIFEXITED(status))
-		cmd.err = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	while (j >= 0)
 	{
-		if (!last && WTERMSIG(status) == SIGINT)
-			(1 && (sig_rec = 130) && (last = 1));
-		else if (!last && WTERMSIG(status) == SIGQUIT)
-			(1 && (sig_rec = 131) && (last = 1));
+		j--;
+		if (pid == wait(&status))
+		{
+			if (WIFEXITED(status))
+				cmd.err = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				if (WTERMSIG(status) == SIGINT)
+					cmd.err = 130;
+				else if (WTERMSIG(status) == SIGQUIT)
+					(1 && (cmd.err = 131) && (printf("Quit: 3\n")));
+			}
+		}
 	}
 	dup2(g_msh.fd[OUT], STDOUT_FILENO);
 	dup2(g_msh.fd[IN], STDIN_FILENO);
