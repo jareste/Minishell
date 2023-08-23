@@ -7,13 +7,13 @@ TO DO:
 - builtins jrneau.
 - executor seems to be working, but some bugs may appear >>>> solved input//output redirect##### MISSING PATH #####
 - errors >>>> 1w
-#- signals >>>> 3 dies? //modificar una mica hehe
+#- signals >>>> 3 dies? //modificar una mica hehe //sembla ok
 - env >>> depen de builtins
 - heredoc >>>> ?
 - neteja de codig >>>> 2-3 dies
 
 expand $?
-cd>>>> cd ~ no funca
+#cd>>>> cd ~ no funca
 "$>foo" SEGFAULT
 ls | cat>a |echo f >> no ho fa correctament.
 #solved expansion error :... "echo"' 'a'b' a... should not work
