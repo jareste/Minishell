@@ -15,4 +15,5 @@ TO DO:
 expand $?
 cd>>>> cd ~ no funca
 "$>foo" SEGFAULT
+ls | cat>a |echo f >> no ho fa correctament.
 #solved expansion error :... "echo"' 'a'b' a... should not work
