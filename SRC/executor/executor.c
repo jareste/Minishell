@@ -6,29 +6,33 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 18:16:31 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:21:26 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static int	redirect_in(char *str)
+static int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
 
 	fd = open(str, O_RDONLY);
-	if (fd > 0)
+	if (cmd->prev_pipe[IN])
         dup2(fd, STDIN_FILENO);
+	else if (fd > 0)
+        dup2(fd, STDIN_FILENO);
+    cmd->flag_red[IN] = 1;
 	return (0);
 }
 
-static int	redirect_out(char *str)
+static int	redirect_out(char *str, t_cmd *cmd)
 {
 	int	fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd > 2)
 		dup2(fd, STDOUT_FILENO);
+	cmd->flag_red[OUT] = 1;
 	return (0);
 }
 
@@ -53,8 +57,8 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 	int	j;
 	int	type;
 	// TODO els fds potser es tindiren que inicialitzar a -1 per saber si realment fan refrencia a un fd
-	// cmd-.pipe_fd[0] = 0; // 2fds, 0 == old, 1 == NEW
-	// cmd-.pipe_fd[1] = 1; // 2fds, 0 == old, 1 == NEW
+	cmd->flag_red[IN] = 0; // 2fds, 0 == old, 1 == NEW
+	cmd->flag_red[OUT] = 0; // 2fds, 0 == old, 1 == NEW
 	cmd->err = 0;
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
@@ -67,9 +71,9 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
 		else if (type == INPUT || type == INPIPE)
-			redirect_in(exp_tok->words[i]->word);
+			redirect_in(exp_tok->words[i]->word, cmd);
 		else if (type == OUTPUT || type == OUTPIPE)
-			redirect_out(exp_tok->words[i]->word);
+			redirect_out(exp_tok->words[i]->word, cmd);
 		else
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
@@ -193,13 +197,13 @@ int	executor(t_tokens *exp_tok, int err[2])
 				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 			{
 				init_signals(N_INTERACT);
-				if (i > 0 && exp_tok->pipe_n != 0)
+				if (i > 0 && exp_tok->pipe_n != 0)// && cmd.flag_red[0] == 0)
 				{
 					close(cmd.prev_pipe[OUT]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
 					dup2(cmd.prev_pipe[IN], STDIN_FILENO);
 					close(cmd.prev_pipe[IN]);
 				}
-				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
+				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)// && cmd.flag_red[1] == 0)
 				{
 					close(cmd.pipe_fd[IN]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
 					dup2(cmd.pipe_fd[OUT], STDOUT_FILENO);
@@ -232,8 +236,16 @@ int	executor(t_tokens *exp_tok, int err[2])
 	// printf("err:::::::::%i,\n", cmd.err);
 	while (wait(NULL) > 0)
 		i++;
+	int last = 0;
 	if (WIFEXITED(status))
 		cmd.err = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (!last && WTERMSIG(status) == SIGINT)
+			(1 && (sig_rec = 130) && (last = 1));
+		else if (!last && WTERMSIG(status) == SIGQUIT)
+			(1 && (sig_rec = 131) && (last = 1));
+	}
 	dup2(g_msh.fd[OUT], STDOUT_FILENO);
 	dup2(g_msh.fd[IN], STDIN_FILENO);
 	close(g_msh.fd[OUT]);
