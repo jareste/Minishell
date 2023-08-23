@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 15:45:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:22:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 
 }
 
-char	*merge_matrix(char **matrix)
+char	*merge_matrix(char **matrix, int len)
 {
 	char	*str;
 	int		i;
@@ -104,6 +104,8 @@ char	*merge_matrix(char **matrix)
 		if (i > 0)
 			free(str);
 		i++;
+		if (i > len)
+			break;
 	}
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/20 16:13:43 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:38:25 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,22 @@ static int	get_len(char *str)
 	return (i);
 }
 
+static int	dst_doll_brk(char *str, int i)
+{
+	char	*ok_char;
+	int		j;
+
+	ok_char = "_0123456789abcdefghijklmnopqrstuvwxyz\
+				ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	j = 0;
+	while (str[i] && ft_strrchr(ok_char, str[i]))
+	{
+		i++;
+		j++;
+	}
+	return (j + 1);
+}
+
 char	*expand_dots(t_tokens *tokens, int i, size_t j)
 {
 	char	*str;
@@ -87,10 +103,13 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j)
 	{
 		if (str[j] == '$')
 		{
-			ret = get_ret(ret, str, j);
-			str = str + j + get_len(str + j) + 1;
-			j = 0;
-			len--;
+			if (dst_doll_brk(str, j) > 1)
+			{
+				ret = get_ret(ret, str, j);
+				str = str + j + get_len(str + j) + 1;
+				j = 0;
+				len--;
+			}
 		}
 		else
 			j++;
@@ -99,8 +118,8 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j)
 	}
 	if (ret[0])
 	{
-	tmp = ft_strdup(ret);
-	free(ret);
+		tmp = ft_strdup(ret);
+		free(ret);
 	}
 	ret = ft_strjoin(tmp, str);
 	if (tmp[0])

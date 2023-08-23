@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 12:28:07 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:42:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,17 @@ static int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
 
-	(void)cmd;
+	// (void)cmd;
 	fd = open(str, O_RDONLY);
-	// if (cmd->prev_pipe[IN])
-        // dup2(fd, STDIN_FILENO);
-	if (fd > 0)
+	if (fd < 0)
+	{
+		ft_printf(2, "%s: ", str);
+		perror(NULL);
+		return (1);
+	}
+	else if (fd > 0)
         dup2(fd, STDIN_FILENO);
-    // cmd->flag_red[IN] = 1;
+    cmd->flag_red[IN] = 1;
 	return (0);
 }
 
@@ -31,6 +35,11 @@ static int	redirect_out(char *str, t_cmd *cmd)
 	int	fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		ft_printf(2, "%s: Permission denied", str);
+		return (1);
+	}
 	if (fd > 2)
 		dup2(fd, STDOUT_FILENO);
 	cmd->flag_red[OUT] = 1;
@@ -53,7 +62,7 @@ int	dst_topipe(t_tokens *exp_tok, size_t i)
 	return (j);
 }
 
-void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
+int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 {
 	int	j;
 	int	type;
@@ -72,14 +81,21 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
 		else if (type == INPUT || type == INPIPE)
-			redirect_in(exp_tok->words[i]->word, cmd);
+		{
+			if (redirect_in(exp_tok->words[i]->word, cmd))
+				return (1);
+		}
 		else if (type == OUTPUT || type == OUTPIPE)
-			redirect_out(exp_tok->words[i]->word, cmd);
+		{
+			if (redirect_out(exp_tok->words[i]->word, cmd))
+				return (1);
+		}
 		else
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
 	}
 	cmd->argc = j;
+	return (0);
 }
 
 void	free_cmd(t_cmd *cmd)
@@ -98,6 +114,11 @@ void	free_cmd(t_cmd *cmd)
 
 int	check_blt(t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
+	while (cmd->args[0][i])
+		ft_tolower(cmd->args[0][i++]);
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen("echo") + 1) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen("cd") + 1) == 0)
@@ -111,7 +132,7 @@ int	check_blt(t_cmd *cmd)
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen("env") + 1) == 0)
 		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
 	else if (ft_strncmp("exit", cmd->args[0], ft_strlen("exit") + 1) == 0)
-		printf("exit\n");//blt_exit;
+		exit(blt_exit(cmd->argc, cmd->args));
 	return (127);
 	//if error return 1;
 }
@@ -151,6 +172,11 @@ int	exe_cmd(t_cmd *cmd)
 
 int	is_blt(char *str)
 {
+	int	i;
+
+	i = 0;
+	while (str[i])
+		ft_tolower(str[i++]);
 	if (ft_strncmp("echo", str, ft_strlen("echo") + 1) == 0)
 		return (0);
 	else if (ft_strncmp("cd", str, ft_strlen("cd") + 1) == 0)
@@ -170,7 +196,7 @@ int	is_blt(char *str)
 }
 
 
-int	executor(t_tokens *exp_tok, int err[2])
+int	executor(t_tokens *exp_tok)
 {
 	size_t	i;
 	t_cmd	cmd;
@@ -179,19 +205,21 @@ int	executor(t_tokens *exp_tok, int err[2])
 	int		j;
 	// int		fdout;
 	// int		fdin;
-	(void)err;
+	// (void)err;
 	j = 0;
 	i = 0;
 	// pid = malloc(sizeof(pid_t) * exp_tok->pipe_n + 1);
-	cmd.pipe_fd[IN] = 0; // 2fds, 0 == old, 1 == NEW
-	cmd.pipe_fd[OUT] = 1;
-	g_msh.fd[OUT]= dup(STDOUT_FILENO);
-	g_msh.fd[IN] = dup(STDIN_FILENO);
+	cmd.pipe_fd[IN] = -1; // 2fds, 0 == old, 1 == NEW
+	cmd.pipe_fd[OUT] = -1;
+	cmd.prev_pipe[IN] = -1;
+	cmd.prev_pipe[OUT] = -1;
+	cmd.init_fd[OUT]= dup(STDOUT_FILENO);
+	cmd.init_fd[IN] = dup(STDIN_FILENO);
 	while (i < exp_tok->size)
 	{
+		init_cmd(exp_tok, &cmd, i);
 		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
 			pipe(cmd.pipe_fd);
-		init_cmd(exp_tok, &cmd, i);
 		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
 		{
 			pid = fork();
@@ -213,7 +241,7 @@ int	executor(t_tokens *exp_tok, int err[2])
 				}
 				exit(exe_cmd(&cmd));
 			}
-			if (i > 0)
+			if (i > 0 && cmd.prev_pipe[IN] > 0)
 			{
 				close(cmd.prev_pipe[IN]);
 				close(cmd.prev_pipe[OUT]);
@@ -248,10 +276,10 @@ int	executor(t_tokens *exp_tok, int err[2])
 			}
 		}
 	}
-	dup2(g_msh.fd[OUT], STDOUT_FILENO);
-	dup2(g_msh.fd[IN], STDIN_FILENO);
-	close(g_msh.fd[OUT]);
-	close(g_msh.fd[IN]);
+	dup2(cmd.init_fd[OUT], STDOUT_FILENO);
+	dup2(cmd.init_fd[IN], STDIN_FILENO);
+	close(cmd.init_fd[OUT]);
+	close(cmd.init_fd[IN]);
 	return (cmd.err);
 }
 
