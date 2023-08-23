@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 20:33:56 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:51:29 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct tokens_s
 
 typedef struct cmd_s
 {
+	int			init_fd[2];
 	int			pipe_fd[2];//[2]
 	int			prev_pipe[2];//[2] 
 	int			flag_red[2];
@@ -128,7 +129,7 @@ int			expander(t_tokens *tokens, t_tokens *exp_tok, int err[2]);
 //expand_utils.c
 char		*free_join(char *ret, char *tmp);
 char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
-char		*merge_matrix(char **matrix);
+char		*merge_matrix(char **matrix, int len);
 
 //expand_dots.c
 char		*expand_dots(t_tokens *tokens, int i, size_t j);
@@ -144,7 +145,7 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define OUTPIPE 5
 # define PATH "/bin/"
 
-int	executor(t_tokens *exp_tok, int err[2]);
+int	executor(t_tokens *exp_tok);
 
 //   ###################################################
 //                    BUILTINS

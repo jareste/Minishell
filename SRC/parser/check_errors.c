@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 10:56:44 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/21 07:52:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:46:40 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	check_redirect_in(char *str, int i)
 		return (1);
 	if (i < 1)
 		return (0);
-	if (is_rd(str[i - 2]) && is_rd(str[i - 1]) && is_rd(str[i]))
+	if (is_rd(str[i - 1]) && is_rd(str[i - 2]) && is_rd(str[i]))
 		return (1);
 	if (str[i] == '<' && str[i - 1] == '>')
 		return (1);
