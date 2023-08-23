@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 00:35:28 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 10:22:13 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:28:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 // 	{
 // 		printf("\n");
 // 		sig_rec = 130;
-	
+// 		exit(sig_rec);
 // 	}
 // 	else if (sig == SIGQUIT)
 // 	{
 // 		printf("Quit: 3\n");
 // 		sig_rec = 131;
+// 		exit(sig_rec);
 // 	}
 // 	return ;
 // }
@@ -62,6 +63,7 @@ int	init_signals(int mode)
 
 	signal.sa_flags = SA_RESTART | SA_SIGINFO;
 	sigemptyset(&signal.sa_mask);
+	// printf("mode::::::%i\n", mode);
 	if (mode == NORM)
 		signal.sa_sigaction = norm_handler;
 	// else if (mode == 3) //sobra?????
