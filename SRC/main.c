@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 10:23:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:23:12 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	start(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 		err[0] = expander(tokens, exp_tok, err);
 		// msh_print_tokens(exp_tok);
 		// printf("#######exp ended######\n\n");  //ss
-		err[0] = executor(exp_tok, err);
+		err[0] = executor(exp_tok);
 		// printf("#######exe ended######\n\n");  //ss
 	}
 	return (err[0]);
