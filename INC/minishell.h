@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 15:03:16 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:18:04 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define _XOPEN_SOURCE
 ///borrar
 # define NORM		1
-# define HEREDOC	2
+// # define HEREDOC	2
 # define N_INTERACT	3
 ////
 typedef struct msh_s	t_msh;
@@ -141,9 +141,13 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define NONE 0
 # define INPUT 1
 # define OUTPUT 2
-# define PIPE 3
-# define INPIPE 4
-# define OUTPIPE 5
+# define HEREDOC 3
+# define APPEND 4
+# define PIPE 5
+# define INPIPE 6
+# define OUTPIPE 7
+# define HEREDOCPIPE 8
+# define APPENDPIPE 9
 # define PATH "/bin/"
 
 int	executor(t_tokens *exp_tok);

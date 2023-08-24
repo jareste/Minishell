@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 02:00:50 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 20:57:27 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:46:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	blt_echo(int argc, char **argv)
 	int	i;
 	int	first;
 
-	// ft_printf(2, "echo:::::::::::::::::::::::::::::::::::::::;%s\n", argv[1]);
 	first = 1;
 	if (argc == 1)
 	{
@@ -50,11 +49,10 @@ int	blt_echo(int argc, char **argv)
 	i = 1;
 	while (i < argc && is_n(argv[i]))
 		i++;
-	// printf("i::::%i, argc:::::%i\n", i, argc);
 	while (i < argc)
 	{
-		if (!first)
-			ft_printf(1, " ");
+		if (first == 0)
+			printf(" ");
 		if (argv[i] == NULL)
 			break ;
 		printf("%s", argv[i]);
