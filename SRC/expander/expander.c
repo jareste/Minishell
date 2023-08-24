@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 18:23:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:22:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	is_break_exp(char ch, int type)
 	return (0);
 }
 
-static	void	ft_free(char **matrix)
+static	void	ft_free(char **matrix, int len)
 {
 	int	i;
 
@@ -51,6 +51,8 @@ static	void	ft_free(char **matrix)
 	{
 		free(matrix[i]);
 		i++;
+		if (i > len)
+			break;
 	}
 	free(matrix);
 }
@@ -139,9 +141,9 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 		}
 		if (str[0])
 		{
-			src = merge_matrix(str);
+			src = merge_matrix(str, len);
 			new_tokens(exp_tok, src, type);
-			ft_free(str);
+			ft_free(str, len);
 		}
 		i++;
 		// printf("after::::::::%i,%c,\n", is_break_exp(tokens->words[i]->word[0]), tokens->words[i]->word[0]);
