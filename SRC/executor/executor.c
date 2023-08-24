@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 14:50:34 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:14:56 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
 	}
+	cmd->err_flag = 0;
 	cmd->argc = j;
 	return (0);
 }
@@ -222,8 +223,9 @@ int	executor(t_tokens *exp_tok)
 	cmd.init_fd[IN] = dup(STDIN_FILENO);
 	while (i < exp_tok->size)
 	{
-		init_cmd(exp_tok, &cmd, i);
-		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
+		if (init_cmd(exp_tok, &cmd, i))
+				cmd.err_flag = 1;
+		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n && !cmd.err_flag) //i < exp_tok->size - 1)
 			pipe(cmd.pipe_fd);
 		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
 		{
@@ -231,6 +233,9 @@ int	executor(t_tokens *exp_tok)
 			if (pid == 0) // es pot gestinar dins del call per tal destalviar linies
 				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
 			{
+				// ft_printf(2, "\nerr:::::::::%i,\n", cmd.err_flag);
+				if (cmd.err_flag == 1)
+					exit(1);
 				init_signals(N_INTERACT);
 				if (i > 0 && exp_tok->pipe_n != 0)// && cmd.flag_red[0] == 0)
 				{
@@ -239,11 +244,12 @@ int	executor(t_tokens *exp_tok)
 						dup2(cmd.prev_pipe[IN], STDIN_FILENO);
 					close(cmd.prev_pipe[IN]);
 				}
-				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)// && cmd.flag_red[OUT] == 0)
+				if (/*i < exp_tok->size - 1 &&*/ exp_tok->pipe_n != 0)// && j <= exp_tok->pipe_n)// && cmd.flag_red[OUT] == 0)
 				{
 					// ft_printf(2, "entro,j:::::%i\n", j);
 					// ft_printf(2, "pipe:::::%i, stdout:::::%i, flag::::%i\n", cmd.pipe_fd[OUT], STDOUT_FILENO, cmd.flag_red[OUT]);
 					close(cmd.pipe_fd[IN]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
+					// ft_printf(2, "flag::::::::%i,\n", cmd.flag_red[OUT]);
 					if (cmd.flag_red[OUT] == 0)// && j < exp_tok->pipe_n)
 					{
 						// ft_printf(2, "swap\n");
@@ -254,6 +260,7 @@ int	executor(t_tokens *exp_tok)
 					}
 					close(cmd.pipe_fd[OUT]);
 				}
+				// ft_printf(2, "str::::%s,\n", cmd.args[0]);
 				exit(exe_cmd(&cmd));
 			}
 			if (i > 0 && cmd.prev_pipe[IN] > 0)
