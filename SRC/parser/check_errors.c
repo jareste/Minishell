@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 10:56:44 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 21:11:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 23:38:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	check_pipe(char *str, int i)
 		return (1);
 	if (!str[i + 1])
 		return (1);
-	if (str[i - 1] == '<' || str[i - 1] == '<')
+	if (str[i - 1] == '<' || str[i - 1] == '>')
 		return (1);
 	return (0);
 }
