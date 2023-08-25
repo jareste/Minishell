@@ -19,3 +19,8 @@ $hola ls (ha d'executar l'ls)
 
 #APPEND DONDE
 #gestionar errores si falla open en in o out si no hay permisos
+
+
+- BUILTINS jrneau.
+	falta printejar (env, export sense arguments)
+	falta el unset

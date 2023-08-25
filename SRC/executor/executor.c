@@ -12,6 +12,7 @@
 
 #include "../../INC/minishell.h"
 
+
 static int	redirect_in(char *str, t_cmd *cmd)
 {
 	int	fd;
@@ -78,6 +79,7 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 {
 	int	type;
 
+
 	(0 || (cmd->flag_red[IN] = 0) || (cmd->flag_red[OUT] = 0) || (cmd->err = 0));
 	(0 || (j = 0) || (cmd->err_flag = 0) || (cmd->exp_tok = exp_tok));
 	if (exp_tok->words[i]->type >= PIPE)
@@ -88,6 +90,7 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 		type = exp_tok->words[i]->type;
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
+
 		if (type == INPUT || type == INPIPE)
 			if (redirect_in(exp_tok->words[i]->word, cmd))
 				return (1);
@@ -130,6 +133,7 @@ int	check_blt(t_cmd *cmd)
 		ft_tolower(cmd->args[0][i++]);
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen("echo") + 1) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
+
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen("cd") + 1) == 0)
 		return (blt_cd(cmd->argc, cmd->args));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
@@ -144,6 +148,7 @@ int	check_blt(t_cmd *cmd)
 		exit(blt_exit(cmd->argc, cmd->args));
 	return (127);
 }
+
 
 int	call(t_cmd *cmd)
 {
@@ -194,6 +199,7 @@ int	exe_cmd(t_cmd *cmd)
 
 int	is_blt(char *str)
 {
+
 	int	i;
 
 	i = 0;
@@ -291,6 +297,7 @@ int	executor(t_tokens *exp_tok)
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
+
 	while (j >= 0)
 	{
 		j--;

@@ -38,7 +38,6 @@ char *ft_strndup(char *str, size_t i)
 		return (NULL);
 	str_res = malloc(sizeof(char) * (i + 1));
 	str_res[i] = '\0';
-	ft_printf(1, "sdaaaf%d\n", i);
 	while(i--)
 	{
 	//	ft_printf(1, "%d\n", i);
@@ -84,6 +83,67 @@ t_env *env_get_last(t_env *env)
 	while (env->next)
 		env = env->next;
 	return (env);
+}
+
+static char *catenv(char *key, char *val)
+{
+	char	*result;
+	char	*temp;
+
+	temp = ft_strjoin(key, "=");
+	if (!temp)
+		return (NULL);
+	result  = ft_strjoin(temp, val);
+	free(temp);
+	return (result);
+}
+
+char **free_matrix(char **matrix)
+{
+	size_t s;
+
+	s = 0;
+	while (matrix[s])
+		free(matrix[s++]);
+	free(matrix);
+	return (NULL);
+}
+
+void	print_matrix(char **matrix)
+{
+	while (*matrix)
+	{
+		ft_printf(1, ">%s<\n", *matrix);
+		matrix++;
+	}
+}
+	
+char **env_matrix(t_env *_envs)
+{
+	t_env	*envs;
+	size_t	size;
+	char	**matrix;
+
+	size = 0;
+	envs = _envs;
+	while (envs)
+	{
+		if (envs->val)
+			size++;
+		envs = envs->next;
+	}
+	matrix = calloc(sizeof(char *), size + 1); //TODO not protected 
+	envs = _envs;
+	size = 0;
+	while (envs)
+	{
+		if (envs->val)
+			matrix[size] = catenv(envs->key, envs->val); //TODO not protected
+		if (envs->val)
+			size++;
+		envs = envs->next;
+	}
+	return (matrix);
 }
 
 

@@ -48,12 +48,19 @@ SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 EXECUTOR_PATH = ./SRC/executor
 
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
+		ppx_get_path.c \
+		ppx_spliter.c \
+		ppx_utils.c \
+		ppx_utils2.c \
+		ppx_wend.c \
+		pipex.c \
 		)
 
 SIGNALS_PATH = ./SRC/signals
 
 SRCS += $(addprefix $(SIGNALS_PATH)/, signals.c \
 		) 
+
 
 CC = cc -g -fsanitize=address 
 RM = rm -f
