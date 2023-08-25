@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 18:22:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:39:10 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static	void	ft_free(char **matrix, int len)
 		free(matrix[i]);
 		i++;
 		if (i > len)
-			break;
+			break ;
 	}
 	free(matrix);
 }
@@ -62,6 +62,34 @@ static void	new_tokens(t_tokens *exp_tok, char *str, int type)
 	msh_add_word(exp_tok, str, ft_strlen(str), type);
 	if (str[0])
 		free(str);
+}
+
+static	int	aux_exp_type(t_tokens *tokens, int i, int type)
+{
+	if (tokens->words[i - 1]->word[0] == '<' && \
+	tokens->words[i - 2]->word[0] == '|')
+		type = INPIPE;
+	if (tokens->words[i - 1]->word[0] == '>' && \
+	tokens->words[i - 2]->word[0] == '|')
+		type = OUTPIPE;
+	// if (i > 2)
+	// {
+	if (tokens->words[i - 1]->word[0] == '<' && \
+	tokens->words[i - 2]->word[0] == '<')
+		type = HEREDOC;
+	if (tokens->words[i - 1]->word[0] == '>' && \
+	tokens->words[i - 2]->word[0] == '>')
+		type = APPEND;
+	if (tokens->words[i - 1]->word[0] == '<' && \
+	tokens->words[i - 2]->word[0] == '<' && i > 2 \
+	&& tokens->words[i - 3]->word[0] == '|')
+		type = HEREDOCPIPE;
+	if (tokens->words[i - 1]->word[0] == '>' && \
+	tokens->words[i - 2]->word[0] == '>' && i > 2\
+	&& tokens->words[i - 3]->word[0] == '|')
+		type = APPENDPIPE;
+	// }
+	return (type);
 }
 
 int	exp_type(t_tokens *tokens, int i)
@@ -80,12 +108,7 @@ int	exp_type(t_tokens *tokens, int i)
 		if (tokens->words[i - 1]->word[0] == '|')
 			type = PIPE;
 		if (i > 1)
-		{
-			if (tokens->words[i - 1]->word[0] == '<' && tokens->words[i - 2]->word[0] == '|')
-				type = INPIPE;
-			if (tokens->words[i - 1]->word[0] == '>' && tokens->words[i - 2]->word[0] == '|')
-				type = OUTPIPE;
-		}
+			type = aux_exp_type(tokens, i, type);
 	}
 	return (type);
 }

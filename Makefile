@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/23 20:55:17 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/24 21:46:46 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,6 @@ SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 EXECUTOR_PATH = ./SRC/executor
 
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
-		ppx_get_path.c \
-		ppx_spliter.c \
-		ppx_utils.c \
-		ppx_utils2.c \
-		ppx_wend.c \
-		pipex.c \
 		)
 
 SIGNALS_PATH = ./SRC/signals
