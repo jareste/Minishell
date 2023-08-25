@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 13:41:51 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/25 14:26:09 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int			msh_free_tokens(t_tokens *tokens);
 char		**env_matrix(t_env *_envs);
 void		print_matrix(char **matrix);
 char		**free_matrix(char **matrix);
+t_env		*free_env(t_env *env);
 
 /* check_errors.c */
 int	check_input(char *str);

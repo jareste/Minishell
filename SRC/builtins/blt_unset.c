@@ -1,24 +1,31 @@
 #include <minishell.h>
 
-static int delete_env(t_env **_env, t_env *prev, *curr)
+static int delete_env(t_env **_env, t_env *prev, t_env *curr)
 {
-		if (!prev && ! curr->next)
-			*_env = free_env(curr);	
-		else if(!prev)
-		{
-			curr = curr->next;
-			free_env(curr);
-			*_env = curr;
-			curr->prev = NULL;
-		}
-		else
-		{
-			curr = curr->next;
-			free_env(curr);
-			curr->prev = prev;
-			prev->next = next;
-		}
+	if (!prev && ! curr->next)
+		*_env = free_env(curr);	
+	else if(!prev)
+	{
+		curr = curr->next;
+		free_env(curr->prev);
+		*_env = curr;
+		curr->prev = NULL;
+	}
+	else if (!curr->next)
+	{
+		prev->next = NULL;
+		free_env(curr);
+	}
+	else
+	{
+		curr = curr->next;
+		free_env(curr->prev);
+		curr->prev = prev;
+		prev->next = curr;
+	}
+	return (0);
 }
+
 int	blt_unset(char **argv, t_env **_env)
 {
 	t_env	*prev;
@@ -26,10 +33,8 @@ int	blt_unset(char **argv, t_env **_env)
 	int		i;
 	
 	i = 0;
-	while (argv[i])
+	while (*_env && (argv[i]))
 	{
-		if (!*_env)
-			return (0);	
 		prev = NULL;
 		curr = *_env;
 		while (curr)
