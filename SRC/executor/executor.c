@@ -6,40 +6,29 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/17 07:02:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:19:22 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-int	redirect_in(char *str, t_cmd *cmd)
+static int	redirect_in(char *str)
 {
 	int	fd;
 
 	fd = open(str, O_RDONLY);
 	if (fd > 0)
-	{
-		// printf("openedIN:::%s::::::%i:::fd_in::::%i\n", str, fd, cmd->fd_in);
-		if (cmd->fd_in[0] != 0)
-			close(cmd->fd_in[0]);
-		cmd->fd_in[0] = fd;
-	}
+        dup2(fd, STDIN_FILENO);
 	return (0);
 }
 
-int	redirect_out(char *str, t_cmd *cmd)
+static int	redirect_out(char *str)
 {
 	int	fd;
 
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd > 2)
-	{
-		if (cmd->fd_out[0] != 1)
-			close(cmd->fd_out[0]);
-		cmd->fd_out[0] = fd;
-		// if (close(fd) == -1)
-			// printf("badclose\n");
-	}
+		dup2(fd, STDOUT_FILENO);
 	return (0);
 }
 
@@ -63,9 +52,9 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 {
 	int	j;
 	int	type;
-
-	cmd->fd_in[0] = 0; // 2fds, 0 == old, 1 == NEW
-	cmd->fd_out[0] = 1; // 2fds, 0 == old, 1 == NEW
+	// TODO els fds potser es tindiren que inicialitzar a -1 per saber si realment fan refrencia a un fd
+	// cmd-.pipe_fd[0] = 0; // 2fds, 0 == old, 1 == NEW
+	// cmd-.pipe_fd[1] = 1; // 2fds, 0 == old, 1 == NEW
 	cmd->exp_tok = exp_tok;
 	if (exp_tok->words[i]->type >= 3)
 		exp_tok->words[i]->type -= 3;
@@ -77,9 +66,9 @@ void	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i)
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
 		else if (type == INPUT || type == INPIPE)
-			redirect_in(exp_tok->words[i]->word, cmd);
+			redirect_in(exp_tok->words[i]->word);
 		else if (type == OUTPUT || type == OUTPIPE)
-			redirect_out(exp_tok->words[i]->word, cmd);
+			redirect_out(exp_tok->words[i]->word);
 		else
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
@@ -106,20 +95,21 @@ int	check_blt(t_cmd *cmd)
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("cd\n");//blt_cd;
+		return (blt_cd(cmd->argc, cmd->args));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("pwd\n");//blt_pwd;
+		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("export\n");//blt_export;
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
 		printf("unset\n");//blt_unset;
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("env\n");//blt_env;
+		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
 	else if (ft_strncmp("exit", cmd->args[0], ft_strlen(cmd->args[0])) == 0)
-		printf("exit\n");//blt_exit;
+		return(blt_exit(cmd->argc, cmd->args));//blt_exit;
 	return (1);
 	//if error return 1;
 }
+
 
 int	call(t_cmd *cmd)
 {
@@ -154,47 +144,101 @@ int	exe_cmd(t_cmd *cmd)
 	return (0);
 }
 
+int	is_blt(char *str)
+{
+	if (ft_strncmp("echo", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("cd", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("pwd", str, ft_strlen(str)) == 0)
+		return(0);
+	else if (ft_strncmp("export", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("unset", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("env", str, ft_strlen(str)) == 0)
+		return (0);
+	else if (ft_strncmp("exit", str, ft_strlen(str)) == 0)
+		return (0);
+	return (1);
+
+}
+
+
 int	executor(t_tokens *exp_tok)
 {
 	size_t	i;
-	int		flag;
 	t_cmd	cmd;
 	pid_t	pid;
 	int		status;
+	int		j;
+	// int		fdout;
+	// int		fdin;
 
+	j = 0;
 	i = 0;
-	flag = 1;
+	cmd.pipe_fd[IN] = 0; // 2fds, 0 == old, 1 == NEW
+	cmd.pipe_fd[OUT] = 1;
+	g_msh.fd[OUT]= dup(STDOUT_FILENO);
+	g_msh.fd[IN] = dup(STDIN_FILENO);
 	while (i < exp_tok->size)
 	{
+		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n) //i < exp_tok->size - 1)
+			pipe(cmd.pipe_fd);
 		init_cmd(exp_tok, &cmd, i);
-		pid = fork();
-		if (!pid)			
-			exit(exe_cmd(&cmd));
-		waitpid(pid, &status, 0);
+		if (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0)) // si es blt i no hay pipe va directo stdout.
+		{
+			pid = fork();
+			if (!pid) // es pot gestinar dins del call per tal destalviar linies
+				//si, tot aixo va dins una funcio, pero aixo ja ho fare quan sigui validat.
+			{
+				init_signals(N_INTERACT);
+				if (i > 0 && exp_tok->pipe_n != 0)
+				{
+					close(cmd.prev_pipe[OUT]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
+					dup2(cmd.prev_pipe[IN], STDIN_FILENO);
+					close(cmd.prev_pipe[IN]);
+				}
+				if (i < exp_tok->size - 1 && exp_tok->pipe_n != 0)
+				{
+					close(cmd.pipe_fd[IN]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
+					dup2(cmd.pipe_fd[OUT], STDOUT_FILENO);
+					close(cmd.pipe_fd[OUT]);
+				}
+				exit(exe_cmd(&cmd));
+			}
+			if (i > 0)
+			{
+				close(cmd.prev_pipe[IN]);
+				close(cmd.prev_pipe[OUT]);
+			}
+			if (i < exp_tok->size - 1)
+			{
+				cmd.prev_pipe[IN] = cmd.pipe_fd[IN];
+				cmd.prev_pipe[OUT] = cmd.pipe_fd[OUT];
+			}
+		}
+		else
+		{
+			check_blt(&cmd);
+		}
+		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
 	}
- 	return (0);
+	if (exp_tok->size == 1)
+		waitpid(pid, &status, 0);
+	while (wait(NULL) > 0)
+		i++;
+	dup2(g_msh.fd[OUT], STDOUT_FILENO);
+	dup2(g_msh.fd[IN], STDIN_FILENO);
+	close(g_msh.fd[OUT]);
+	close(g_msh.fd[IN]);
+	return (0);
 }
 
-//FUNCIONA EJECUTA CAT
-/*
-char *args[4];
-args[0] = "cat";
-args[1] = "tst";
-args[2] = NULL;
-args[3] = NULL;
-
-int output_fd = open("afd", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
- pid_t pid = fork();
-        // printf("pid:%i\n", pid);
-
-    if (pid == 0) {  // Proceso hijo
-        // Redirigir la salida estándar al archivo
-        dup2(output_fd, STDOUT_FILENO);
-        close(output_fd); // Cerrar el descriptor de archivo
-        execve("/bin/cat", args, NULL); // Usar la ruta completa de "cat"
-        return 1;
-    }
-*/
+///////////////////////// CHECK NO FD OPEN /////////////////////////
+	// int hola = open("JAJAJA", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	// printf("fd_check no fdopen:::::::::::%i\n", hola);
+	// close (hola);
+///////////////////////// CHECK NO FD OPEN /////////////////////////

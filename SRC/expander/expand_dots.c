@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 20:33:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/20 16:13:43 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static char	*check_env(char *str)
 	char	*env;
 	char	*aux;
 
-	printf("dddddddddd::::::%s\n", str);
 	env = getenv_str(str);
 	if (!getenv(env))
 		aux = ft_strdup("");
