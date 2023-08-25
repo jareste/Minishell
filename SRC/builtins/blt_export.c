@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:01:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 17:14:56 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:58:18 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ int export_add(char **argv, t_env **_env)
 
 int blt_export(int argc, char **argv, t_env **env)
 {
-
 	if (argc == 1)
 		return (export_print(*env));
 	else

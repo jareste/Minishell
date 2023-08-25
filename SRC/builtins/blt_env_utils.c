@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:02:22 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 18:55:45 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:43:23 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ char **env_matrix(t_env *_envs)
 	}
 	return (matrix);
 }
+
 
 t_env	*env_list(char **envs)
 {

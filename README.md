@@ -2,21 +2,25 @@
 
 TO DO:
 
+- builtins jrneau.
+- env >>> depen de builtins
+#- errors >>>> 1w
+- heredoc >>>> ? heredoc guardarme fd de escritura que es donde tengoq ue escirbir.
+- neteja de codig >>>> 2-3 dies
+#- executor PATH when intern command
 
 
-#- revisar el parser, hauria de descartar directament els parsing errors.>>> DONE A FALTA D'ERRORS.
-#- gestionar "d{$a}fff per a que expandi nomes $a>>>>> max 1 dia. //tiene que expandir hasta que haya algo que no sea alfanum o barrabaja 
+#hacer tolower en blt
+#echo "'$'"
+#cd>>>> cd ~ no funca //hauria d'expandir ~ abans de cd
+#"$>foo" SEGFAULT
+#ls | cat>a |echo f >> no ho fa correctament.
+$hola ls (ha d'executar l'ls)
+
+#APPEND DONDE
+#gestionar errores si falla open en in o out si no hay permisos
+
 
 - BUILTINS jrneau.
 	falta printejar (env, export sense arguments)
 	falta el unset
-- executor seems to be working, but some bugs may appear >>>> solved input//output redirect##### MISSING PATH #####
-- errors >>>> 1w
-#- signals >>>> 3 dies? //modificar una mica hehe
-- env >>> depen de builtins
-- heredoc >>>> ?
-- neteja de codig >>>> 2-3 dies
-
-expand $?
-"$>foo" SEGFAULT
-#solved expansion error :... "echo"' 'a'b' a... should not work
