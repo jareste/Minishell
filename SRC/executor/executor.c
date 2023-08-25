@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 21:44:37 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:17:02 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	free_cmd(t_cmd *cmd)
 		free(cmd->args);
 }
 
-int	check_blt(t_cmd *cmd)
+int	check_blt(t_cmd *cmd, t_env **env)
 {
 	int	i;
 
@@ -139,7 +139,7 @@ int	check_blt(t_cmd *cmd)
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
 		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen("export") + 1) == 0)
-		printf("export\n");//blt_export;
+		return (export_add(cmd->args, env));
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen("unset") + 1) == 0)
 		printf("unset\n");//blt_unset;
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen("env") + 1) == 0)
@@ -184,9 +184,9 @@ int	call_wo_path(t_cmd *cmd)
 
 ///EXEC CMD
 
-int	exe_cmd(t_cmd *cmd)
+int	exe_cmd(t_cmd *cmd, t_env **env)
 {
-	if (check_blt(cmd) == 0)
+	if (check_blt(cmd, env) == 0)
 		return (0);//ss
 	else if (call(cmd) == 0)
 		return (0);//ss
@@ -224,7 +224,7 @@ int	is_blt(char *str)
 }
 
 
-int	executor(t_tokens *exp_tok)
+int	executor(t_tokens *exp_tok, t_env **env)
 {
 	size_t	i;
 	t_cmd	cmd;
@@ -273,7 +273,7 @@ int	executor(t_tokens *exp_tok)
 					}
 					close(cmd.pipe_fd[OUT]);
 				}
-				exit(exe_cmd(&cmd));
+				exit(exe_cmd(&cmd, env));
 			}
 			if (i > 0 && cmd.prev_pipe[IN] > 0)
 			{
@@ -292,7 +292,7 @@ int	executor(t_tokens *exp_tok)
 		}
 		else
 			if (cmd.argc)
-				cmd.err = check_blt(&cmd);
+				cmd.err = check_blt(&cmd, env);
 		j++;
 		i += dst_topipe(exp_tok, i);
 		free_cmd(&cmd);
