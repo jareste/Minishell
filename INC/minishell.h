@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 21:53:08 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:16:40 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define APPENDPIPE 9
 # define PATH "/bin/"
 
-int	executor(t_tokens *exp_tok);
+int	executor(t_tokens *exp_tok, t_env **env);
 
 //   ###################################################
 //                    BUILTINS
@@ -190,4 +190,10 @@ int	blt_env(char **env, char *str, int to_do);
 int	init_signals(int mode);
 void	do_sigign(int signum);
 
+
+//##################
+void print_envs(t_env *env);
+t_env	*env_list(char **envs);
+// int blt_export(int argc, char **argv, t_env **env);
+int export_add(char **argv, t_env **_env);
 #endif
