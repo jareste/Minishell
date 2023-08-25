@@ -6,6 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
+
 /*   Updated: 2023/08/23 18:22:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -35,6 +36,7 @@ static int	dst_doll_brk(char *str, int i)
 	return (j + 1);
 }
 
+
 char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 {
 	char	*str;
@@ -52,6 +54,7 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 	// }
 	str = tokens->words[i + 1]->word;
 	// printf("dst:::::%i,len::::%i,\n", dst_doll_brk(str, 0), (int)ft_strlen(str));
+
 	if (str[0] == '?')
 	{
 		if (sig_rec != 0)

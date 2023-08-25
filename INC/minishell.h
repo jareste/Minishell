@@ -33,6 +33,7 @@
 # define _XOPEN_SOURCE
 ///borrar
 # define NORM		1
+
 // # define HEREDOC	2
 # define N_INTERACT	3
 ////
@@ -43,6 +44,7 @@ typedef struct env_s	t_env;
 # define OUT 1
 /*  variable global */
 t_msh				g_msh;
+
 int			sig_rec;
 
 struct msh_s
@@ -119,6 +121,12 @@ int			msh_add_word(t_tokens *words, char *str, size_t len, int type);
 int			msh_mount_matrix(t_tokens *words);
 void		msh_print_tokens(t_tokens *words);
 int			msh_free_tokens(t_tokens *tokens);
+char		**env_matrix(t_env *_envs);
+void		print_matrix(char **matrix);
+char		**free_matrix(char **matrix);
+
+/* check_errors.c */
+int	check_input(char *str);
 
 /* check_errors.c */
 int	check_input(char *str);
