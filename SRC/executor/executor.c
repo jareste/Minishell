@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:17:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 14:30:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,47 @@ int	dst_topipe(t_tokens *exp_tok, size_t i)
 	}
 	return (j);
 }
+/* abro un archivo .hdc_nombre del archivo donde almacenare todo
+el stdinput*/
+int	do_hdc(char *str, t_cmd *cmd)
+{
+	char	*filename;
+	int		temp_pipe[2];
+	int		fd;
+	char	*line;
+	int		aux_fd;
 
-// int	do_hdc(char *str, t_cmd *cmd)
-// {
-	// 
-// }
+	// filename = ft_strjoin(".hdc_", str);
+	// fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	ft_printf(2, "hdc::::%s,%i,\n", filename, fd);
+	if (pipe(temp_pipe) < 0)
+	{
+		ft_printf(2, "%s: ", str);
+		perror(NULL);
+		cmd->err = 1;
+		return (1);
+	}
+	else if (fd > 0)
+	{
+		aux_fd = dup(STDOUT_FILENO);
+        dup2(fd, STDOUT_FILENO);
+		line = get_next_line(0);
+		while (line && ft_strncmp(line, str, ft_strlen(line) - 1))
+		{
+			printf("%s", line);
+			free(line);
+			line = get_next_line(0);
+		}
+		ft_printf(2, "surto\n");
+        dup2(aux_fd, STDOUT_FILENO);
+        dup2(fd, STDIN_FILENO);
+		free(line);
+	}
+	close(fd);
+	cmd->flag_red[IN] = 1;
+	return (0);
+}
+
 
 int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 {
@@ -98,8 +134,8 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 		type == APPEND || type == APPENDPIPE)
 			if (redirect_out(exp_tok->words[i]->word, cmd, type))
 				return (1);
-		// if (type == HEREDOC || type == HEREDOCPIPE)
-			// do_hdc(exp_tok->words[i]->word, cmd);
+		if (type == HEREDOC || type == HEREDOCPIPE)
+			do_hdc(exp_tok->words[i]->word, cmd);
 		if (type == NONE)
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
@@ -139,7 +175,7 @@ int	check_blt(t_cmd *cmd, t_env **env)
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
 		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen("export") + 1) == 0)
-		return (export_add(cmd->args, env));
+		return (blt_export(cmd->argc, cmd->args, env));
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen("unset") + 1) == 0)
 		printf("unset\n");//blt_unset;
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen("env") + 1) == 0)
