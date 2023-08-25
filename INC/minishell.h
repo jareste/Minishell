@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:16:40 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 14:02:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct cmd_s
 	int			err;
 	int			err_flag;
 	int			hdc_flag;
+	int			*hdc_aux;
 	char		**args;
 	t_tokens	*exp_tok;
 }				t_cmd;
@@ -194,6 +195,6 @@ void	do_sigign(int signum);
 //##################
 void print_envs(t_env *env);
 t_env	*env_list(char **envs);
-// int blt_export(int argc, char **argv, t_env **env);
-int export_add(char **argv, t_env **_env);
+int blt_export(int argc, char **argv, t_env **env);
+// int export_add(char **argv, t_env **_env);
 #endif
