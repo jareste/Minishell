@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/23 18:55:14 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:53:08 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 # define _XOPEN_SOURCE
 ///borrar
 # define NORM		1
-# define HEREDOC	2
+
+// # define HEREDOC	2
 # define N_INTERACT	3
 ////
 typedef struct msh_s	t_msh;
@@ -44,11 +45,12 @@ typedef struct env_s	t_env;
 /*  variable global */
 t_msh				g_msh;
 
+int			sig_rec;
+
 struct msh_s
 {
-	t_env	*env;
+	char	**env;
 	int		fd[2];//in0 out1
-	int		ctrl_c;
 	int		err;
 };
 
@@ -76,15 +78,21 @@ typedef struct tokens_s
 	t_word	**words;
 	size_t	size;
 	int		pipe_n;
+	int		error;
 	char	*str;
 }				t_tokens;
 
 typedef struct cmd_s
 {
+	int			init_fd[2];
 	int			pipe_fd[2];//[2]
 	int			prev_pipe[2];//[2] 
+	int			flag_red[2];
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
+	int			err;
+	int			err_flag;
+	int			hdc_flag;
 	char		**args;
 	t_tokens	*exp_tok;
 }				t_cmd;
@@ -120,16 +128,19 @@ char		**free_matrix(char **matrix);
 /* check_errors.c */
 int	check_input(char *str);
 
+/* check_errors.c */
+int	check_input(char *str);
+
 //   ###################################################
 //                    EXPANDER
 //   ###################################################
 //expander.c
-int			expander(t_tokens *tokens, t_tokens *exp_tok);
+int			expander(t_tokens *tokens, t_tokens *exp_tok, int err[2]);
 
 //expand_utils.c
 char		*free_join(char *ret, char *tmp);
-char		*expand_dollar(t_tokens *tokens, int i);
-char		*merge_matrix(char **matrix);
+char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
+char		*merge_matrix(char **matrix, int len);
 
 //expand_dots.c
 char		*expand_dots(t_tokens *tokens, int i, size_t j);
@@ -140,9 +151,13 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define NONE 0
 # define INPUT 1
 # define OUTPUT 2
-# define PIPE 3
-# define INPIPE 4
-# define OUTPIPE 5
+# define HEREDOC 3
+# define APPEND 4
+# define PIPE 5
+# define INPIPE 6
+# define OUTPIPE 7
+# define HEREDOCPIPE 8
+# define APPENDPIPE 9
 # define PATH "/bin/"
 
 int	executor(t_tokens *exp_tok);
