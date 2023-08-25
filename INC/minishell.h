@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/17 06:45:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:55:14 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,41 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <termios.h>
+
+# include "pipex.h"
 
 # define _XOPEN_SOURCE
+///borrar
+# define NORM		1
+# define HEREDOC	2
+# define N_INTERACT	3
+////
+typedef struct msh_s	t_msh;
+typedef struct env_s	t_env;
+
+# define IN 0
+# define OUT 1
+/*  variable global */
+t_msh				g_msh;
+
+struct msh_s
+{
+	t_env	*env;
+	int		fd[2];//in0 out1
+	int		ctrl_c;
+	int		err;
+};
+
+struct env_s
+{
+	struct env_s	*prev;
+	struct env_s	*next;
+	char			*key;
+	char			*val;
+};
+
 
 typedef struct word_s
 {
@@ -34,7 +67,6 @@ typedef struct word_s
 	int				type;
 	size_t			len;
 	struct word_s	*next;
-
 }				t_word;
 
 typedef struct tokens_s
@@ -43,19 +75,22 @@ typedef struct tokens_s
 	t_word	*last;
 	t_word	**words;
 	size_t	size;
+	int		pipe_n;
 	char	*str;
 }				t_tokens;
 
 typedef struct cmd_s
 {
-	int			fd_in[2];//[2]
-	int			fd_out[2];//[2] 
+	int			pipe_fd[2];//[2]
+	int			prev_pipe[2];//[2] 
 	int			flag;// 0 = mid cmd 1 = start of cmd
 	int			argc;
 	char		**args;
-	char		**env;
 	t_tokens	*exp_tok;
 }				t_cmd;
+
+/* pipex.c */
+// int call(t_cmd *cmd);
 
 //   ###################################################
 //                    PARSER
@@ -78,6 +113,12 @@ int			msh_add_word(t_tokens *words, char *str, size_t len, int type);
 int			msh_mount_matrix(t_tokens *words);
 void		msh_print_tokens(t_tokens *words);
 int			msh_free_tokens(t_tokens *tokens);
+char		**env_matrix(t_env *_envs);
+void		print_matrix(char **matrix);
+char		**free_matrix(char **matrix);
+
+/* check_errors.c */
+int	check_input(char *str);
 
 //   ###################################################
 //                    EXPANDER
@@ -111,6 +152,27 @@ int	executor(t_tokens *exp_tok);
 //   ###################################################
 int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
-int			blt_cd(int argc, char **argv);
+int			blt_cd(int argc, char** argv);
+int			blt_pwd(void);
+int			blt_export(int argc, char **argv, t_env **env);
+
+/* blt_env_utils.c */
+t_env		*env_list(char **envs);
+void		print_envs(t_env *env);
+void		vervose_print_envs(t_env *env);
+t_env		*free_envs(t_env **env_nodes);
+t_env		*env_get_last(t_env *env);
+int			ft_ichar(char *str, char c);
+int			export_print(t_env *env);
+char		*ft_strndup(char *str, size_t i);
+
+int	blt_env(char **env, char *str, int to_do);
+
+//   ###################################################
+//                    SIGNALS
+//   ###################################################
+
+int	init_signals(int mode);
+void	do_sigign(int signum);
 
 #endif

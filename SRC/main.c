@@ -6,73 +6,69 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 10:37:11 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/21 09:25:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../INC/minishell.h"
-/*
-int main(void)
-{
-	t_tokens *words;
+#include "../INC/minishell.h"
 
-	words = msh_start_words();
-	printf("-----hellow-----\n");
-	msh_add_word(words, "hellowwwwwwwwwww", 7, 1);
-	printf("added word\n");
-	msh_print_words_by_list(words);
-	printf("-----waka-----\n");
-	msh_add_word(words, "wakaaaaaaaaaaa", 4, 1);
-	msh_print_words_by_list(words);
-	printf("-----NULL-----\n");
-	msh_add_word(words, NULL, 4, 1);
-	msh_print_words_by_list(words);
-	printf("-----len0-----\n");
-	msh_add_word(words, "", 4, 1);
-	msh_print_words_by_list(words);
-	printf("-----bye-----\n");
-	msh_add_word(words, "byeeeeeeeeeee", 4, 1);
-	msh_print_words_by_list(words);
-	printf("-----Mounting Matrix-----\n");
-	msh_mount_matrix(words);
-	msh_print_words(words);
-	printf("----------\n");
-	msh_free_words(words);
-}*/
+static int	start(t_tokens *tokens, t_tokens *exp_tok)
+{
+	g_msh.err = parser(tokens);
+	if (g_msh.err == 0)
+	{
+		// msh_print_tokens(tokens);
+		// printf("#######tokens ended######\n\n"); //s
+		g_msh.err = expander(tokens, exp_tok);
+		// msh_print_tokens(exp_tok);
+		// printf("#######exp ended######\n\n");  //ss
+		g_msh.err = executor(exp_tok);
+		// printf("#######exe ended######\n\n");  //ss
+	}
+	return (g_msh.err);
+}
 
 int	main(int argc, char **argv, char *env[])
 {
 	t_tokens	*tokens;
 	t_tokens	*exp_tok;
 
-	argc = 0;
-	argv = 0;
-	(void) env;
+	(0 || (argc = 0) || (argv = 0));
+	(void)env;//we should start env on global var
 	while (1)
 	{
-		tokens = msh_start_words();
-		exp_tok = msh_start_words();
-		int tmp_exit = parser(tokens);
-		if (tmp_exit == 0)
+		init_signals(NORM);
+		do_sigign(SIGQUIT);
+		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
+		tokens->str = readline("🎷🦄miniHell> ");
+		do_sigign(SIGINT);
+		if (!tokens->str)
 		{
-			// msh_print_tokens(tokens);
-			// printf("#######tokens ended######\n\n"); //s
-			expander(tokens, exp_tok);
-			// msh_print_tokens(exp_tok);
-			// printf("#######exp ended######\n\n");  //ss
-			executor(exp_tok);
-			// printf("#######exe ended######\n\n");  //ss
+			if (isatty(STDIN_FILENO))
+				ft_printf(2, "exit\n");
+			(1 && (msh_free_tokens(tokens)) && (msh_free_tokens(exp_tok)));
+			return (0);
 		}
-		msh_free_tokens(tokens);
-		msh_free_tokens(exp_tok);
-		if (tmp_exit == -2)
-			break;
+		start(tokens, exp_tok);
+		(1 && (msh_free_tokens(tokens)) && (msh_free_tokens(exp_tok)));
+		if (g_msh.err == -2) // sobra
+			break ;//sobra
 	}
-
-	// ft_printf(2, "hola%i  :::%s\n", 45, "jajajaj");
 	return (0);
 }
 
+
+	//#######################for geting env#################
+	 // char **ptr_env;
+	 // ptr_env = env;
+	 // while (*ptr_env)
+	 // {
+	 // 	printf("%s\n", *ptr_env);
+	 // 	ptr_env++;
+	 // }
+	//#######################for geting env#################
+	
+	// blt_env(env);
 //FUNCIONA EJECUTA CAT
 /*
 char *args[4];

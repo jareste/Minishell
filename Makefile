@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/17 04:52:13 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/22 17:02:45 by jrenau-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,17 @@ PRINTF = INC/PRINTF/libftprintf.a
 PRINTF_MAKE = INC/PRINTF
 LIBFT = INC/libft/libft.a
 LIBFT_MAKE = INC/LIBFT
+READLINE_MAKE = INC/READLINE
 
 HEADER = INC/minishell.h
 
-SRCS = $(addprefix $(SRC_PATH)/, main.c \
-	   parser.c \
+SRCS = ./SRC/main.c
+
+SRCS += $(addprefix $(SRC_PATH)/, parser.c \
 	   parser_utils.c \
 	   msh_words.c \
-	   msh_words_utils.c)
+	   msh_words_utils.c \
+	   check_errors.c)
 
 EXPANDER_PATH = ./SRC/expander
 
@@ -37,20 +40,36 @@ SRCS += $(addprefix $(EXPANDER_PATH)/, expander.c \
 BUILTINS_PATH = ./SRC/builtins
 
 SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
-		blt_echo.c)
+		blt_echo.c \
+		blt_cd.c \
+		blt_pwd.c \
+		blt_env.c)
 
 EXECUTOR_PATH = ./SRC/executor
 
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
+		ppx_get_path.c \
+		ppx_spliter.c \
+		ppx_utils.c \
+		ppx_utils2.c \
+		ppx_wend.c \
+		pipex.c \
 		)
 
-CC = cc -g #-fsanitize=address 
+SIGNALS_PATH = ./SRC/signals
+
+SRCS += $(addprefix $(SIGNALS_PATH)/, signals.c \
+		) 
+
+CC = cc  -fsanitize=address 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
-RDLFL = -lreadline -ltermcap #-lhistory #-lft 
-READL = INC/libft/libreadline.a 
-HISTORY = INC/libft/libhistory.a
+RDLFL = -lreadline -ltermcap #-lhistory -lft 
+READL = INC/readline/libreadline.a 
+#READL = INC/libft/libreadline.a 
+HISTORY = INC/readline/libhistory.a
+#HISTORY = INC/libft/libhistory.a
 
 
 %.o: %.c ${HEADER} Makefile
@@ -61,6 +80,7 @@ OBJS = ${SRCS:.c=.o}
 all:
 		@$(MAKE) -C $(LIBFT_MAKE) --no-print-directory
 		@$(MAKE) -C $(PRINTF_MAKE) --no-print-directory
+		@$(MAKE) -C $(READLINE_MAKE) --no-print-directory
 		@$(MAKE) ${NAME} --no-print-directory
 
 ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
@@ -70,6 +90,7 @@ ${NAME}:: ${OBJS} $(LIBFT) $(PRINTF)
 clean:
 			@$(MAKE) clean -C $(LIBFT_MAKE) --no-print-directory
 			@$(MAKE) clean -C $(PRINTF_MAKE) --no-print-directory
+			@$(MAKE) clean -C $(READLINE_MAKE) --no-print-directory
 			@${RM} ${OBJS} 
 			@echo "OBJECTS REMOVED😭   "
 
