@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:16:40 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:41:51 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int			blt_echo(int argc, char **argv);
 int			blt_cd(int argc, char** argv);
 int			blt_pwd(void);
 int			blt_export(int argc, char **argv, t_env **env);
+int			blt_unset(char **argv, t_env **_env);
 
 /* blt_env_utils.c */
 t_env		*env_list(char **envs);

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:02:22 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 18:43:23 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:48:01 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ int ft_ichar(char *str, char c)
 	return (i);
 }
 
+t_env	*free_env(t_env *env)
+{
+	free(env->key);
+	free(env->val);
+	free(env);
+	return (NULL);
+}
 t_env *free_envs(t_env **_env_nodes)
 {
 	t_env *aux;
@@ -69,10 +76,8 @@ t_env *free_envs(t_env **_env_nodes)
 	while (env_nodes)
 	{
 		aux = env_nodes;
-		free(env_nodes->key);
-		free(env_nodes->val);
 		env_nodes = env_nodes->next;
-		free(aux);
+		free_env(aux);
 	}
 	*_env_nodes = NULL;
 	return (NULL);

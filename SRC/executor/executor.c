@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:17:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:50:50 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ int	check_blt(t_cmd *cmd, t_env **env)
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
 		return(blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen("export") + 1) == 0)
-		return (export_add(cmd->args, env));
+		return (blt_export(cmd->argc, cmd->args, env));
 	else if (ft_strncmp("unset", cmd->args[0], ft_strlen("unset") + 1) == 0)
-		printf("unset\n");//blt_unset;
+		return (blt_unset(cmd->args, env));//blt_unset;
 	else if (ft_strncmp("env", cmd->args[0], ft_strlen("env") + 1) == 0)
 		printf("env\n");//return (blt_env(cmd->env, NULL, 0));
 	else if (ft_strncmp("exit", cmd->args[0], ft_strlen("exit") + 1) == 0)
