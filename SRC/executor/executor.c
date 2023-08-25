@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 20:09:26 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:44:37 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ int	dst_topipe(t_tokens *exp_tok, size_t i)
 	return (j);
 }
 
+// int	do_hdc(char *str, t_cmd *cmd)
+// {
+	// 
+// }
+
 int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 {
 	int	type;
@@ -90,6 +95,8 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 		type == APPEND || type == APPENDPIPE)
 			if (redirect_out(exp_tok->words[i]->word, cmd, type))
 				return (1);
+		// if (type == HEREDOC || type == HEREDOCPIPE)
+			// do_hdc(exp_tok->words[i]->word, cmd);
 		if (type == NONE)
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
@@ -137,7 +144,6 @@ int	check_blt(t_cmd *cmd)
 		exit(blt_exit(cmd->argc, cmd->args));
 	return (127);
 }
-
 
 int	call(t_cmd *cmd)
 {
@@ -222,8 +228,7 @@ int	executor(t_tokens *exp_tok)
 
 	j = 0;
 	i = 0;
-	// pid = malloc(sizeof(pid_t) * exp_tok->pipe_n + 1);
-	cmd.pipe_fd[IN] = -1; // 2fds, 0 == old, 1 == NEW
+	cmd.pipe_fd[IN] = -1;
 	cmd.pipe_fd[OUT] = -1;
 	cmd.prev_pipe[IN] = -1;
 	cmd.prev_pipe[OUT] = -1;
@@ -233,7 +238,7 @@ int	executor(t_tokens *exp_tok)
 	{
 		if (init_cmd(exp_tok, &cmd, i, 0))
 			cmd.err_flag = 1;
-		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n && !cmd.err_flag) //i < exp_tok->size - 1)
+		if (exp_tok->pipe_n != 0 && j < exp_tok->pipe_n && !cmd.err_flag)
 			pipe(cmd.pipe_fd);
 		if (cmd.argc && (is_blt(cmd.args[0]) || (!is_blt(cmd.args[0]) && exp_tok->pipe_n != 0))) // si es blt i no hay pipe va directo stdout.
 		{
@@ -252,8 +257,8 @@ int	executor(t_tokens *exp_tok)
 				}
 				if (exp_tok->pipe_n != 0)
 				{
-					close(cmd.pipe_fd[IN]); // TODO no se si es possible que tanci el stdin en cas de que no s'hagi innicialitzat
-					if (cmd.flag_red[OUT] == 0)// && j < exp_tok->pipe_n)
+					close(cmd.pipe_fd[IN]);
+					if (cmd.flag_red[OUT] == 0)
 					{
 						if (j == exp_tok->pipe_n)
 							dup2(cmd.init_fd[OUT], STDOUT_FILENO);

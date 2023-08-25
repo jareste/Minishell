@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 17:18:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:53:08 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct tokens_s
 	t_word	**words;
 	size_t	size;
 	int		pipe_n;
+	int		error;
 	char	*str;
 }				t_tokens;
 
@@ -89,6 +90,7 @@ typedef struct cmd_s
 	int			argc;
 	int			err;
 	int			err_flag;
+	int			hdc_flag;
 	char		**args;
 	t_tokens	*exp_tok;
 }				t_cmd;
