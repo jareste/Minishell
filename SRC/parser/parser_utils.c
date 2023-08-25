@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:37:54 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/13 05:15:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:57:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ static int	dst_todot(char *str, char dot)
 
 	i = 1;
 	if (str[1] == dot)
-		return (-2); //error or smth
+		return (-2);
 	while (str[i] && str[i] != dot)
 		i++;
 	if (str[i] == '\0')
 	{
-		printf("error not closing quotation\n"); // hay que imprimir o 
-		//gestionar error
+		printf("error not closing quotation\n");
 		return (-1);
 	}
 	return (i - 1);
@@ -35,10 +34,11 @@ int	do_dots(t_tokens *tokens, char *str)
 	int	len;
 
 	len = dst_todot(str, str[0]);
-	if (len == -1)
-		return (1); // aqui hay que gestionar un error.
-	if (len == -2)
-		return (2); //otro error.
+	if (len == -1 || len == -2)
+	{
+		tokens->error = 1;
+		return (1);
+	}
 	if (len == 0)
 		return (len);
 	if (str[0] == '"')
