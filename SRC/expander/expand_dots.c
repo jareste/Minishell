@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 19:58:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:32:29 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static int	dst_doll_brk(char *str, int i);
+// static int	dst_doll_brk(char *str, int i);
 
 static char	*getenv_str(char *str)
 {
@@ -72,33 +72,13 @@ static int	get_len(char *str)
 	return (i);
 }
 
-static int	dst_doll_brk(char *str, int i)
-{
-	char	*ok_char;
-	int		j;
-
-	ok_char = "_0123456789abcdefghijklmnopqrstuvwxyz\
-				ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	j = 0;
-	while (str[i] && ft_strrchr(ok_char, str[i]))
-	{
-		i++;
-		j++;
-	}
-	return (j + 1);
-}
-
-char	*expand_dots(t_tokens *tokens, int i, size_t j)
+char	*expand_dots(t_tokens *tokens, int i, size_t j, char *ret)
 {
 	char	*str;
-	char	*ret;
-	char	*tmp;
 	int		len;
 
 	len = tokens->words[i]->len;
 	str = tokens->words[i]->word;
-	ret = "\0";
-	tmp = "\0";
 	while (str[j])
 	{
 		if (str[j] == '$')
@@ -116,13 +96,6 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j)
 		if (len-- <= 0)
 			break ;
 	}
-	if (ret[0])
-	{
-		tmp = ft_strdup(ret);
-		free(ret);
-	}
-	ret = ft_strjoin(tmp, str);
-	if (tmp[0])
-		free(tmp);
+	ret = ft_strjoin(ret, str);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 10:56:11 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:19:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*free_join(char *ret, char *tmp)
 	return (tmp);
 }
 
-static int	dst_doll_brk(char *str, int i)
+int	dst_doll_brk(char *str, int i)
 {
 	char	*ok_char;
 	int		j;
