@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:22:49 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:43:34 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:13:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_print_string(int fd ,char *str)
+int	ft_print_string(int fd, char *str)
 {
 	int	i;
 

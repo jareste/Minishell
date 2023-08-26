@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 11:02:31 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:14:11 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <signal.h>
 # include <termios.h>
 
-# include "pipex.h"
 
 # define _XOPEN_SOURCE
 ///borrar
