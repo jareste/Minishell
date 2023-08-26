@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 03:01:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 10:46:35 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ int	open_hdc(t_tokens *exp_tok, char *str, int i)
 	{
 		ft_printf(2, "%s: ", str);
 		perror(NULL);
-		// cmd->err = 1;
 		return (1);
 	}
 	else
@@ -174,7 +173,6 @@ int	do_hdc(t_tokens *exp_tok)
 int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 {
 	int	type;
-
 
 	(0 || (cmd->flag_red[IN] = 0) || (cmd->flag_red[OUT] = 0) || (cmd->err = 0));
 	(0 || (j = 0) || (cmd->err_flag = 0) || (cmd->exp_tok = exp_tok));
