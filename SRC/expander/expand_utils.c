@@ -6,8 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-
-/*   Updated: 2023/08/23 18:22:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 10:56:11 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +46,7 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 	if ((int)tokens->size <= i + 1)
 		return (ft_strdup("$"));
 	type = tokens->words[i + 1]->type;
-	// if (type == 4)
-	// {
-		// str = "$";
-		// return (str);
-	// }
 	str = tokens->words[i + 1]->word;
-	// printf("dst:::::%i,len::::%i,\n", dst_doll_brk(str, 0), (int)ft_strlen(str));
 
 	if (str[0] == '?')
 	{
@@ -79,7 +72,6 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 			tmp = ft_strjoin(str, tmp2);
 		else
 			return (tmp2);
-		// printf("tmp::::::%s,tmp2:::::%s,\n::str:%s\n", str, tmp2, tmp);
 		free(tmp2);
 		return (tmp);
 	}

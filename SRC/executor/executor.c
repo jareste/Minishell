@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 10:46:35 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 10:55:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ ejecuto justo antes y en exp_tok->words[i]->hd_fd guardo el infd.*/
 // 	return (0);
 // }
 
-
-
 int	open_hdc(t_tokens *exp_tok, char *str, int i)
 {
 	int		temp_pipe[2];
@@ -161,7 +159,6 @@ int	do_hdc(t_tokens *exp_tok)
 	while (i < exp_tok->size)
 	{
 		type = exp_tok->words[i]->type;
-		// ft_printf(2,"%s\n", exp_tok->words[i]->word);
 		if (type == HEREDOC || type == HEREDOCPIPE)
 			if (open_hdc(exp_tok, exp_tok->words[i]->word, i))
 				return (1);
@@ -184,7 +181,6 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 		type = exp_tok->words[i]->type;
 		if (exp_tok->words[i]->type >= PIPE && j > 0)
 			break ;
-
 		if (type == INPUT || type == INPIPE)
 			if (redirect_in(exp_tok->words[i]->word, cmd))
 				return (1);
@@ -228,7 +224,6 @@ int	check_blt(t_cmd *cmd, t_env **env)
 		ft_tolower(cmd->args[0][i++]);
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen("echo") + 1) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
-
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen("cd") + 1) == 0)
 		return (blt_cd(cmd->argc, cmd->args));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
