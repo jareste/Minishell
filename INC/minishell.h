@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 14:02:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 01:22:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct word_s
 	char			*word;
 	int				type;
 	size_t			len;
+	int				hd_fd;
 	struct word_s	*next;
 }				t_word;
 
