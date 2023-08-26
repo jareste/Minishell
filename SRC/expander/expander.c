@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 17:39:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 02:42:30 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,13 @@ int	exp_type(t_tokens *tokens, int i)
 	if (i >= 1)
 	{
 		if (i > 1 && tokens->words[i - 1]->word[0] == ' ')
+		{
 			tokens->words[i - 1]->word[0] = tokens->words[i - 2]->word[0];
+			if (i > 2)
+				tokens->words[i - 2]->word[0] = tokens->words[i - 3]->word[0];
+			else if (i == 2)
+				tokens->words[i - 2]->word[0] = '\0';
+		}
 		if (tokens->words[i - 1]->word[0] == '<')
 			type = INPUT;
 		if (tokens->words[i - 1]->word[0] == '>')
