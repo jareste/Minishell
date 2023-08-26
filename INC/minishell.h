@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 21:30:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 23:39:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,11 @@ typedef struct cmd_s
 	int			err;
 	int			err_flag;
 	int			hdc_flag;
+	int			j;
 	int			*hdc_aux;
 	char		**args;
 	t_tokens	*exp_tok;
+	t_env		**env;
 }				t_cmd;
 
 /* pipex.c */
@@ -178,7 +180,31 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j, char *ret);
 # define APPENDPIPE 9
 # define PATH "/bin/"
 
+//executor.c
 int	executor(t_tokens *exp_tok, t_env **env);
+
+//exe_redirects.c
+int	redirect_in(char *str, t_cmd *cmd);
+int	redirect_out(char *str, t_cmd *cmd, int type);
+int	redirect_hdc(int fd, t_cmd *cmd);
+
+//heredoc.c
+int	do_hdc(t_tokens *exp_tok);
+
+//blt_checks.c
+int	check_blt(t_cmd *cmd, t_env **env);
+int	is_blt(char *str);
+
+//exe_cmd.c
+int	exe_cmd(t_cmd *cmd, t_env **env);
+int	dst_topipe(t_tokens *exp_tok, size_t i);
+
+//executor_utils.c
+void	ft_close(t_cmd *cmd);
+void	ft_init_fd(t_cmd *cmd, t_tokens *exp_tok);
+void	do_fork(t_tokens *exp_tok, t_cmd *cmd, int i, int j);
+void	wait_process(t_cmd *cmd, pid_t pid, int j);
+void	close_pipe_fd(t_tokens *exp_tok, t_cmd *cmd, size_t i);
 
 //   ###################################################
 //                    BUILTINS
