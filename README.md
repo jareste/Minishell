@@ -5,7 +5,7 @@ TO DO:
 - builtins jrneau.
 - env >>> depen de builtins
 #- errors >>>> 1w
-- heredoc >>>> ? heredoc guardarme fd de escritura que es donde tengoq ue escirbir.
+#- heredoc >>>> ? heredoc guardarme fd de escritura que es donde tengoq ue escirbir.
 - neteja de codig >>>> 2-3 dies
 #- executor PATH when intern command
 

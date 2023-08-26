@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 02:42:50 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 03:01:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	open_hdc(t_tokens *exp_tok, char *str, int i)
 	{
 		while (1)
 		{
-			line = readline("> ");
+			line = readline("heredoc> ");
 			if (line == NULL)
 				exit (1);
 			if (ft_strcmp(line, str) == 0)
