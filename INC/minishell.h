@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 01:22:39 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 11:02:31 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,17 @@ typedef struct tokens_s
 	int		error;
 	char	*str;
 }				t_tokens;
+
+typedef struct aux_exp_s
+{
+	size_t		i;
+	size_t		j;
+	int			len;
+	char		**str;
+	char		*src;
+	int			type;
+}				t_aux_exp;
+
 
 typedef struct cmd_s
 {

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 02:42:30 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 11:05:38 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,54 +136,41 @@ static int	count_pipes(t_tokens *tokens)
 }
 int	expander(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 {
-	size_t		i;
-	size_t		j;
-	int			len;
-	char		**str;
-	char		*src;
-	int			type;
+	t_aux_exp	aux;
 
-	type = 0;
-	i = 0;
+	aux.type = 0;
+	aux.i = 0;
 	exp_tok->pipe_n = count_pipes(tokens);
-	while (i < tokens->size)
+	while (aux.i < tokens->size)
 	{
-		len = dst_tobreak(tokens, i);
-		str = ft_calloc(len + 1, sizeof(char *));
-		type = exp_type(tokens, i);
-		j = 0;
-		while (!is_break_exp(tokens->words[i]->word[0], tokens->words[i]->type))
+		aux.len = dst_tobreak(tokens, aux.i);
+		aux.str = ft_calloc(aux.len + 1, sizeof(char *));
+		aux.type = exp_type(tokens, aux.i);
+		aux.j = 0;
+		while (!is_break_exp(tokens->words[aux.i]->word[0], tokens->words[aux.i]->type))
 		{
-			if (tokens->words[i]->type == 2)
-				str[j] = expand_dots(tokens, i, 0);
-			else if (tokens->words[i]->type == 3) // TODO  el tres tambe pot ser pipe i no la gestiona
+			if (tokens->words[aux.i]->type == 2)
+				aux.str[aux.j] = expand_dots(tokens, aux.i, 0);
+			else if (tokens->words[aux.i]->type == 3)
 			{
-				str[j] = ft_strdup(expand_dollar(tokens, i, err)); // TODO Doble dup
-				i++;
+				aux.str[aux.j] = ft_strdup(expand_dollar(tokens, aux.i, err));
+				aux.i++;
 			}
 			else
-				str[j] = ft_strdup(tokens->words[i]->word);
-			j++;
-			i++;
-			if (tokens->size <= i)
+				aux.str[aux.j] = ft_strdup(tokens->words[aux.i]->word);
+			aux.j++;
+			aux.i++;
+			if (tokens->size <= aux.i)
 				break ;
 		}
-		if (str[0])
+		if (aux.str[0])
 		{
-			src = merge_matrix(str, len);
-			new_tokens(exp_tok, src, type);
-			ft_free(str, len);
+			aux.src = merge_matrix(aux.str, aux.len);
+			new_tokens(exp_tok, aux.src, aux.type);
+			ft_free(aux.str, aux.len);
 		}
-		i++;
-		// printf("after::::::::%i,%c,\n", is_break_exp(tokens->words[i]->word[0]), tokens->words[i]->word[0]);
-
+		aux.i++;
 	}
 	msh_mount_matrix(exp_tok);
 	return (0);
 }
-/*
-puedo crear una matriz donde primero tengo que contar
-la distancia hasta el espacio, despues asignar memoria de la matriz
-para luego ir rellenando cada posicion con la string 
-expandida correspondiente y finalmente juntar todo en 1 sola.
-*/
