@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 10:55:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 11:16:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,9 @@ int	open_hdc(t_tokens *exp_tok, char *str, int i)
 	int		temp_pipe[2];
 	char	*line;
 
-	line = NULL;
 	if (pipe(temp_pipe) < 0)
 	{
-		ft_printf(2, "%s: ", str);
-		perror(NULL);
+		perror(str);
 		return (1);
 	}
 	else
@@ -135,19 +133,17 @@ int	open_hdc(t_tokens *exp_tok, char *str, int i)
 		while (1)
 		{
 			line = readline("heredoc> ");
-			if (line == NULL)
-				exit (1);
 			if (ft_strcmp(line, str) == 0)
 				break ;
+			// if (!line)
+			// 	break ;
 			ft_printf(temp_pipe[1], "%s\n", line);
 			free(line);
 		}
 	}
 	close(temp_pipe[1]);
-	exp_tok->words[i]->hd_fd = dup(temp_pipe[0]);
-	close(temp_pipe[0]);
+	exp_tok->words[i]->hd_fd = temp_pipe[0];
 	return (0);
-
 }
 
 int	do_hdc(t_tokens *exp_tok)

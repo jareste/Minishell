@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 02:02:30 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 02:02:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 11:16:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_strcmp(const char *str1, const char *str2)
 	unsigned char	*s1;
 	unsigned char	*s2;
 
+	if (!str1 || !str2)
+		return (0);
 	s1 = (unsigned char *)str1;
 	s2 = (unsigned char *)str2;
 	l = 0;
