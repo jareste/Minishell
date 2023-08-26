@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 20:31:30 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 21:30:02 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,11 @@ char		*free_join(char *ret, char *tmp);
 char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
 char		*merge_matrix(char **matrix, int len);
 int	dst_doll_brk(char *str, int i);
+
+//expand_utils2.c
+int	exp_type(t_tokens *tokens, int i);
+int	count_pipes(t_tokens *tokens);
+void	new_tokens(t_tokens *exp_tok, char *str, int type);
 
 //expand_dots.c
 char		*expand_dots(t_tokens *tokens, int i, size_t j, char *ret);
