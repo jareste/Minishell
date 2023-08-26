@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:16:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 02:42:37 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ static int	start(t_tokens *tokens, t_tokens *exp_tok, t_env **env, int err[2])
 	err[0] = parser(tokens);
 	if (err[0] == 0)
 	{
-		msh_print_tokens(tokens);
-		printf("#######tokens ended######\n\n"); //s
+		// msh_print_tokens(tokens);
+		// printf("#######tokens ended######\n\n"); //s
 		err[0] = expander(tokens, exp_tok, err);
-		msh_print_tokens(exp_tok);
-		printf("#######exp ended######\n\n");  //ss
+		// msh_print_tokens(exp_tok);
+		// printf("#######exp ended######\n\n");  //ss
 		if (err[0] == 0)
 			err[0] = executor(exp_tok, env);
-		printf("#######exe ended######\n\n");  //ss
+		// printf("#######exe ended######\n\n");  //ss
 	}
 	return (err[0]);
 }
@@ -63,7 +63,7 @@ int	main(int argc, char **argv, char *envp[])
 			err[1] = sig_rec;
 			sig_rec = 0;
 		}
-	print_envs(env);
+	// print_envs(env);
 
 		// if (sig_rec != 0)
 			// err[1] = sig_rec;
