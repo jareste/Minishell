@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/04 12:08:30 by jareste-          #+#    #+#              #
-#    Updated: 2023/07/31 09:26:33 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/26 02:03:33 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS	=	ft_atoi.c \
 			ft_memmove.c \
 			ft_strlcpy.c \
 			ft_strlcat.c \
+			ft_strcmp.c \
 			ft_toupper.c \
 			ft_tolower.c \
 			ft_memchr.c \

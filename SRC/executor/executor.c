@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 14:30:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 02:14:54 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,25 @@ static int	redirect_out(char *str, t_cmd *cmd, int type)
 	return (0);
 }
 
+static int	redirect_hdc(int fd, t_cmd *cmd)
+{
+	// int	fd;
+
+	// fd = open(str, O_RDONLY);
+	// if (fd < 0)
+	// {
+		// ft_printf(2, "%s: ", str);
+		// perror(NULL);
+		// cmd->e/rr = 1;
+		// return (1);
+	// }
+	// else if (fd > 0)
+    dup2(fd, STDIN_FILENO);
+    close(fd);
+    cmd->flag_red[IN] = 1;
+	return (0);
+}
+
 int	dst_topipe(t_tokens *exp_tok, size_t i)
 {
 	int	j;
@@ -69,47 +88,99 @@ int	dst_topipe(t_tokens *exp_tok, size_t i)
 	}
 	return (j);
 }
-/* abro un archivo .hdc_nombre del archivo donde almacenare todo
-el stdinput*/
-int	do_hdc(char *str, t_cmd *cmd)
-{
-	char	*filename;
-	int		temp_pipe[2];
-	int		fd;
-	char	*line;
-	int		aux_fd;
+/* tengo que hacer todos los heredoc antes de ejecutar nada, es decir
+antes del bucle principal, no cada vez que llegue a un hd
+ejecuto justo antes y en exp_tok->words[i]->hd_fd guardo el infd.*/
+// int	do_hdc(char *str, t_cmd *cmd)
+// {
+// 	char	*filename;
+// 	int		temp_pipe[2];
+// 	int		fd;
+// 	char	*line;
+// 	int		aux_fd;
 
-	// filename = ft_strjoin(".hdc_", str);
-	// fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	ft_printf(2, "hdc::::%s,%i,\n", filename, fd);
+// 	// filename = ft_strjoin(".hdc_", str);
+// 	// fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	ft_printf(2, "hdc::::%s,%i,\n", filename, fd);
+// 	if (pipe(temp_pipe) < 0)
+// 	{
+// 		ft_printf(2, "%s: ", str);
+// 		perror(NULL);
+// 		cmd->err = 1;
+// 		return (1);
+// 	}
+// 	else
+// 	{
+// 		// aux_fd = dup(STDOUT_FILENO);
+//         // dup2(fd, STDOUT_FILENO);
+// 		line = get_next_line(0);
+// 		while (line && ft_strncmp(line, str, ft_strlen(line) - 1))
+// 		{
+// 			ft_printf(temp_pipe[1], "%s", line);
+// 			free(line);
+// 			line = get_next_line(0);
+// 		}
+// 		ft_printf(2, "surto\n");
+//         dup2(temp_pipe[0], STDIN_FILENO);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	cmd->flag_red[IN] = 1;
+// 	return (0);
+// }
+
+
+
+int	open_hdc(t_tokens *exp_tok, char *str, int i)
+{
+	int		temp_pipe[2];
+	char	*line;
+
+	line = NULL;
 	if (pipe(temp_pipe) < 0)
 	{
 		ft_printf(2, "%s: ", str);
 		perror(NULL);
-		cmd->err = 1;
+		// cmd->err = 1;
 		return (1);
 	}
-	else if (fd > 0)
+	else
 	{
-		aux_fd = dup(STDOUT_FILENO);
-        dup2(fd, STDOUT_FILENO);
-		line = get_next_line(0);
-		while (line && ft_strncmp(line, str, ft_strlen(line) - 1))
+		while (1)
 		{
-			printf("%s", line);
+			line = readline("> ");
+			if (line == NULL)
+				exit (1);
+			if (ft_strcmp(line, str) == 0)
+				break ;
+			ft_printf(temp_pipe[1], "%s\n", line);
 			free(line);
-			line = get_next_line(0);
 		}
-		ft_printf(2, "surto\n");
-        dup2(aux_fd, STDOUT_FILENO);
-        dup2(fd, STDIN_FILENO);
-		free(line);
 	}
-	close(fd);
-	cmd->flag_red[IN] = 1;
+	close(temp_pipe[1]);
+	exp_tok->words[i]->hd_fd = dup(temp_pipe[0]);
+	close(temp_pipe[0]);
 	return (0);
+
 }
 
+int	do_hdc(t_tokens *exp_tok)
+{
+	size_t	i;
+	int		type;
+
+	i = 0;
+	while (i < exp_tok->size)
+	{
+		type = exp_tok->words[i]->type;
+		// ft_printf(2,"%s\n", exp_tok->words[i]->word);
+		if (type == HEREDOC || type == HEREDOCPIPE)
+			if (open_hdc(exp_tok, exp_tok->words[i]->word, i))
+				return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 {
@@ -135,7 +206,8 @@ int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 			if (redirect_out(exp_tok->words[i]->word, cmd, type))
 				return (1);
 		if (type == HEREDOC || type == HEREDOCPIPE)
-			do_hdc(exp_tok->words[i]->word, cmd);
+			if (redirect_hdc(exp_tok->words[i]->hd_fd, cmd))
+				return (1);
 		if (type == NONE)
 			cmd->args[j++] = ft_strdup(exp_tok->words[i]->word);
 		i++;
@@ -276,6 +348,8 @@ int	executor(t_tokens *exp_tok, t_env **env)
 	cmd.prev_pipe[OUT] = -1;
 	cmd.init_fd[OUT]= dup(STDOUT_FILENO);
 	cmd.init_fd[IN] = dup(STDIN_FILENO);
+	if (do_hdc(exp_tok))
+		cmd.err_flag = 1;
 	while (i < exp_tok->size)
 	{
 		if (init_cmd(exp_tok, &cmd, i, 0))
