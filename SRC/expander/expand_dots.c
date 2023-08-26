@@ -6,20 +6,20 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 10:55:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:58:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
+
+static int	dst_doll_brk(char *str, int i);
 
 static char	*getenv_str(char *str)
 {
 	int		i;
 	char	*ret;
 
-	i = 1;
-	while (str[i] && str[i] != '$' && str[i] != ' ')
-		i++;
+	i = dst_doll_brk(str, 1) - 1;
 	if (str[i] == '$' || str[i] == ' ')
 		i--;
 	ret = ft_substr(str, 1, i);
@@ -103,7 +103,7 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j)
 	{
 		if (str[j] == '$')
 		{
-			if (dst_doll_brk(str, j) > 1)
+			if (dst_doll_brk(str, j + 1) > 1)
 			{
 				ret = get_ret(ret, str, j);
 				str = str + j + get_len(str + j) + 1;
