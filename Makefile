@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/26 21:29:00 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/26 23:36:07 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,12 +45,17 @@ SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 		blt_cd.c \
 		blt_pwd.c \
 		blt_env_utils.c \
-		blt_export.c)
+		blt_export.c \
+		)
 
 EXECUTOR_PATH = ./SRC/executor
 
 SRCS += $(addprefix $(EXECUTOR_PATH)/, executor.c \
-		)
+		exe_redirects.c \
+		heredoc.c \
+		blt_checks.c \
+		exe_cmd.c \
+		exe_utils.c)
 
 SIGNALS_PATH = ./SRC/signals
 
