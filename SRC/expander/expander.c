@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 11:05:38 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:32:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	expander(t_tokens *tokens, t_tokens *exp_tok, int err[2])
 		while (!is_break_exp(tokens->words[aux.i]->word[0], tokens->words[aux.i]->type))
 		{
 			if (tokens->words[aux.i]->type == 2)
-				aux.str[aux.j] = expand_dots(tokens, aux.i, 0);
+				aux.str[aux.j] = expand_dots(tokens, aux.i, 0, "\0");
 			else if (tokens->words[aux.i]->type == 3)
 			{
 				aux.str[aux.j] = ft_strdup(expand_dollar(tokens, aux.i, err));
