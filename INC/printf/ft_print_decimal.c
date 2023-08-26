@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 09:24:21 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/14 22:48:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:12:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_print_decimal(int fd, int n)
 	num = ft_itoa(n);
 	if (!num)
 		return (-1);
-	c_printed = ft_print_string(fd ,num);
+	c_printed = ft_print_string(fd, num);
 	if (c_printed == -1)
 	{
 		free(num);
