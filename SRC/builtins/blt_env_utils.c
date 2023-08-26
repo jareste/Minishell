@@ -40,7 +40,6 @@ char *ft_strndup(char *str, size_t i)
 	str_res[i] = '\0';
 	while(i--)
 	{
-	//	ft_printf(1, "%d\n", i);
 		str_res[i] =  str[i];
 	}
 	return (str_res);

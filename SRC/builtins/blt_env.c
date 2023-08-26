@@ -10,6 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../INC/minishell.h"
+
+static int print_env(t_env **envp)
+{
+	t_env	*env;
+
+	env = *envp;
+	while (env)
+	{
+		if (env->val)
+			ft_printf(1, "%s=%s\n", env->key, env->val);
+		env = env->next;	
+	}
+	return (0);
+}
+
+int	blt_envv(int argc, char **argv, t_env **envp)
+{
+	if (argc == 1)
+		return (print_env(envp));
+	if (!argc)
+		ft_printf(1, "env:%p", argv);
+	return (0);
+	
+}
+
+
 /*
 #include "../../INC/minishell.h"
 
