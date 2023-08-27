@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 21:31:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 18:11:10 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ t_aux_exp *aux, int err[2])
 		if (tokens->words[aux->i]->type == 2)
 			aux->str[aux->j] = expand_dots(tokens, aux->i, 0, "\0");
 		else if (tokens->words[aux->i]->type == 3)
-		{
-			aux->str[aux->j] = ft_strdup(expand_dollar(tokens, aux->i, err));
-			aux->i++;
-		}
+			aux->str[aux->j] = ft_strdup(expand_dollar(tokens, aux->i++, err));
+		else if (!ft_strcmp(tokens->words[aux->i]->word, "~") \
+		&& tokens->words[aux->i]->type == 0)
+			aux->str[aux->j] = ft_strdup(getenv("HOME")); 
 		else
 			aux->str[aux->j] = ft_strdup(tokens->words[aux->i]->word);
 		aux->j++;
