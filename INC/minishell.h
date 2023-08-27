@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 23:39:16 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 00:22:10 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@
 # include <signal.h>
 # include <termios.h>
 
-
 # define _XOPEN_SOURCE
 ///borrar
 # define NORM		1
-
 // # define HEREDOC	2
 # define N_INTERACT	3
 ////
