@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 02:00:50 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 15:46:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:56:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	is_n(char *str)
 	if (ft_strlen(str) > 1)
 	{
 		if (str[0] == '-' && str[1] == 'n')
+		{
 			while (str[i])
 			{
 				if (str[i] == 'n')
@@ -27,8 +28,9 @@ static int	is_n(char *str)
 				else
 					return (0);
 			}
-			else
-				return (0);
+		}
+		else
+			return (0);
 	}
 	else
 		return (0);
