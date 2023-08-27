@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 00:22:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:52:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,21 @@
 // # define HEREDOC	2
 # define N_INTERACT	3
 ////
-typedef struct msh_s	t_msh;
-typedef struct env_s	t_env;
+// typedef struct msh_s	t_msh;
+// typedef struct env_s	t_env;
 
 # define IN 0
 # define OUT 1
 /*  variable global */
-t_msh				g_msh;
+int			g_sig_rec;
 
-int			sig_rec;
-
-struct msh_s
-{
-	char	**env;
-	int		fd[2];//in0 out1
-	int		err;
-};
-
-struct env_s
+typedef struct env_s
 {
 	struct env_s	*prev;
 	struct env_s	*next;
 	char			*key;
 	char			*val;
-};
-
+}				t_env;
 
 typedef struct word_s
 {
@@ -90,14 +80,13 @@ typedef struct aux_exp_s
 	int			type;
 }				t_aux_exp;
 
-
 typedef struct cmd_s
 {
 	int			init_fd[2];
-	int			pipe_fd[2];//[2]
-	int			prev_pipe[2];//[2] 
+	int			pipe_fd[2];
+	int			prev_pipe[2];
 	int			flag_red[2];
-	int			flag;// 0 = mid cmd 1 = start of cmd
+	int			flag;
 	int			argc;
 	int			err;
 	int			err_flag;
@@ -108,9 +97,6 @@ typedef struct cmd_s
 	t_tokens	*exp_tok;
 	t_env		**env;
 }				t_cmd;
-
-/* pipex.c */
-// int call(t_cmd *cmd);
 
 //   ###################################################
 //                    PARSER
@@ -138,10 +124,7 @@ void		print_matrix(char **matrix);
 char		**free_matrix(char **matrix);
 
 /* check_errors.c */
-int	check_input(char *str);
-
-/* check_errors.c */
-int	check_input(char *str);
+int			check_input(char *str);
 
 //   ###################################################
 //                    EXPANDER
@@ -153,12 +136,12 @@ int			expander(t_tokens *tokens, t_tokens *exp_tok, int err[2]);
 char		*free_join(char *ret, char *tmp);
 char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
 char		*merge_matrix(char **matrix, int len);
-int	dst_doll_brk(char *str, int i);
+int			dst_doll_brk(char *str, int i);
 
 //expand_utils2.c
-int	exp_type(t_tokens *tokens, int i);
-int	count_pipes(t_tokens *tokens);
-void	new_tokens(t_tokens *exp_tok, char *str, int type);
+int			exp_type(t_tokens *tokens, int i);
+int			count_pipes(t_tokens *tokens);
+void		new_tokens(t_tokens *exp_tok, char *str, int type);
 
 //expand_dots.c
 char		*expand_dots(t_tokens *tokens, int i, size_t j, char *ret);
@@ -179,37 +162,37 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j, char *ret);
 # define PATH "/bin/"
 
 //executor.c
-int	executor(t_tokens *exp_tok, t_env **env);
+int			executor(t_tokens *exp_tok, t_env **env);
 
 //exe_redirects.c
-int	redirect_in(char *str, t_cmd *cmd);
-int	redirect_out(char *str, t_cmd *cmd, int type);
-int	redirect_hdc(int fd, t_cmd *cmd);
+int			redirect_in(char *str, t_cmd *cmd);
+int			redirect_out(char *str, t_cmd *cmd, int type);
+int			redirect_hdc(int fd, t_cmd *cmd);
 
 //heredoc.c
-int	do_hdc(t_tokens *exp_tok);
+int			do_hdc(t_tokens *exp_tok);
 
 //blt_checks.c
-int	check_blt(t_cmd *cmd, t_env **env);
-int	is_blt(char *str);
+int			check_blt(t_cmd *cmd, t_env **env);
+int			is_blt(char *str);
 
 //exe_cmd.c
-int	exe_cmd(t_cmd *cmd, t_env **env);
-int	dst_topipe(t_tokens *exp_tok, size_t i);
+int			exe_cmd(t_cmd *cmd, t_env **env);
+int			dst_topipe(t_tokens *exp_tok, size_t i);
 
 //executor_utils.c
-void	ft_close(t_cmd *cmd);
-void	ft_init_fd(t_cmd *cmd, t_tokens *exp_tok);
-void	do_fork(t_tokens *exp_tok, t_cmd *cmd, int i, int j);
-void	wait_process(t_cmd *cmd, pid_t pid, int j);
-void	close_pipe_fd(t_tokens *exp_tok, t_cmd *cmd, size_t i);
+void		ft_close(t_cmd *cmd);
+void		ft_init_fd(t_cmd *cmd, t_tokens *exp_tok);
+void		do_fork(t_tokens *exp_tok, t_cmd *cmd, int i, int j);
+void		wait_process(t_cmd *cmd, pid_t pid, int j);
+void		close_pipe_fd(t_tokens *exp_tok, t_cmd *cmd, size_t i);
 
 //   ###################################################
 //                    BUILTINS
 //   ###################################################
 int			blt_exit(int argc, char **argv);
 int			blt_echo(int argc, char **argv);
-int			blt_cd(int argc, char** argv);
+int			blt_cd(int argc, char **argv);
 int			blt_pwd(void);
 int			blt_export(int argc, char **argv, t_env **env);
 
@@ -223,19 +206,18 @@ int			ft_ichar(char *str, char c);
 int			export_print(t_env *env);
 char		*ft_strndup(char *str, size_t i);
 
-int	blt_env(char **env, char *str, int to_do);
+int			blt_env(char **env, char *str, int to_do);
 
 //   ###################################################
 //                    SIGNALS
 //   ###################################################
 
-int	init_signals(int mode);
-void	do_sigign(int signum);
-
+int			init_signals(int mode);
+void		do_sigign(int signum);
 
 //##################
-void print_envs(t_env *env);
-t_env	*env_list(char **envs);
-int blt_export(int argc, char **argv, t_env **env);
-// int export_add(char **argv, t_env **_env);
+void		print_envs(t_env *env);
+t_env		*env_list(char **envs);
+int			blt_export(int argc, char **argv, t_env **env);
+
 #endif
