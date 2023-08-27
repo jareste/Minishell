@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/26 23:36:07 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/27 10:48:57 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,16 +63,13 @@ SRCS += $(addprefix $(SIGNALS_PATH)/, signals.c \
 		) 
 
 
-CC = cc -g -fsanitize=address 
+CC = cc 
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -I ./INC
 
 RDLFL = -lreadline -ltermcap #-lhistory -lft 
 READL = INC/readline/libreadline.a 
-#READL = INC/libft/libreadline.a 
 HISTORY = INC/readline/libhistory.a
-#HISTORY = INC/libft/libhistory.a
-
 
 %.o: %.c ${HEADER} Makefile
 		@${CC} ${CFLAGS} -c $< -o $@	

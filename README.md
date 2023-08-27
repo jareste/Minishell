@@ -6,7 +6,7 @@ TO DO:
 - env >>> depen de builtins
 #- errors >>>> 1w
 #- heredoc >>>> ? heredoc guardarme fd de escritura que es donde tengoq ue escirbir.
-- neteja de codig >>>> 2-3 dies
+- neteja de codig >>>> 2-3 dies >>> ALMOST DONE FALTEN BUILTINS
 #- executor PATH when intern command
 
 
@@ -15,7 +15,6 @@ TO DO:
 #cd>>>> cd ~ no funca //hauria d'expandir ~ abans de cd
 #"$>foo" SEGFAULT
 #ls | cat>a |echo f >> no ho fa correctament.
-$hola ls (ha d'executar l'ls)
 
 #APPEND DONDE
 #gestionar errores si falla open en in o out si no hay permisos
