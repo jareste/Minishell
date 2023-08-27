@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 20:46:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:49:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 	type = tokens->words[i + 1]->type;
 	if (tokens->words[i + 1]->word[0] == '?')
 	{
-		if (sig_rec != 0)
-			return (ft_itoa(sig_rec));
+		if (g_sig_rec != 0)
+			return (ft_itoa(g_sig_rec));
 		else
 			return (ft_itoa(err[1]));
 	}

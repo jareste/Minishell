@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 03:54:26 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 15:03:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:58:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 static int	check_prnt_direrr(char *dir)
 {
-	int						err;
 	struct stat	*restrict	stat_buf;
 
 	if (access(dir, F_OK) < 0)
 	{
-		err = errno;
 		ft_printf(2, "cd: %s: No such file or directory\n", dir);
 		return (1);
 	}
@@ -27,7 +25,6 @@ static int	check_prnt_direrr(char *dir)
 	if (stat(dir, stat_buf) == 0)
 	{
 		if (!S_ISDIR(stat_buf->st_mode)) 
-		//modificada condicio, macro de llibreria <sys/stat.h>
 		{
 			ft_printf(2, "cd: %s: Not a directory\n", dir);
 			free(stat_buf);
@@ -37,9 +34,8 @@ static int	check_prnt_direrr(char *dir)
 	}
 	if (access(dir, X_OK) < 0)
 	{
-		err = errno;
 		ft_printf(2, "cd: %s: Permission denied\n", dir);
-		return (err);
+		return (errno);
 	}
 	return (0);
 }
@@ -47,24 +43,23 @@ static int	check_prnt_direrr(char *dir)
 int	blt_cd(int argc, char **argv)
 {
 	char	*dir;
-
+	int		err;
 	//TODO modifie env
-	if (argc == 1 || (ft_strncmp("~", argv[1], ft_strlen("~")) == 0)) //if argc == 1 no ha de retornar 1, sino anar a HOME.
+	
+	err = 0;
+	if (argc == 1 || (ft_strncmp("~", argv[1], ft_strlen("~")) == 0))
 		dir = ft_strdup(getenv("HOME"));
 	else
 		dir = ft_strdup(argv[1]);
-	g_msh.err = check_prnt_direrr(dir);
-	if (g_msh.err)
-	{
-		return (g_msh.err);
-	}
+	err = check_prnt_direrr(dir);
+	if (err)
+		return (err);
 	if (chdir(dir) < 0)
 	{
-		g_msh.err = 1;
 		ft_printf(2, "cd: %s: ", dir);
 		perror(NULL);
 		free(dir);
-		return (g_msh.err);
+		return (1);
 	}
 	free(dir);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 09:28:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 18:09:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char *envp[])
 
 	(0 || (argc = 0) || (argv = 0) || (err[1] = 0) || (err[0] = 0));
 	env = env_list(envp);//we should start env on global var
-	sig_rec = 0;
+	g_sig_rec = 0;
 	while (1)
 	{
 		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
@@ -58,10 +58,10 @@ int	main(int argc, char **argv, char *envp[])
 		if (err[1] == -2) // sobra
 			break ;//sobra
 		// printf("sig:::::::::%i,\n", sig_rec);
-		if (sig_rec > 0)
+		if (g_sig_rec > 0)
 		{
-			err[1] = sig_rec;
-			sig_rec = 0;
+			err[1] = g_sig_rec;
+			g_sig_rec = 0;
 		}
 	// print_envs(env);
 
