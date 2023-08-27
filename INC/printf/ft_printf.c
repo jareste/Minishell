@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:13 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/16 01:30:44 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:13:36 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	ft_check_format(int fd, char format, va_list args)
 	if (format == 'c')
 		c_printed = ft_print_char_fd(va_arg(args, int), fd);
 	else if (format == 's')
-		c_printed = ft_print_string(fd ,va_arg(args, char *));
+		c_printed = ft_print_string(fd, va_arg(args, char *));
 	else if (format == 'p')
-		c_printed = ft_print_ptr(fd ,va_arg(args, void *));
+		c_printed = ft_print_ptr(fd, va_arg(args, void *));
 	else if (format == 'd' || format == 'i')
-		c_printed = ft_print_decimal(fd ,va_arg(args, int));
+		c_printed = ft_print_decimal(fd, va_arg(args, int));
 	else if (format == 'u')
-		c_printed = ft_print_uinteger(fd ,va_arg(args, unsigned int));
+		c_printed = ft_print_uinteger(fd, va_arg(args, unsigned int));
 	else if (format == 'x' || format == 'X')
 		c_printed = ft_print_hex(fd, va_arg(args, unsigned int), format, 0);
 	else if (format == '%')
@@ -65,8 +65,6 @@ int	bucle(int fd, const char *s, va_list args, int c_printed)
 	}
 	return (c_printed);
 }
-
-#include <stdio.h>
 
 int	ft_printf(int fd, const char *s, ...)
 {

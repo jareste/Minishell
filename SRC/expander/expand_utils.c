@@ -6,8 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-
-/*   Updated: 2023/08/23 18:22:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:46:12 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +19,7 @@ char	*free_join(char *ret, char *tmp)
 	return (tmp);
 }
 
-static int	dst_doll_brk(char *str, int i)
+int	dst_doll_brk(char *str, int i)
 {
 	char	*ok_char;
 	int		j;
@@ -36,55 +35,49 @@ static int	dst_doll_brk(char *str, int i)
 	return (j + 1);
 }
 
+static char	*aux_expand_dollar(char *str, char *tmp)
+{
+	char	*tmp2;
+
+	tmp = ft_substr(str, 0, dst_doll_brk(str, 0) - 1);
+	tmp2 = ft_substr(str, dst_doll_brk(str, 0) \
+	- 1, 1 + (int)ft_strlen(str) - dst_doll_brk(str, 0));
+	str = getenv(tmp);
+	free(tmp);
+	if (str)
+		tmp = ft_strjoin(str, tmp2);
+	else
+		return (tmp2);
+	free(tmp2);
+	return (tmp);
+}
 
 char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 {
-	char	*str;
 	int		type;
 	char	*tmp;
-	char	*tmp2;
 
+	tmp = NULL;
 	if ((int)tokens->size <= i + 1)
 		return (ft_strdup("$"));
 	type = tokens->words[i + 1]->type;
-	// if (type == 4)
-	// {
-		// str = "$";
-		// return (str);
-	// }
-	str = tokens->words[i + 1]->word;
-	// printf("dst:::::%i,len::::%i,\n", dst_doll_brk(str, 0), (int)ft_strlen(str));
-
-	if (str[0] == '?')
+	if (tokens->words[i + 1]->word[0] == '?')
 	{
 		if (sig_rec != 0)
 			return (ft_itoa(sig_rec));
 		else
-			return(ft_itoa(err[1]));
+			return (ft_itoa(err[1]));
 	}
-	if (dst_doll_brk(str, 0) == (int)ft_strlen(str))
+	if (dst_doll_brk(tokens->words[i + 1]->word, 0) \
+	== (int)ft_strlen(tokens->words[i + 1]->word))
 	{
-		if (!getenv(str))
+		if (!getenv(tokens->words[i + 1]->word))
 			return (ft_strdup(""));
-		tmp = ft_strdup(getenv(str));
-		return (tmp);
+		tmp = ft_strdup(getenv(tokens->words[i + 1]->word));
 	}
 	else
-	{
-		tmp = ft_substr(str, 0, dst_doll_brk(str, 0) - 1);
-		tmp2 = ft_substr(str, dst_doll_brk(str, 0) - 1, 1 + (int)ft_strlen(str) - dst_doll_brk(str, 0));
-		str = getenv(tmp);
-		free(tmp);
-		if (str)
-			tmp = ft_strjoin(str, tmp2);
-		else
-			return (tmp2);
-		// printf("tmp::::::%s,tmp2:::::%s,\n::str:%s\n", str, tmp2, tmp);
-		free(tmp2);
-		return (tmp);
-	}
-	return (NULL);
-
+		tmp = aux_expand_dollar(tokens->words[i + 1]->word, tmp);
+	return (tmp);
 }
 
 char	*merge_matrix(char **matrix, int len)
@@ -108,7 +101,7 @@ char	*merge_matrix(char **matrix, int len)
 			free(str);
 		i++;
 		if (i > len)
-			break;
+			break ;
 	}
 	return (ret);
 }

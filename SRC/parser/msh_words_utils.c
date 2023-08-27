@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:48 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/12 18:08:51 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 00:15:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,6 @@ static void	msh_print_word(char *format_str, t_word word)
 	else
 		printf(format_str, word.type, word.word);
 }
-
-// void	msh_print_words_by_list(t_tokens *words)
-// {
-// 	t_word	*word;
-
-// 	word = words->first;
-// 	while (word)
-// 	{
-// 		msh_print_word("%d: >>%s<<\n", *word);
-// 		word = word->next;
-// 	}
-// }
 
 void	msh_print_tokens(t_tokens *tokens)
 {

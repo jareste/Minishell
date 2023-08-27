@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 01:22:39 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 00:22:10 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@
 # include <signal.h>
 # include <termios.h>
 
-# include "pipex.h"
-
 # define _XOPEN_SOURCE
 ///borrar
 # define NORM		1
-
 // # define HEREDOC	2
 # define N_INTERACT	3
 ////
@@ -83,6 +80,17 @@ typedef struct tokens_s
 	char	*str;
 }				t_tokens;
 
+typedef struct aux_exp_s
+{
+	size_t		i;
+	size_t		j;
+	int			len;
+	char		**str;
+	char		*src;
+	int			type;
+}				t_aux_exp;
+
+
 typedef struct cmd_s
 {
 	int			init_fd[2];
@@ -94,9 +102,11 @@ typedef struct cmd_s
 	int			err;
 	int			err_flag;
 	int			hdc_flag;
+	int			j;
 	int			*hdc_aux;
 	char		**args;
 	t_tokens	*exp_tok;
+	t_env		**env;
 }				t_cmd;
 
 /* pipex.c */
@@ -143,9 +153,15 @@ int			expander(t_tokens *tokens, t_tokens *exp_tok, int err[2]);
 char		*free_join(char *ret, char *tmp);
 char		*expand_dollar(t_tokens *tokens, int i, int err[2]);
 char		*merge_matrix(char **matrix, int len);
+int	dst_doll_brk(char *str, int i);
+
+//expand_utils2.c
+int	exp_type(t_tokens *tokens, int i);
+int	count_pipes(t_tokens *tokens);
+void	new_tokens(t_tokens *exp_tok, char *str, int type);
 
 //expand_dots.c
-char		*expand_dots(t_tokens *tokens, int i, size_t j);
+char		*expand_dots(t_tokens *tokens, int i, size_t j, char *ret);
 
 //   ###################################################
 //                    EXECUTOR
@@ -162,7 +178,31 @@ char		*expand_dots(t_tokens *tokens, int i, size_t j);
 # define APPENDPIPE 9
 # define PATH "/bin/"
 
+//executor.c
 int	executor(t_tokens *exp_tok, t_env **env);
+
+//exe_redirects.c
+int	redirect_in(char *str, t_cmd *cmd);
+int	redirect_out(char *str, t_cmd *cmd, int type);
+int	redirect_hdc(int fd, t_cmd *cmd);
+
+//heredoc.c
+int	do_hdc(t_tokens *exp_tok);
+
+//blt_checks.c
+int	check_blt(t_cmd *cmd, t_env **env);
+int	is_blt(char *str);
+
+//exe_cmd.c
+int	exe_cmd(t_cmd *cmd, t_env **env);
+int	dst_topipe(t_tokens *exp_tok, size_t i);
+
+//executor_utils.c
+void	ft_close(t_cmd *cmd);
+void	ft_init_fd(t_cmd *cmd, t_tokens *exp_tok);
+void	do_fork(t_tokens *exp_tok, t_cmd *cmd, int i, int j);
+void	wait_process(t_cmd *cmd, pid_t pid, int j);
+void	close_pipe_fd(t_tokens *exp_tok, t_cmd *cmd, size_t i);
 
 //   ###################################################
 //                    BUILTINS
