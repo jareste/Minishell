@@ -25,7 +25,7 @@
 static int check_bad_char(char * arg)
 {
 	int c;
-	char valid[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char valid[] = "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	if (!ft_strchr(valid + 10, arg[0])) 
 	{

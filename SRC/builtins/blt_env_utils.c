@@ -12,6 +12,45 @@
 
 # include <minishell.h>
 
+char **dup_matrix(char **matrix, size_t len)
+{
+	char	**nw_mtrx;
+	
+	nw_mtrx = (char **) malloc(sizeof(char *) * (len + 1));
+	if (!nw_mtrx)
+		return (NULL);
+	nw_mtrx[len] = '\0';
+	while (1)
+	{
+		len--;
+		nw_mtrx[len] = ft_strdup(matrix[len]); 
+		if (len == 0)
+			break;
+	}
+	return (nw_mtrx);
+}
+
+char **tokens_to_matrix(t_tokens *tokens)
+{
+	char	**nw_mtrx;
+	size_t	len;
+	
+	
+	len = tokens->size;
+	nw_mtrx = (char **) malloc(sizeof(char *) * (len + 1));
+	if (!nw_mtrx)
+		return (NULL);
+	nw_mtrx[len] = '\0';
+	while (1)
+	{
+		len--;
+		nw_mtrx[len] = ft_strdup(tokens->words[len]->word); 
+		if (len == 0)
+			break;
+	}
+	return (nw_mtrx);
+}
+
 void vervose_print_envs(t_env *env) // TODO es pot borrar per passar norminette
 {
 	while (env)
