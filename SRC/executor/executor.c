@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 22:45:36 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 23:39:27 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/27 09:28:58 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	init_cmd(t_tokens *exp_tok, t_cmd *cmd, size_t i, int j)
 	(0 || (cmd->flag_red[IN] = 0) || (cmd->flag_red[OUT] = 0));
 	(0 || (j = 0) || (cmd->err_flag = 0) || (cmd->exp_tok = exp_tok));
 	cmd->err = 0;
+	cmd->argc = 0;
 	if (exp_tok->words[i]->type >= PIPE)
 		exp_tok->words[i]->type -= PIPE;
 	cmd->args = ft_calloc(sizeof(char *), dst_topipe(exp_tok, i) + 1);
