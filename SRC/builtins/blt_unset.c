@@ -4,12 +4,12 @@ static int delete_env(t_env **_env, t_env *prev, t_env *curr)
 {
 	if (!prev && ! curr->next)
 	{
-ft_printf(1, "not prev not next\n");
+// ft_printf(1, "not prev not next\n");
 		*_env = free_env(curr);	
 	}
 	else if(!prev)
 	{
-ft_printf(1, "not prev\n");
+// ft_printf(1, "not prev\n");
 		curr = curr->next;
 		free_env(curr->prev);
 		*_env = curr;
@@ -17,13 +17,13 @@ ft_printf(1, "not prev\n");
 	}
 	else if (!curr->next)
 	{
-ft_printf(1, "not next\n");
+// ft_printf(1, "not next\n");
 		prev->next = NULL;
 		free_env(curr);
 	}
 	else
 	{
-ft_printf(1, "not not any\n");
+// ft_printf(1, "not not any\n");
 		curr = curr->next;
 		free_env(curr->prev);
 		curr->prev = prev;

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:46:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 16:02:59 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/28 18:14:34 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int print_env(t_env **envp)
 {
 	t_env	*env;
 
-	ft_printf(1, "PRINTING ENV\n"); // TODO delete
+	// ft_printf(1, "PRINTING ENV\n"); // TODO delete
 
 	env = *envp;
 	while (env)
@@ -84,31 +84,31 @@ int	call_envv(int argc, char **argv, t_env **envp)
 	t_env	*nw_env;
 	char	**matrix;
 
-	ft_printf(1, "CALLING ENV\n"); // TODO delete
+	// ft_printf(1, "CALLING ENV\n"); // TODO delete
 	i = 1;
 	nw_env = NULL;
 	matrix = env_matrix(*envp);
 	export_add(matrix, &nw_env);	
-	ft_printf(1, "\nENVS COPIED\n");	//
+	// ft_printf(1, "\nENVS COPIED\n");	//
 	vervose_print_envs(nw_env);					//
-	ft_printf(1, "\nfreeing\n");	//
+	// ft_printf(1, "\nfreeing\n");	//
 	free_matrix(matrix);
-	ft_printf(1, "\nfreed\n");	//
+	// ft_printf(1, "\nfreed\n");	//
 	
 	matrix = NULL;
 	matrix = new_env(argc, argv, &i);//size_t
-	ft_printf(1, "\nentering_exportadd\n");	//
+	// ft_printf(1, "\nentering_exportadd\n");	//
 	export_add(matrix, &nw_env);	
-	ft_printf(1, "\nNEW ENVS ADDED\n");	//
+	// ft_printf(1, "\nNEW ENVS ADDED\n");	//
 	print_envs(nw_env);					//
-	ft_printf(1, "\nNEW ENVS PRINTED\n");	//
+	// ft_printf(1, "\nNEW ENVS PRINTED\n");	//
 	free_matrix(matrix);
-	ft_printf(1, "freed\n");	//
+	// ft_printf(1, "freed\n");	//
 	
 	matrix = args_envv(argc, argv, &i); //int
-ft_printf(1, "printing args matrix\n");	//
+// ft_printf(1, "printing args matrix\n");	//
 	print_matrix(matrix);
-ft_printf(1, "printed args matrix\n");	//
+// ft_printf(1, "printed args matrix\n");	//
 exit(0);
 	return (0);
 }
