@@ -19,6 +19,17 @@ TO DO:
 #APPEND DONDE
 #gestionar errores si falla open en in o out si no hay permisos
 
+FER FT_GETENV!!!!!!
+testejar unset path i probar comandes.
+testejar export k = cho
+e$k hola.
+
+
+
+
+
+
+
 
 - BUILTINS jrneau.
 	falta printejar (env, export sense arguments)
