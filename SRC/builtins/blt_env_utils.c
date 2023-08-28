@@ -6,11 +6,50 @@
 /*   By: jareste- <jareste-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:02:22 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/22 18:43:23 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:40:45 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <minishell.h>
+
+char **dup_matrix(char **matrix, size_t len)
+{
+	char	**nw_mtrx;
+	
+	nw_mtrx = (char **) malloc(sizeof(char *) * (len + 1));
+	if (!nw_mtrx)
+		return (NULL);
+	nw_mtrx[len] = NULL;
+	while (1)
+	{
+		len--;
+		nw_mtrx[len] = ft_strdup(matrix[len]); 
+		if (len == 0)
+			break;
+	}
+	return (nw_mtrx);
+}
+
+char **tokens_to_matrix(t_tokens *tokens)
+{
+	char	**nw_mtrx;
+	size_t	len;
+	
+	
+	len = tokens->size;
+	nw_mtrx = (char **) malloc(sizeof(char *) * (len + 1));
+	if (!nw_mtrx)
+		return (NULL);
+	nw_mtrx[len] = NULL;
+	while (1)
+	{
+		len--;
+		nw_mtrx[len] = ft_strdup(tokens->words[len]->word); 
+		if (len == 0)
+			break;
+	}
+	return (nw_mtrx);
+}
 
 void vervose_print_envs(t_env *env) // TODO es pot borrar per passar norminette
 {
@@ -40,7 +79,6 @@ char *ft_strndup(char *str, size_t i)
 	str_res[i] = '\0';
 	while(i--)
 	{
-	//	ft_printf(1, "%d\n", i);
 		str_res[i] =  str[i];
 	}
 	return (str_res);
@@ -58,6 +96,13 @@ int ft_ichar(char *str, char c)
 	return (i);
 }
 
+t_env	*free_env(t_env *env)
+{
+	free(env->key);
+	free(env->val);
+	free(env);
+	return (NULL);
+}
 t_env *free_envs(t_env **_env_nodes)
 {
 	t_env *aux;
@@ -69,10 +114,8 @@ t_env *free_envs(t_env **_env_nodes)
 	while (env_nodes)
 	{
 		aux = env_nodes;
-		free(env_nodes->key);
-		free(env_nodes->val);
 		env_nodes = env_nodes->next;
-		free(aux);
+		free_env(aux);
 	}
 	*_env_nodes = NULL;
 	return (NULL);
