@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 01:23:25 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 18:11:10 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:32:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_aux_exp *aux, int err[2])
 			aux->str[aux->j] = ft_strdup(expand_dollar(tokens, aux->i++, err));
 		else if (!ft_strcmp(tokens->words[aux->i]->word, "~") \
 		&& tokens->words[aux->i]->type == 0)
-			aux->str[aux->j] = ft_strdup(getenv("HOME")); 
+			aux->str[aux->j] = ft_getenv(*tokens->env, "HOME"); 
 		else
 			aux->str[aux->j] = ft_strdup(tokens->words[aux->i]->word);
 		aux->j++;

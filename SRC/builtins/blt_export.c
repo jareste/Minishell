@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:01:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 18:13:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:24:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,19 @@ static int	append_env(t_env **_env, char **arg)
 		env->val = ft_strdup(*arg + eqi + 1);
 	}
 	return (0);
+}
+char *ft_getenv(t_env *env, char *target)
+{
+	while (env)
+	{
+		if (ft_strncmp(env->key, target, ft_strlen(env->key) + 1) == 0)
+		{
+			return (ft_strdup(env->val));
+		}
+		env = env->next;
+	}
+	return (NULL);				// TODO which return?
+	return (ft_strdup(""));		//
 }
 
 static int	check_keys(char ***_argv, t_env **_env) //TODO reduce one pointer to **env

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 18:34:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:10:57 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char *envp[])
 	g_sig_rec = 0;
 	while (1)
 	{
-		(1 && (tokens = msh_start_words()) && (exp_tok = msh_start_words()));
+		(1 && (tokens = msh_start_words(&env)) && (exp_tok = msh_start_words(&env)));
 		init_signals(NORM);
 		do_sigign(SIGQUIT);
 		tokens->str = readline("🎷🦄miniHell> ");

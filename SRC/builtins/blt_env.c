@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:46:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 18:14:34 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:14:24 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char **new_env(int argc, char **argv, int *_i)
 	char		**char_envs;
 
 
-	tk_envs = msh_start_words();
+	tk_envs = msh_start_words(NULL);
 
 	i = 1;
 	while (i < argc && ft_strchr(argv[i], '='))
@@ -60,7 +60,7 @@ char	**args_envv(int argc, char **argv, int *_i)
 	char		**nw_args;
 	t_tokens	*aux_args;
 	
-	aux_args = msh_start_words();
+	aux_args = msh_start_words(NULL);
 	i = *_i;
 	while (i < argc)
 	{

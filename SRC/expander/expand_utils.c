@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:11:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 17:49:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:31:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	dst_doll_brk(char *str, int i)
 	return (j + 1);
 }
 
-static char	*aux_expand_dollar(char *str, char *tmp)
+static char	*aux_expand_dollar(t_tokens *tokens, char *str, char *tmp)
 {
 	char	*tmp2;
 
 	tmp = ft_substr(str, 0, dst_doll_brk(str, 0) - 1);
 	tmp2 = ft_substr(str, dst_doll_brk(str, 0) \
 	- 1, 1 + (int)ft_strlen(str) - dst_doll_brk(str, 0));
-	str = getenv(tmp);
+	str = ft_getenv(*tokens->env, tmp);
 	free(tmp);
 	if (str)
 		tmp = ft_strjoin(str, tmp2);
@@ -71,12 +71,12 @@ char	*expand_dollar(t_tokens *tokens, int i, int err[2])
 	if (dst_doll_brk(tokens->words[i + 1]->word, 0) \
 	== (int)ft_strlen(tokens->words[i + 1]->word))
 	{
-		if (!getenv(tokens->words[i + 1]->word))
+		if (!ft_getenv(*tokens->env, tokens->words[i + 1]->word))
 			return (ft_strdup(""));
-		tmp = ft_strdup(getenv(tokens->words[i + 1]->word));
+		tmp = ft_strdup(ft_getenv(*tokens->env, tokens->words[i + 1]->word));
 	}
 	else
-		tmp = aux_expand_dollar(tokens->words[i + 1]->word, tmp);
+		tmp = aux_expand_dollar(tokens, tokens->words[i + 1]->word, tmp);
 	return (tmp);
 }
 
