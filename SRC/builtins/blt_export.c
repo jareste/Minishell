@@ -6,26 +6,26 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:01:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/25 11:14:38 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:46:24 by jrenau-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	export_print(t_env *env)
-{
-	 while (env)
-	 {
-	 	ft_printf(1, "%s\n", env->key, env->val);
-	 	env = env->next;
-	 }
-	return (0);
-}
+//int	export_print(t_env *env)
+//{
+//	 while (env)
+//	 {
+//	 	ft_printf(1, "%s\n", env->key, env->val);
+//	 	env = env->next;
+//	 }
+//	return (0);
+//}
 
 static int check_bad_char(char * arg)
 {
 	int c;
-	char valid[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char valid[] = "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	if (!ft_strchr(valid + 10, arg[0])) 
 	{
@@ -45,6 +45,13 @@ static int check_bad_char(char * arg)
 	return (0);
 }
 
+t_env	*last_env(t_env *env)
+{
+	while (env->next)
+		env = env->next;
+	return (env);
+}
+
 static int	append_env(t_env **_env, char **arg)
 {
 	t_env		*env;
@@ -52,13 +59,17 @@ static int	append_env(t_env **_env, char **arg)
 
 	if (!*_env)
 	{
-		*_env = calloc(sizeof(t_env), 1);
+		ft_printf(1, "adding to NULL env %p\n", _env);
+		*_env = ft_calloc(sizeof(t_env), 1);// TODO not protected
 		env = *_env;
 	}
 	else
 	{
-		(*_env)->next = calloc(sizeof(t_env), 1);
-		env = (*_env)->next;
+		ft_printf(1, "adding to not NULL env %p\n", *_env);
+		env = last_env(*_env);
+		(env)->next = ft_calloc(sizeof(t_env), 1); //TODO not protected
+		env->next->prev = env; 
+		env = env->next;
 	}
 	if (!env)
 		return (1);
@@ -81,16 +92,24 @@ static int	append_env(t_env **_env, char **arg)
 	return (0);
 }
 
-static int	check_keys(char ***_argv, t_env **_env)
+static int	check_keys(char ***_argv, t_env **_env) //TODO reduce one pointer to **env
 {
 	t_env	*env;
+	//t_env	*aux;
 	char 	**argv;
+	int 	len;
 
+	ft_printf(1, "Checkinggg\n");
 	env = *_env;
-	argv =*_argv;
-	while (env->next)
+	argv = *_argv;
+	while (env)
 	{
-		if (ft_strncmp(env->key, *argv, ft_strlen(env->key)) == 0) 
+		len = ft_ichar(*argv, '=');
+		if (len < 0)
+			len = ft_strlen(*argv);
+		if (len < (int) ft_strlen(env->key))
+			len = ft_strlen(env->key);
+		if (ft_strncmp(env->key, *argv, len) == 0) 
 		{
 			free(env->val);
 			env->val = ft_strdup(*argv + ft_ichar(*argv, '=') + 1);
@@ -99,39 +118,57 @@ static int	check_keys(char ***_argv, t_env **_env)
 		}
 		env = env->next;
 	}
-	*_env = env;
 	return (0);
 }
 
 int export_add(char **argv, t_env **_env) 
 {
-	t_env	*env; // TODO no need to use the second variable can use **_env
+//	t_env	*env; // TODO no need to use the second variable can use **_env
 	int		ret;
 
 	ret = 0;
-	if (!_env)
-		append_env(_env, argv++);
+	if (!*_env && append_env(_env, argv++))
+		return (1);
 	while (*argv)
 	{
-		ft_printf(1, "Adding: %s\n", *argv);
-		env = *_env;
+//	env = *_env;
 		if (check_bad_char(*argv))
 		{
 			ret = 1;
 			argv++;
 			continue ;
 		}
-		if (check_keys(&argv, &env))
+		if (check_keys(&argv, _env))
 			continue ;
-		append_env(&env, argv++);
+		append_env(_env, argv++);
+
 	}
 	return (ret);
 }
 
+static int print_export(t_env **envp)
+{
+	t_env	*env;
+
+	env = *envp;
+	while (env)
+	{
+		if (!env->val)
+			ft_printf(1, "declare -x %s\n", env->key);
+		else if (env->val[0] == '\0')
+			ft_printf(1, "declare -x %s=\"\"\n", env->key);
+		else
+			ft_printf(1, "declare -x %s=\"%s\"\n", env->key, env->val);
+		env = env->next;	
+	}
+	return (0);
+}
+
+
 int blt_export(int argc, char **argv, t_env **env)
 {
 	if (argc == 1)
-		return (export_print(*env));
+		return (print_export(env));
 	else
 		return (export_add(argv + 1, env));
 }
