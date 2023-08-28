@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 03:54:26 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 17:58:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:40:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,14 @@ static int	check_prnt_direrr(char *dir)
 	return (0);
 }
 
-int	blt_cd(int argc, char **argv)
+int	blt_cd(int argc, char **argv, t_env **env)
 {
 	char	*dir;
 	int		err;
-	//TODO modifie env
-	
+
 	err = 0;
-	if (argc == 1 || (ft_strncmp("~", argv[1], ft_strlen("~")) == 0))
-		dir = ft_strdup(getenv("HOME"));
+	if (argc == 1)
+		dir = ft_getenv(*env, "HOME");
 	else
 		dir = ft_strdup(argv[1]);
 	err = check_prnt_direrr(dir);

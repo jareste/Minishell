@@ -6,20 +6,20 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:02:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/24 18:10:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:40:23 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void stde_print(char *str)
+void	stde_print(char *str)
 {
 	write(2, str, ft_strlen(str));
 }
 
-int check_digits(char *_num)
+int	check_digits(char *_num)
 {
-	char *num;
+	char	*num;
 
 	num = _num + (*_num == '-');
 	while (*num)
@@ -38,16 +38,16 @@ int check_digits(char *_num)
 
 int	blt_exit(int argc, char **argv)
 {
-	unsigned	char ret;
-	char		negative;
-	char		*num;
+	unsigned char	ret;
+	char			negative;
+	char			*num;
 
 	if (argc == 1)
-		return(0); // TODO must return $?
+		return (0);
 	if (!check_digits(argv[1]) || argc != 2)
 	{
 		ret = -1;
-		return(ret);
+		return (ret);
 	}
 	negative = argv[1][0] == '-';
 	num = argv[1] + negative;
@@ -61,5 +61,4 @@ int	blt_exit(int argc, char **argv)
 	if (negative)
 		ret *= -1;
 	return (ret);
-	 
 }

@@ -6,20 +6,22 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 22:33:05 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 23:39:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:29:13 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-static int	call(t_cmd *cmd)
+static int	call(t_cmd *cmd, t_env **env)
 {
 	char	**paths;
 	char	*path_test;
 	int		i;
 	int		ret;
 
-	paths = ft_split(getenv("PATH"), ':');
+	if (!ft_getenv(*env, "PATH"))
+		return (1);
+	paths = ft_split(ft_getenv(*env, "PATH"), ':');
 	i = 0;
 	while (paths[i])
 	{
@@ -48,7 +50,7 @@ int	exe_cmd(t_cmd *cmd, t_env **env)
 {
 	if (check_blt(cmd, env) == 0)
 		return (0);
-	else if (call(cmd) == 0)
+	else if (call(cmd, env) == 0)
 		return (0);
 	else if (call_wo_path(cmd) == 0)
 		return (0);
