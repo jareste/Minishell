@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 04:18:45 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/26 20:32:29 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:21:24 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,21 @@ static char	*getenv_str(char *str)
 	return (ret);
 }
 
-static char	*check_env(char *str)
+static char	*check_env(t_tokens *tokens, char *str)
 {
 	char	*env;
 	char	*aux;
 
 	env = getenv_str(str);
-	if (!getenv(env))
+	if (!ft_getenv(*tokens->env, env))
 		aux = ft_strdup("");
 	else
-		aux = ft_strdup(getenv(env));
+		aux = ft_strdup(ft_getenv(*tokens->env, env));
 	free(env);
 	return (aux);
 }
 
-static char	*get_ret(char *ret, char *str, int j)
+static char	*get_ret(t_tokens *tokens, char *ret, char *str, int j)
 {
 	char	*aux;
 	char	*tmp;
@@ -53,7 +53,7 @@ static char	*get_ret(char *ret, char *str, int j)
 	if (tmp[0] != '\0')
 		free(tmp);
 	free(aux);
-	aux = check_env(str + j);
+	aux = check_env(tokens, str + j);
 	tmp = free_join(ret, tmp);
 	ret = ft_strjoin(tmp, aux);
 	free(tmp);
@@ -85,7 +85,7 @@ char	*expand_dots(t_tokens *tokens, int i, size_t j, char *ret)
 		{
 			if (dst_doll_brk(str, j + 1) > 1)
 			{
-				ret = get_ret(ret, str, j);
+				ret = get_ret(tokens, ret, str, j);
 				str = str + j + get_len(str + j) + 1;
 				j = 0;
 				len--;

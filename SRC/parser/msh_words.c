@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:42:33 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 00:15:08 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:10:23 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/minishell.h"
 
-t_tokens	*msh_start_words(void)
+t_tokens	*msh_start_words(t_env	**env)
 {
 	t_tokens	*tokens;
 
@@ -21,6 +21,7 @@ t_tokens	*msh_start_words(void)
 		return (NULL);
 	tokens->words = NULL; 
 	tokens->size = 0;
+	tokens->env = env;
 	return (tokens);
 }
 

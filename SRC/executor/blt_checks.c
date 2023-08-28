@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 22:33:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 18:07:34 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:16:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_blt(t_cmd *cmd, t_env **env)
 	if (ft_strncmp("echo", cmd->args[0], ft_strlen("echo") + 1) == 0)
 		return (blt_echo(cmd->argc, cmd->args));
 	else if (ft_strncmp("cd", cmd->args[0], ft_strlen("cd") + 1) == 0)
-		return (blt_cd(cmd->argc, cmd->args));
+		return (blt_cd(cmd->argc, cmd->args, env));
 	else if (ft_strncmp("pwd", cmd->args[0], ft_strlen("pwd") + 1) == 0)
 		return (blt_pwd());
 	else if (ft_strncmp("export", cmd->args[0], ft_strlen("export") + 1) == 0)
