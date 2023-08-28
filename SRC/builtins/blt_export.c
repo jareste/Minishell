@@ -6,27 +6,18 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:01:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 19:24:41 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 20:51:34 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-//int	export_print(t_env *env)
-//{
-//	 while (env)
-//	 {
-//	 	ft_printf(1, "%s\n", env->key, env->val);
-//	 	env = env->next;
-//	 }
-//	return (0);
-//}
-
-static int check_bad_char(char * arg)
+int	check_bad_char(char *arg)
 {
-	int c;
-	char valid[] = "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int		c;
+	char	*valid;
 
+	valid = "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	if (!ft_strchr(valid + 10, arg[0])) 
 	{
 		ft_printf(2, "export: '%s': not a valid identifier\n", arg);
@@ -38,41 +29,15 @@ static int check_bad_char(char * arg)
 		if (!ft_strchr(valid, arg[c]))
 		{
 			ft_printf(2, "export: '%s': not a valid identifier\n", arg);
-			return (1);	
+			return (1);
 		}
 		c++;
 	}
 	return (0);
 }
 
-t_env	*last_env(t_env *env)
+static int	aux_append_env(t_env *env, char **arg, size_t eqi)
 {
-	while (env->next)
-		env = env->next;
-	return (env);
-}
-
-static int	append_env(t_env **_env, char **arg)
-{
-	t_env		*env;
-	size_t		eqi;
-
-	if (!*_env)
-	{
-		// ft_printf(1, "adding to NULL env %p\n", _env);
-		*_env = ft_calloc(sizeof(t_env), 1);// TODO not protected
-		env = *_env;
-	}
-	else
-	{
-		// ft_printf(1, "adding to not NULL env %p\n", *_env);
-		env = last_env(*_env);
-		(env)->next = ft_calloc(sizeof(t_env), 1); //TODO not protected
-		env->next->prev = env; 
-		env = env->next;
-	}
-	if (!env)
-		return (1);
 	eqi = ft_ichar(*arg, '=');
 	if (eqi == (size_t) -1)
 	{
@@ -91,75 +56,29 @@ static int	append_env(t_env **_env, char **arg)
 	}
 	return (0);
 }
-char *ft_getenv(t_env *env, char *target)
+
+int	append_env(t_env **_env, char **arg)
 {
-	while (env)
+	t_env		*env;
+
+	if (!*_env)
 	{
-		if (ft_strncmp(env->key, target, ft_strlen(env->key) + 1) == 0)
-		{
-			return (ft_strdup(env->val));
-		}
+		*_env = ft_calloc(sizeof(t_env), 1);
+		env = *_env;
+	}
+	else
+	{
+		env = last_env(*_env);
+		(env)->next = ft_calloc(sizeof(t_env), 1);
+		env->next->prev = env; 
 		env = env->next;
 	}
-	return (NULL);				// TODO which return?
-	return (ft_strdup(""));		//
-}
-
-static int	check_keys(char ***_argv, t_env **_env) //TODO reduce one pointer to **env
-{
-	t_env	*env;
-	//t_env	*aux;
-	char 	**argv;
-	int 	len;
-
-	// ft_printf(1, "Checkinggg\n");
-	env = *_env;
-	argv = *_argv;
-	while (env)
-	{
-		len = ft_ichar(*argv, '=');
-		if (len < 0)
-			len = ft_strlen(*argv);
-		if (len < (int) ft_strlen(env->key))
-			len = ft_strlen(env->key);
-		if (ft_strncmp(env->key, *argv, len) == 0) 
-		{
-			free(env->val);
-			env->val = ft_strdup(*argv + ft_ichar(*argv, '=') + 1);
-			*_argv = *_argv + 1;
-			return (1);
-		}
-		env = env->next;
-	}
-	return (0);
-}
-
-int export_add(char **argv, t_env **_env) 
-{
-//	t_env	*env; // TODO no need to use the second variable can use **_env
-	int		ret;
-
-	ret = 0;
-	if (!*_env && append_env(_env, argv++))
+	if (!env)
 		return (1);
-	while (*argv)
-	{
-//	env = *_env;
-		if (check_bad_char(*argv))
-		{
-			ret = 1;
-			argv++;
-			continue ;
-		}
-		if (check_keys(&argv, _env))
-			continue ;
-		append_env(_env, argv++);
-
-	}
-	return (ret);
+	return (aux_append_env(env, arg, 0));
 }
 
-static int print_export(t_env **envp)
+static int	print_export(t_env **envp)
 {
 	t_env	*env;
 
@@ -172,13 +91,12 @@ static int print_export(t_env **envp)
 			ft_printf(1, "declare -x %s=\"\"\n", env->key);
 		else
 			ft_printf(1, "declare -x %s=\"%s\"\n", env->key, env->val);
-		env = env->next;	
+		env = env->next;
 	}
 	return (0);
 }
 
-
-int blt_export(int argc, char **argv, t_env **env)
+int	blt_export(int argc, char **argv, t_env **env)
 {
 	if (argc == 1)
 		return (print_export(env));
