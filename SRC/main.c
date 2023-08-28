@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:24:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 18:09:22 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 18:34:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	main(int argc, char **argv, char *envp[])
 	t_env		*env;
 	int			err[2];
 
+	envp[200] = ft_strdup("sdaf=fasd");
+	ft_printf(2, "env::::::::::%s,,,getenv:::::::%s\n", envp[200], getenv("sdaf"));
 	(0 || (argc = 0) || (argv = 0) || (err[1] = 0) || (err[0] = 0));
 	env = env_list(envp);//we should start env on global var
 	g_sig_rec = 0;

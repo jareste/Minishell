@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/27 17:52:49 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 18:10:26 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,11 @@ int			ft_ichar(char *str, char c);
 int			export_print(t_env *env);
 char		*ft_strndup(char *str, size_t i);
 
-int			blt_env(char **env, char *str, int to_do);
+int	blt_envv(int argc, char **argv, t_env **envp);
+int	blt_unset(char **argv, t_env **_env);
+int export_add(char **argv, t_env **_env);
+char **tokens_to_matrix(t_tokens *tokens);
+t_env	*free_env(t_env *env);
 
 //   ###################################################
 //                    SIGNALS

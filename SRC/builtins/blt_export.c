@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 04:01:56 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 17:46:24 by jrenau-v         ###   ########.fr       */
+/*   Updated: 2023/08/28 18:13:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ static int	append_env(t_env **_env, char **arg)
 
 	if (!*_env)
 	{
-		ft_printf(1, "adding to NULL env %p\n", _env);
+		// ft_printf(1, "adding to NULL env %p\n", _env);
 		*_env = ft_calloc(sizeof(t_env), 1);// TODO not protected
 		env = *_env;
 	}
 	else
 	{
-		ft_printf(1, "adding to not NULL env %p\n", *_env);
+		// ft_printf(1, "adding to not NULL env %p\n", *_env);
 		env = last_env(*_env);
 		(env)->next = ft_calloc(sizeof(t_env), 1); //TODO not protected
 		env->next->prev = env; 
@@ -99,7 +99,7 @@ static int	check_keys(char ***_argv, t_env **_env) //TODO reduce one pointer to 
 	char 	**argv;
 	int 	len;
 
-	ft_printf(1, "Checkinggg\n");
+	// ft_printf(1, "Checkinggg\n");
 	env = *_env;
 	argv = *_argv;
 	while (env)
