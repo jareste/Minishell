@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 00:51:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 19:21:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 21:49:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,8 @@ int			blt_cd(int argc, char **argv, t_env **env);
 int			blt_pwd(void);
 int			blt_export(int argc, char **argv, t_env **env);
 
-char *ft_getenv(t_env *_env, char *target);
+char		*ft_getenv(t_env *_env, char *target);
+
 /* blt_env_utils.c */
 t_env		*env_list(char **envs);
 void		print_envs(t_env *env);
@@ -207,12 +208,24 @@ t_env		*env_get_last(t_env *env);
 int			ft_ichar(char *str, char c);
 int			export_print(t_env *env);
 char		*ft_strndup(char *str, size_t i);
-
-int	blt_envv(int argc, char **argv, t_env **envp);
-int	blt_unset(char **argv, t_env **_env);
-int export_add(char **argv, t_env **_env);
-char **tokens_to_matrix(t_tokens *tokens);
-t_env	*free_env(t_env *env);
+int			blt_envv(int argc, char **argv, t_env **envp);
+int			blt_unset(char **argv, t_env **_env);
+int			export_add(char **argv, t_env **_env);
+char		**tokens_to_matrix(t_tokens *tokens);
+t_env		*free_env(t_env *env);
+t_env		*last_env(t_env *env);
+int			append_env(t_env **_env, char **arg);
+int			check_bad_char(char *arg);
+int			check_keys(char ***_argv, t_env **_env);
+char		*ft_strndup(char *str, size_t i);
+void		print_envs(t_env *env);
+void		vervose_print_envs(t_env *env);
+char		**tokens_to_matrix(t_tokens *tokens);
+int			ft_ichar(char *str, char c);
+t_env		*env_get_last(t_env *env);
+t_env		*free_envs(t_env **_env_nodes);
+t_env		*free_env(t_env *env);
+char		**dup_matrix(char **matrix, size_t len);
 
 //   ###################################################
 //                    SIGNALS

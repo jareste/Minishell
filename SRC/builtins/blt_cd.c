@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 03:54:26 by jareste-          #+#    #+#             */
-/*   Updated: 2023/08/28 19:25:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/08/28 19:40:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	blt_cd(int argc, char **argv, t_env **env)
 {
 	char	*dir;
 	int		err;
-	//TODO modifie env
-	
+
 	err = 0;
 	if (argc == 1)
 		dir = ft_getenv(*env, "HOME");

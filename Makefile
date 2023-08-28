@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/28 18:10:10 by jareste-         ###   ########.fr        #
+#    Updated: 2023/08/28 21:31:56 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,12 @@ SRCS += $(addprefix $(BUILTINS_PATH)/, blt_exit.c \
 		blt_cd.c \
 		blt_pwd.c \
 		blt_env_utils.c \
+		blt_env_utils2.c \
+		blt_env_utils3.c \
 		blt_export.c \
 		blt_env.c \
-		blt_unset.c)
+		blt_unset.c \
+		blt_export_utils.c)
 
 EXECUTOR_PATH = ./SRC/executor
 
