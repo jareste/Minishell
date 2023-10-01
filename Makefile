@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/31 09:20:31 by jareste-          #+#    #+#              #
-#    Updated: 2023/08/28 21:31:56 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/01 11:45:55 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,7 @@ OBJS = ${SRCS:.c=.o}
 all:
 		@$(MAKE) -C $(LIBFT_MAKE) --no-print-directory
 		@$(MAKE) -C $(PRINTF_MAKE) --no-print-directory
+		@cd INC/readline && ./configure &>/dev/null
 		@$(MAKE) -C $(READLINE_MAKE) --no-print-directory
 		@$(MAKE) ${NAME} --no-print-directory
 
